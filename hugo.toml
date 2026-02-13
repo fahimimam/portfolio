@@ -1,3 +1,64 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://fahimimam.pro.bd/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Fahim Imam - Software Developer'
+theme = 'PaperMod'
+
+enableEmoji = true
+
+[pagination]
+pagerSize = 10
+
+[params]
+
+# FORCE DARK MODE - No toggle button
+defaultTheme = "dark"
+disableThemeToggle = true  # This removes the toggle button
+
+# Disable default home page
+homeInfoParams = false
+
+# Social links (used in custom homepage)
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/fahimimam"
+
+[[params.socialIcons]]
+name = "linkedin"
+url = "https://linkedin.com/in/yourprofile"
+
+[[params.socialIcons]]
+name = "email"
+url = "mailto:your@email.com"
+
+ShowReadingTime = true
+ShowShareButtons = true
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = true
+
+[menu]
+[[menu.main]]
+identifier = "projects"
+name = "Projects"
+url = "/projects/"
+weight = 10
+
+[[menu.main]]
+identifier = "blog"
+name = "Blog"
+url = "/blog/"
+weight = 20
+
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 30
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
