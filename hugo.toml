@@ -1,23 +1,28 @@
-baseURL = 'https://fahimimam.pro.bd/'
+baseURL = 'http://fahimimam.pro.bd/'
 languageCode = 'en-us'
 title = 'Fahim Imam - Software Developer'
 theme = 'PaperMod'
 
 enableEmoji = true
 
+# URL structure settings
+disableKinds = []
+canonifyURLs = false
+relativeURLs = false
+
 [pagination]
 pagerSize = 10
 
+[permalinks]
+posts = "/:filename/"
+blog = "/blog/:filename/"
+projects = "/projects/:filename/"
+
 [params]
-
-# FORCE DARK MODE - No toggle button
 defaultTheme = "dark"
-disableThemeToggle = true  # This removes the toggle button
-
-# Disable default home page
+disableThemeToggle = true
 homeInfoParams = false
 
-# Social links (used in custom homepage)
 [[params.socialIcons]]
 name = "github"
 url = "https://github.com/fahimimam"
