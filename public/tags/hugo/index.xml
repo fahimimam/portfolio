@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Hugo on Fahim Imam - Software Developer</title>
-    <link>http://fahimimam.pro.bd/tags/hugo/</link>
+    <link>http://localhost:55484/tags/hugo/</link>
     <description>Recent content in Hugo on Fahim Imam - Software Developer</description>
     <generator>Hugo -- 0.155.2</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 06 Feb 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://fahimimam.pro.bd/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:55484/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Portfolio Website</title>
-      <link>http://fahimimam.pro.bd/projects/portfolio-website/</link>
+      <link>http://localhost:55484/projects/portfolio-website/</link>
       <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://fahimimam.pro.bd/projects/portfolio-website/</guid>
+      <guid>http://localhost:55484/projects/portfolio-website/</guid>
       <description>Hugo static site, deployed via rsync on a 1-core 2GB VPS using only ~10MB RAM.</description>
     </item>
   </channel>

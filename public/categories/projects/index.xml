@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Projects on Fahim Imam - Software Developer</title>
-    <link>http://fahimimam.pro.bd/categories/projects/</link>
+    <link>http://localhost:55484/categories/projects/</link>
     <description>Recent content in Projects on Fahim Imam - Software Developer</description>
     <generator>Hugo -- 0.155.2</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 09 Aug 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://fahimimam.pro.bd/categories/projects/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:55484/categories/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Expense Tracker</title>
-      <link>http://fahimimam.pro.bd/projects/expense-tracker/</link>
+      <link>http://localhost:55484/projects/expense-tracker/</link>
       <pubDate>Sun, 09 Aug 2026 00:00:00 +0000</pubDate>
-      <guid>http://fahimimam.pro.bd/projects/expense-tracker/</guid>
+      <guid>http://localhost:55484/projects/expense-tracker/</guid>
       <description>A personal finance tracker for categorizing expenses, setting monthly budgets, and visualizing where the money goes.</description>
     </item>
     <item>
       <title>Lunch Tracker</title>
-      <link>http://fahimimam.pro.bd/projects/lunch-tracker/</link>
+      <link>http://localhost:55484/projects/lunch-tracker/</link>
       <pubDate>Sun, 09 Aug 2026 00:00:00 +0000</pubDate>
-      <guid>http://fahimimam.pro.bd/projects/lunch-tracker/</guid>
+      <guid>http://localhost:55484/projects/lunch-tracker/</guid>
       <description>A daily lunch logger — track what I eat, where, and the cost. Surfaces patterns over time.</description>
     </item>
     <item>
       <title>Portfolio Website</title>
-      <link>http://fahimimam.pro.bd/projects/portfolio-website/</link>
+      <link>http://localhost:55484/projects/portfolio-website/</link>
       <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>http://fahimimam.pro.bd/projects/portfolio-website/</guid>
+      <guid>http://localhost:55484/projects/portfolio-website/</guid>
       <description>Hugo static site, deployed via rsync on a 1-core 2GB VPS using only ~10MB RAM.</description>
     </item>
     <item>
       <title>Chat Application</title>
-      <link>http://fahimimam.pro.bd/projects/chat-application/</link>
+      <link>http://localhost:55484/projects/chat-application/</link>
       <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>http://fahimimam.pro.bd/projects/chat-application/</guid>
+      <guid>http://localhost:55484/projects/chat-application/</guid>
       <description>Real-time chat built with Go, WebSockets, and Redis pub/sub for horizontal scaling.</description>
     </item>
   </channel>

@@ -2,83 +2,83 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://fahimimam.pro.bd/categories/</loc>
+    <loc>http://localhost:55484/categories/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/docker/</loc>
+    <loc>http://localhost:55484/tags/docker/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/projects/expense-tracker/</loc>
+    <loc>http://localhost:55484/projects/expense-tracker/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/</loc>
+    <loc>http://localhost:55484/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/go/</loc>
+    <loc>http://localhost:55484/tags/go/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/htmx/</loc>
+    <loc>http://localhost:55484/tags/htmx/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/projects/lunch-tracker/</loc>
+    <loc>http://localhost:55484/projects/lunch-tracker/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/postgresql/</loc>
+    <loc>http://localhost:55484/tags/postgresql/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/categories/projects/</loc>
+    <loc>http://localhost:55484/categories/projects/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/projects/</loc>
+    <loc>http://localhost:55484/projects/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/rest/</loc>
+    <loc>http://localhost:55484/tags/rest/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/sqlite/</loc>
+    <loc>http://localhost:55484/tags/sqlite/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/</loc>
+    <loc>http://localhost:55484/tags/</loc>
     <lastmod>2026-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/blog/</loc>
+    <loc>http://localhost:55484/blog/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/categories/blog/</loc>
+    <loc>http://localhost:55484/categories/blog/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/categories/devops/</loc>
+    <loc>http://localhost:55484/categories/devops/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/devops/</loc>
+    <loc>http://localhost:55484/tags/devops/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/hugo/</loc>
+    <loc>http://localhost:55484/tags/hugo/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/blog/my-first-post/</loc>
+    <loc>http://localhost:55484/blog/my-first-post/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/projects/portfolio-website/</loc>
+    <loc>http://localhost:55484/projects/portfolio-website/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/static-site/</loc>
+    <loc>http://localhost:55484/tags/static-site/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/vps/</loc>
+    <loc>http://localhost:55484/tags/vps/</loc>
     <lastmod>2024-02-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/projects/chat-application/</loc>
+    <loc>http://localhost:55484/projects/chat-application/</loc>
     <lastmod>2024-01-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/redis/</loc>
+    <loc>http://localhost:55484/tags/redis/</loc>
     <lastmod>2024-01-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/tags/websockets/</loc>
+    <loc>http://localhost:55484/tags/websockets/</loc>
     <lastmod>2024-01-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://fahimimam.pro.bd/about/</loc>
+    <loc>http://localhost:55484/about/</loc>
   </url><url>
-    <loc>http://fahimimam.pro.bd/cv/</loc>
+    <loc>http://localhost:55484/cv/</loc>
   </url>
 </urlset>
