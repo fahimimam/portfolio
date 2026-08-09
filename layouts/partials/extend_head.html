@@ -1,0 +1,8 @@
+{{- /*
+  Extend head: matrix-rain background for non-landing pages so the cyberpunk
+  aesthetic carries across the site. The landing page (layouts/index.html)
+  handles its own background, so we skip it here.
+*/ -}}
+{{- if not .IsHome }}
+<script defer src="/js/matrix.js"></script>
+{{- end }}

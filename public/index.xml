@@ -1,1 +1,61 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Fahim Imam - Software Developer</title><link>http://fahimimam.pro.bd/</link><description>Recent content on Fahim Imam - Software Developer</description><generator>Hugo -- 0.155.2</generator><language>en-us</language><lastBuildDate>Tue, 06 Feb 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://fahimimam.pro.bd/index.xml" rel="self" type="application/rss+xml"/><item><title>Optimizing VPS Deployment: Binary Uploads vs Docker</title><link>http://fahimimam.pro.bd/blog/my-first-post/</link><pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate><guid>http://fahimimam.pro.bd/blog/my-first-post/</guid><description>How I optimized my VPS deployment strategy to save resources</description></item><item><title>Portfolio Website with Hugo</title><link>http://fahimimam.pro.bd/projects/project-2/</link><pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate><guid>http://fahimimam.pro.bd/projects/project-2/</guid><description>Lightning-fast portfolio website using Hugo static site generator</description></item><item><title>Chat Application with WebSockets</title><link>http://fahimimam.pro.bd/projects/project-1/</link><pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate><guid>http://fahimimam.pro.bd/projects/project-1/</guid><description>Real-time chat application built with Go, WebSockets, and Redis</description></item><item><title>About Me</title><link>http://fahimimam.pro.bd/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://fahimimam.pro.bd/about/</guid><description>Learn more about Fahim Imam</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Fahim Imam - Software Developer</title>
+    <link>http://fahimimam.pro.bd/</link>
+    <description>Recent content on Fahim Imam - Software Developer</description>
+    <generator>Hugo -- 0.155.2</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 09 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://fahimimam.pro.bd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Expense Tracker</title>
+      <link>http://fahimimam.pro.bd/projects/expense-tracker/</link>
+      <pubDate>Sun, 09 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/projects/expense-tracker/</guid>
+      <description>A personal finance tracker for categorizing expenses, setting monthly budgets, and visualizing where the money goes.</description>
+    </item>
+    <item>
+      <title>Lunch Tracker</title>
+      <link>http://fahimimam.pro.bd/projects/lunch-tracker/</link>
+      <pubDate>Sun, 09 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/projects/lunch-tracker/</guid>
+      <description>A daily lunch logger — track what I eat, where, and the cost. Surfaces patterns over time.</description>
+    </item>
+    <item>
+      <title>Optimizing VPS Deployment: Binary Uploads vs Docker</title>
+      <link>http://fahimimam.pro.bd/blog/my-first-post/</link>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/blog/my-first-post/</guid>
+      <description>How I optimized my VPS deployment strategy to save resources</description>
+    </item>
+    <item>
+      <title>Portfolio Website</title>
+      <link>http://fahimimam.pro.bd/projects/portfolio-website/</link>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/projects/portfolio-website/</guid>
+      <description>Hugo static site, deployed via rsync on a 1-core 2GB VPS using only ~10MB RAM.</description>
+    </item>
+    <item>
+      <title>Chat Application</title>
+      <link>http://fahimimam.pro.bd/projects/chat-application/</link>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/projects/chat-application/</guid>
+      <description>Real-time chat built with Go, WebSockets, and Redis pub/sub for horizontal scaling.</description>
+    </item>
+    <item>
+      <title>About</title>
+      <link>http://fahimimam.pro.bd/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/about/</guid>
+      <description>Who I am, what I work on, and what I&amp;#39;m learning.</description>
+    </item>
+    <item>
+      <title>CV / Résumé</title>
+      <link>http://fahimimam.pro.bd/cv/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/cv/</guid>
+      <description>Download or view my résumé as a PDF.</description>
+    </item>
+  </channel>
+</rss>

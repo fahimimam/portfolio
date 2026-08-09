@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>HTMX on Fahim Imam - Software Developer</title>
+    <link>http://fahimimam.pro.bd/tags/htmx/</link>
+    <description>Recent content in HTMX on Fahim Imam - Software Developer</description>
+    <generator>Hugo -- 0.155.2</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 09 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://fahimimam.pro.bd/tags/htmx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Expense Tracker</title>
+      <link>http://fahimimam.pro.bd/projects/expense-tracker/</link>
+      <pubDate>Sun, 09 Aug 2026 00:00:00 +0000</pubDate>
+      <guid>http://fahimimam.pro.bd/projects/expense-tracker/</guid>
+      <description>A personal finance tracker for categorizing expenses, setting monthly budgets, and visualizing where the money goes.</description>
+    </item>
+  </channel>
+</rss>

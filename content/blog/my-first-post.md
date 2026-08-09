@@ -37,4 +37,24 @@ Instead of using Docker for everything, I decided to:
 
 ```bash
 #!/bin/bash
-GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-s -w" -o app-linux main.go
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
+    go build -ldflags="-s -w" -o app-linux main.go
+```
+
+The flags `-s -w` strip the symbol table and DWARF debug info, which
+typically cuts the binary size by 20–30%.
+
+### Why this matters
+
+A statically-linked Go binary uses ~10MB of RAM at idle. The same
+application inside a Docker container typically uses 30–60MB once you
+count the daemon, container layers, and overlay filesystem. On a 2GB
+box, that difference is the difference between running four services
+and running one.
+
+### When Docker still makes sense
+
+For complex multi-service stacks where reproducibility matters more than
+RAM — staging environments, CI, anything you throw away after a day —
+Docker is still the right tool. The point isn't to avoid Docker
+entirely, it's to match the deployment shape to the workload.
