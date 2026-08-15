@@ -1,42 +1,9 @@
 {{ define "main" }}
+{{- $home := .Site.Data.home -}}
 <div class="hero-section">
     <div class="hero-content">
-        <div class="profile-card">
-            <div class="card-corners">
-                <span class="corner top-left"></span>
-                <span class="corner top-right"></span>
-                <span class="corner bottom-left"></span>
-                <span class="corner bottom-right"></span>
-            </div>
-
-            <div class="card-scanline"></div>
-
-            <div class="card-header">
-                <span class="status-indicator"></span>
-                <span class="status-text">ONLINE</span>
-                <div class="card-id">ID: DEV-2024</div>
-            </div>
-
-            <div class="profile-image-wrapper">
-                <img src="/images/profile.png" alt="Fahim Imam" class="profile-image">
-                <div class="image-overlay"></div>
-                <div class="holographic-effect"></div>
-            </div>
-
-            <div class="card-footer">
-                <div class="data-line">
-                    <span class="label">ROLE:</span>
-                    <span class="value">SOFTWARE_DEV</span>
-                </div>
-                <div class="data-line">
-                    <span class="label">STACK:</span>
-                    <span class="value">GO | DOCKER | LINUX</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="terminal-text">
-            <div class="terminal-header">
+        <div class="hero-shell">
+            <div class="hero-shell-header">
                 <span class="terminal-title">fahim@portfolio:~$</span>
                 <div class="terminal-buttons">
                     <span class="btn-close"></span>
@@ -44,48 +11,64 @@
                     <span class="btn-maximize"></span>
                 </div>
             </div>
-            <div class="terminal-body">
-                <p class="terminal-line">
-                    <span class="prompt">~$</span>
-                    <span class="command">whoami</span>
-                </p>
-                <p class="output">
-                    <span class="typing-text" id="typing-name">Fahim Imam</span>
-                </p>
+            <div class="hero-shell-body">
+                <aside class="profile-card">
+                    <div class="card-scanline"></div>
 
-                <p class="terminal-line">
-                    <span class="prompt">~$</span>
-                    <span class="command">cat about.txt</span>
-                </p>
-                <p class="output">
-                    <span class="typing-text" id="typing-role">Software Developer | Go Enthusiast | System Optimizer</span>
-                </p>
+                    <div class="card-header">
+                        {{- if $home.card.availability }}
+                        <span class="availability-chip" title="Open to work">
+                            <span class="availability-chip-dot" aria-hidden="true"></span>
+                            {{ $home.card.availability }}
+                        </span>
+                        {{- end }}
+                    </div>
 
-                <p class="terminal-line">
-                    <span class="prompt">~$</span>
-                    <span class="command">ls skills/</span>
-                </p>
-                <p class="output skills-grid">
-                    <span class="skill">Go</span>
-                    <span class="skill">Docker</span>
-                    <span class="skill">PostgreSQL</span>
-                    <span class="skill">Redis</span>
-                    <span class="skill">Linux</span>
-                    <span class="skill">Hugo</span>
-                </p>
+                    <div class="profile-image-wrapper">
+                        <img src="/images/profile.png" alt="Fahim Imam" class="profile-image">
+                        <div class="image-overlay"></div>
+                        <div class="holographic-effect"></div>
+                    </div>
 
-                <p class="terminal-line">
-                    <span class="prompt">~$</span>
-                    <span class="command">cat status.txt</span>
-                </p>
-                <p class="output status-line">
-                    <span class="status-available">● Available for opportunities</span>
-                </p>
+                    <div class="card-footer">
+                        {{- range $home.card.dataLines }}
+                        <div class="data-line">
+                            <span class="label">{{ .label }}:</span>
+                            <span class="value">{{ .value }}</span>
+                        </div>
+                        {{- end }}
+                    </div>
+                </aside>
 
-                <p class="terminal-line">
-                    <span class="prompt">~$</span>
-                    <span class="cursor-blink">▋</span>
-                </p>
+                <section class="terminal-text">
+                    <div class="terminal-body">
+                        {{- range .Site.Data.terminal.lines }}
+                        {{- if eq .type "prompt" }}
+                        <p class="terminal-line">
+                            <span class="prompt">~$</span>
+                            <span class="command">{{ .command }}</span>
+                        </p>
+                        {{- else if eq .type "typing" }}
+                        <p class="output">
+                            <span class="typing-text">{{ .value }}</span>
+                        </p>
+                        {{- else if eq .type "skills" }}
+                        <p class="output skills-grid">
+                            {{- range .values }}
+                            <span class="skill">{{ . }}</span>
+                            {{- end }}
+                        </p>
+                        {{- else if eq .type "info" }}
+                        <p class="output output-info">{{ .value }}</p>
+                        {{- else if eq .type "cursor" }}
+                        <p class="terminal-line">
+                            <span class="prompt">~$</span>
+                            <span class="cursor-blink">▋</span>
+                        </p>
+                        {{- end }}
+                        {{- end }}
+                    </div>
+                </section>
             </div>
         </div>
 
@@ -93,16 +76,16 @@
             <a href="{{ "projects/" | relURL }}" class="btn btn-primary">
                 <span class="btn-icon">📁</span> View Projects
             </a>
-            <a href="{{ "cv/" | relURL }}" class="btn btn-secondary">
+            <a href="{{ "cv/" | relURL }}" class="btn btn-primary">
                 <span class="btn-icon">📄</span> View CV
             </a>
-            <a href="{{ "blog/" | relURL }}" class="btn btn-secondary">
-                <span class="btn-icon">📝</span> Read Blog
-            </a>
-            <a href="{{ "about/" | relURL }}" class="btn btn-secondary">
-                <span class="btn-icon">👤</span> About Me
-            </a>
         </div>
+        <nav class="cta-ghost-row" aria-label="More about Fahim">
+            <a href="{{ "blog/" | relURL }}" class="cta-ghost">📝 Read Blog</a>
+            <a href="{{ "about/" | relURL }}" class="cta-ghost">👤 About Me</a>
+            <a href="{{ "now/" | relURL }}" class="cta-ghost">⚡ Now</a>
+            <a href="{{ "uses/" | relURL }}" class="cta-ghost">🛠️ Uses</a>
+        </nav>
 
         <div class="social-links">
             <a href="https://github.com/fahimimam" target="_blank" title="GitHub">
@@ -125,572 +108,5 @@
 
     <div class="background-grid"></div>
 </div>
-
-<style>
-    /*
-      Home-page-only styles.
-
-      Theme tokens (--neon-blue, --text-primary, --cyber-bg, …) and the
-      base body/font rule come from the bundled stylesheet
-      assets/css/extended/custom.css. We only declare what the home
-      page needs on top of that bundle:
-
-        --darker-bg: a slightly deeper variant of --cyber-bg used only
-                     here for the home-page hero background.
-
-      Stripping the duplicated :root, *, and body rules removes ~6 KB
-      of bytes that ships once on every home-page request.
-    */
-    :root {
-        --darker-bg: #050811;
-        --dark-bg: #0a0e27;
-        --terminal-bg: rgba(10, 14, 39, 0.9);
-    }
-
-    body {
-        background: var(--darker-bg);
-        overflow-x: hidden;
-    }
-
-    .hero-section {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        position: relative;
-        background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
-    }
-
-    .background-grid {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image:
-                linear-gradient(var(--neon-blue) 1px, transparent 1px),
-                linear-gradient(90deg, var(--neon-blue) 1px, transparent 1px);
-        background-size: 50px 50px;
-        opacity: 0.03;
-        animation: gridMove 20s linear infinite;
-    }
-
-    @keyframes gridMove {
-        0% { transform: translate(0, 0); }
-        100% { transform: translate(50px, 50px); }
-    }
-
-    .hero-content {
-        max-width: 1200px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 3rem;
-        z-index: 1;
-    }
-
-    .profile-card {
-        position: relative;
-        width: 340px;
-        background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(5, 8, 17, 0.95) 100%);
-        border-radius: 16px;
-        border: 2px solid var(--neon-blue);
-        padding: 1.5rem;
-        box-shadow:
-                0 0 30px rgba(0, 243, 255, 0.3),
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                inset 0 0 20px rgba(0, 243, 255, 0.05);
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-    }
-
-    /* Corner decorations */
-    .card-corners .corner {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        border: 2px solid var(--neon-orange);
-    }
-
-    .corner.top-left {
-        top: 8px;
-        left: 8px;
-        border-right: none;
-        border-bottom: none;
-    }
-
-    .corner.top-right {
-        top: 8px;
-        right: 8px;
-        border-left: none;
-        border-bottom: none;
-    }
-
-    .corner.bottom-left {
-        bottom: 8px;
-        left: 8px;
-        border-right: none;
-        border-top: none;
-    }
-
-    .corner.bottom-right {
-        bottom: 8px;
-        right: 8px;
-        border-left: none;
-        border-top: none;
-    }
-
-    /* Scanline effect */
-    .card-scanline {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 243, 255, 0.03) 0px,
-                rgba(0, 243, 255, 0.03) 1px,
-                transparent 1px,
-                transparent 2px
-        );
-        pointer-events: none;
-        animation: scanlineMove 3s linear infinite;
-        z-index: 2;
-    }
-
-    @keyframes scanlineMove {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(100%); }
-    }
-
-    /* Card header */
-    .card-header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(0, 243, 255, 0.3);
-        position: relative;
-        z-index: 1;
-    }
-
-    .status-indicator {
-        width: 10px;
-        height: 10px;
-        background: #4ade80;
-        border-radius: 50%;
-        box-shadow: 0 0 10px #4ade80;
-        animation: pulse-status 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse-status {
-        0%, 100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-        50% {
-            opacity: 0.6;
-            transform: scale(0.9);
-        }
-    }
-
-    .status-text {
-        color: #4ade80;
-        font-size: 0.75rem;
-        font-weight: bold;
-        letter-spacing: 1px;
-    }
-
-    .card-id {
-        margin-left: auto;
-        color: var(--text-secondary);
-        font-size: 0.7rem;
-        font-family: 'Courier New', monospace;
-        opacity: 0.7;
-    }
-
-    /* Profile image wrapper */
-    .profile-image-wrapper {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 3/4;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 2px solid var(--neon-blue);
-        box-shadow:
-                0 0 20px rgba(0, 243, 255, 0.3),
-                inset 0 0 30px rgba(0, 243, 255, 0.1);
-        margin-bottom: 1rem;
-    }
-
-    .profile-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        filter: brightness(1.1) contrast(1.05);
-        position: relative;
-        z-index: 0;
-    }
-
-    /* Holographic border effect */
-    .holographic-effect {
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(
-                45deg,
-                var(--neon-blue),
-                var(--neon-purple),
-                var(--neon-orange),
-                var(--neon-blue)
-        );
-        background-size: 300% 300%;
-        opacity: 0.3;
-        filter: blur(8px);
-        animation: holographicShift 6s ease infinite;
-        z-index: -1;
-        border-radius: 8px;
-    }
-
-    @keyframes holographicShift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-
-    /* Image overlay (subtle tech grid) */
-    .image-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image:
-                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
-        background-size: 20px 20px;
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    /* Card footer */
-    .card-footer {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        position: relative;
-        z-index: 1;
-    }
-
-    .data-line {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.4rem 0;
-        border-bottom: 1px solid rgba(0, 243, 255, 0.1);
-        font-size: 0.8rem;
-    }
-
-    .data-line:last-child {
-        border-bottom: none;
-    }
-
-    .data-line .label {
-        color: var(--neon-orange);
-        font-weight: bold;
-        letter-spacing: 1px;
-    }
-
-    .data-line .value {
-        color: var(--text-primary);
-        font-family: 'Courier New', monospace;
-        font-size: 0.75rem;
-    }
-
-    /* Hover effect for entire card */
-    .profile-card:hover {
-        transform: translateY(-5px);
-        box-shadow:
-                0 0 40px rgba(0, 243, 255, 0.5),
-                0 25px 80px rgba(0, 0, 0, 0.6),
-                inset 0 0 30px rgba(0, 243, 255, 0.1);
-        transition: all 0.3s ease;
-    }
-
-    .profile-card:hover .holographic-effect {
-        opacity: 0.5;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .profile-card {
-            width: 280px;
-            padding: 1rem;
-        }
-
-        .data-line {
-            font-size: 0.7rem;
-        }
-
-        .data-line .value {
-            font-size: 0.65rem;
-        }
-    }
-
-    /* Terminal */
-    .terminal-text {
-        width: 100%;
-        max-width: 700px;
-        background: var(--terminal-bg);
-        border-radius: 12px;
-        border: 2px solid var(--neon-blue);
-        box-shadow:
-                0 0 20px rgba(0, 243, 255, 0.3),
-                0 10px 40px rgba(0, 0, 0, 0.5);
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-    }
-
-    .terminal-header {
-        background: rgba(0, 243, 255, 0.1);
-        padding: 0.75rem 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid var(--neon-blue);
-    }
-
-    .terminal-title {
-        color: var(--neon-blue);
-        font-weight: bold;
-        font-size: 0.9rem;
-    }
-
-    .terminal-buttons {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .terminal-buttons span {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        display: block;
-    }
-
-    .btn-close { background: #ff5f56; }
-    .btn-minimize { background: #ffbd2e; }
-    .btn-maximize { background: #27c93f; }
-
-    .terminal-body {
-        padding: 1.5rem;
-        font-size: 1rem;
-        line-height: 1.8;
-    }
-
-    .terminal-line {
-        margin: 1rem 0;
-    }
-
-    .prompt {
-        color: var(--neon-blue);
-        font-weight: bold;
-        margin-right: 0.5rem;
-    }
-
-    .command {
-        color: var(--neon-purple);
-        font-weight: bold;
-    }
-
-    .output {
-        color: var(--text-primary);
-        margin: 0.5rem 0 1rem 2rem;
-    }
-
-    .typing-text {
-        display: inline-block;
-        border-right: 2px solid var(--neon-orange);
-        animation: typing 2s steps(30) 1s forwards, blink 0.5s step-end infinite;
-        white-space: nowrap;
-        overflow: hidden;
-        max-width: 0;
-    }
-
-    #typing-name {
-        color: var(--neon-orange);
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    #typing-role {
-        color: var(--text-secondary);
-    }
-
-    @keyframes typing {
-        from { max-width: 0; }
-        to { max-width: 100%; }
-    }
-
-    @keyframes blink {
-        50% { border-color: transparent; }
-    }
-
-    .skills-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .skill {
-        background: rgba(0, 243, 255, 0.1);
-        color: var(--neon-blue);
-        padding: 0.4rem 0.8rem;
-        border-radius: 6px;
-        border: 1px solid var(--neon-blue);
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-    }
-
-    .skill:hover {
-        background: var(--neon-blue);
-        color: var(--darker-bg);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 243, 255, 0.4);
-    }
-
-    .status-line {
-        color: #4ade80;
-    }
-
-    .status-available::before {
-        content: '';
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        background: #4ade80;
-        border-radius: 50%;
-        margin-right: 0.5rem;
-        animation: statusBlink 2s ease-in-out infinite;
-    }
-
-    @keyframes statusBlink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-    }
-
-    .cursor-blink {
-        color: var(--neon-blue);
-        animation: blink 1s step-end infinite;
-    }
-
-    /* CTA Buttons */
-    .cta-buttons {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .btn {
-        padding: 0.875rem 1.75rem;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
-        border: 2px solid;
-        font-size: 1rem;
-    }
-
-    .btn-primary {
-        background: var(--neon-blue);
-        color: var(--darker-bg);
-        border-color: var(--neon-blue);
-    }
-
-    .btn-primary:hover {
-        background: transparent;
-        color: var(--neon-blue);
-        box-shadow: 0 0 20px var(--neon-blue);
-        transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-        background: transparent;
-        color: var(--neon-orange);
-        border-color: var(--neon-orange);
-    }
-
-    .btn-secondary:hover {
-        background: var(--neon-orange);
-        color: var(--darker-bg);
-        box-shadow: 0 0 20px var(--neon-orange);
-        transform: translateY(-2px);
-    }
-
-    .btn-icon {
-        font-size: 1.2rem;
-    }
-
-    /* Social Links */
-    .social-links {
-        display: flex;
-        gap: 1.5rem;
-        margin-top: 1rem;
-    }
-
-    .social-icon {
-        width: 32px;
-        height: 32px;
-        color: var(--text-secondary);
-        transition: all 0.3s ease;
-    }
-
-    .social-links a:hover .social-icon {
-        color: var(--neon-blue);
-        filter: drop-shadow(0 0 8px var(--neon-blue));
-        transform: translateY(-3px);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .hero-content {
-            gap: 2rem;
-        }
-
-        .profile-image-container {
-            width: 200px;
-            height: 200px;
-        }
-
-        .terminal-body {
-            font-size: 0.85rem;
-            padding: 1rem;
-        }
-
-        #typing-name {
-            font-size: 1.2rem;
-        }
-
-        .cta-buttons {
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .btn {
-            width: 100%;
-            justify-content: center;
-        }
-    }
-</style>
 
 {{ end }}

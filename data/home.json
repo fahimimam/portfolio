@@ -1,0 +1,9 @@
+{
+  "card": {
+    "availability": "Available for opportunities",
+    "dataLines": [
+      { "label": "ROLE", "value": "SOFTWARE_DEV" },
+      { "label": "STACK", "value": "GO | DOCKER | LINUX" }
+    ]
+  }
+}

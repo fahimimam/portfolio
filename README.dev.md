@@ -490,6 +490,61 @@ It's a syntactic and runtime floor, not a test framework — catches
 
 ## Live domain check
 
+## Landing page (`/`)
+
+`layouts/index.html` overrides PaperMod's `index.html` with the
+hero/terminal/CTA stack. The page is split across three files:
+
+- `layouts/index.html` — markup only (114 lines). Reads from the
+  two data files for any copy that changes.
+- `assets/css/extended/home.css` — all home-page CSS. Picked up
+  automatically by PaperMod's `resources.Match "css/extended/*.css"`
+  in `themes/PaperMod/layouts/partials/head.html`, so it gets
+  minified, fingerprinted, and cached by the browser rather than
+  shipping in the HTML on every visit.
+- `data/home.json` — card copy (status text, availability,
+  role/stack lines).
+- `data/terminal.json` — every line of the terminal, in order.
+
+### Updating the terminal feed
+
+Each entry in `data/terminal.lines` is one of:
+
+| `type`      | fields              | renders as                              |
+|-------------|---------------------|-----------------------------------------|
+| `prompt`    | `command`           | `~$ <command>`                          |
+| `typing`    | `value`             | typewriter-animated line                |
+| `skills`    | `values: [...]`     | flex row of pills                       |
+| `info`      | `value`             | plain monospace output (no animation)   |
+| `cursor`    | —                   | blinking `▋` after a prompt             |
+
+To add a new engineering line to the hero, append a `prompt`
++ `info` pair:
+
+```json
+{ "type": "prompt", "command": "echo '// something I shipped'" },
+{ "type": "info",   "value":   "// something I shipped" },
+```
+
+The `nth-of-type` stagger in `home.css` keeps the typing
+animation in sync for the first 4 typing lines and uses a generic
+fallback for any beyond that.
+
+### Mobile restack
+
+On screens ≤768px, the CSS `order` property reshuffles the
+hero-content stack so CTA buttons and the ghost row land above
+the shell (card + terminal). The shell is the tall content; the
+CTAs are decision-ready — they should be the first thing a phone
+visitor sees.
+
+### Reduced motion
+
+`home.css` ends with a `@media (prefers-reduced-motion: reduce)`
+block that disables every keyframed animation on the page when
+the user has set their OS-level preference. Visual effects remain;
+they just stop moving.
+
 | Domain | What it serves |
 |---|---|
 | `https://fahimimam.pro.bd` | Production. The `baseURL`. |
