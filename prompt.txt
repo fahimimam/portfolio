@@ -1,0 +1,500 @@
+# Claude Prompt — Lunch Tracker Portfolio Integration
+
+You are acting as a **Principal Software Engineer, Technical Architect, and Senior Technical Writer**.
+
+You have access to two codebases:
+
+1. **Portfolio** — my personal portfolio website. This is where the Lunch Tracker project needs to be showcased.
+2. **Lunch Tracker** — the actual project/codebase that you previously built.
+
+I will provide/link both directories to you.
+
+Your job is to **deeply inspect both codebases before making changes** and then integrate Lunch Tracker into my portfolio in a way that properly demonstrates the engineering work behind it.
+
+---
+
+## 1. Understand Lunch Tracker First
+
+Do **not** immediately start modifying the portfolio.
+
+First, thoroughly inspect the Lunch Tracker codebase.
+
+I want you to reconstruct the project from an engineering perspective:
+
+### Understand:
+
+- What problem Lunch Tracker solves
+- Why the project exists
+- Who it is intended for
+- The core user flows
+- Main features
+- Backend architecture
+- Frontend/client architecture, if applicable
+- Database architecture
+- APIs and endpoints
+- Authentication/authorization, if applicable
+- Data models
+- Important business logic
+- Background jobs/workers, if any
+- Caching, if any
+- External integrations
+- Deployment architecture
+- Configuration/environment handling
+- Error handling
+- Validation
+- Logging
+- Security considerations
+- Performance considerations
+- Important design decisions
+- Interesting algorithms or implementation details
+- Infrastructure/deployment decisions
+- Testing strategy
+- Any notable trade-offs
+
+Also inspect the **Git history, comments, documentation, configuration, migrations, and project structure** where useful.
+
+The goal is to understand not merely **what the code does**, but **why it was built the way it was built**.
+
+---
+
+# 2. Reconstruct the Development Story
+
+This is particularly important.
+
+Since you originally built Lunch Tracker, use the available source code and Git history to identify the engineering journey behind the project.
+
+I want the portfolio presentation to communicate things such as:
+
+> What problem did we encounter?
+
+> What was the initial approach?
+
+> What challenges appeared during development?
+
+> How did we solve them?
+
+> Why were certain technologies chosen?
+
+> What architectural decisions were made?
+
+> What mistakes, limitations, or trade-offs existed?
+
+> How did the project evolve?
+
+Look for evidence of this in:
+
+- Git commits
+- Previous implementations
+- Refactors
+- Database migrations
+- Configuration changes
+- Dependency changes
+- TODOs
+- Comments
+- Error-handling evolution
+- API changes
+- Architectural changes
+- Performance improvements
+- Bug fixes
+
+**Do not invent a development story.**
+
+If something cannot be established from the repository, either omit it or clearly present it as an engineering inference rather than a historical fact.
+
+---
+
+# 3. Inspect the Live API
+
+Lunch Tracker is also deployed and accessible here:
+
+**https://fahimimam.sytes.net/api/lunch**
+
+Inspect the relevant API endpoints and compare the live behavior with the source code.
+
+The complete list of endpoints should primarily be discovered from the Lunch Tracker directory I provide you.
+
+Use the live API to understand:
+
+- Available endpoints
+- HTTP methods
+- Request/response structures
+- Example responses
+- Pagination
+- Authentication requirements
+- Error responses
+- Important API behavior
+- Anything interesting that would help explain the project
+
+Do not expose secrets, tokens, credentials, private configuration, or sensitive infrastructure information in the portfolio.
+
+---
+
+# 4. Understand the Existing Portfolio
+
+Now thoroughly inspect the Portfolio project.
+
+Understand:
+
+- Existing architecture
+- Framework
+- Routing
+- Component structure
+- Styling system
+- Design language
+- Existing project section
+- Existing project detail pages
+- Navigation
+- Responsive behavior
+- Animation conventions
+- Typography
+- Color system
+- Existing reusable components
+- How other projects are presented
+- SEO/metadata conventions
+- Mobile experience
+
+**Do not create something visually disconnected from the existing portfolio.**
+
+The Lunch Tracker presentation should feel like it was always part of the website.
+
+---
+
+# 5. Redesign the Project Presentation if Necessary
+
+Currently, the portfolio has a project section.
+
+I want Lunch Tracker to receive a **much more detailed presentation** than a simple project card.
+
+Think of this as a proper **engineering case study / project showcase**.
+
+If the existing architecture supports it, create a dedicated Lunch Tracker project detail page.
+
+The page should showcase the project as something a senior engineer would be proud to present.
+
+Possible structure:
+
+### Hero
+
+- Lunch Tracker
+- Short, compelling description
+- What problem it solves
+- Technology stack
+- Project status
+- Link to live project/API
+- GitHub/source link if available
+- Appropriate visual representation
+
+### Problem
+
+Explain the real-world problem that led to the project.
+
+### What is Lunch Tracker?
+
+Explain the product in simple language before getting technical.
+
+A recruiter or non-engineer should understand what it does.
+
+### How It Works
+
+Explain the main workflow.
+
+For example:
+
+```text
+User
+ ↓
+Application
+ ↓
+API
+ ↓
+Business Logic
+ ↓
+Database
+```
+
+Adapt this to the **actual architecture**.
+
+### Architecture
+
+Provide a technically meaningful explanation of:
+
+- Components
+- Services
+- Database
+- APIs
+- External dependencies
+- Data flow
+
+If appropriate, create an architecture diagram or an interactive/visual representation using the existing portfolio's design language.
+
+### Technology Stack
+
+Explain not only what technologies were used, but **why** they were appropriate.
+
+For example:
+
+```text
+Go
+PostgreSQL
+Redis
+Docker
+...
+```
+
+But don't blindly list technologies.
+
+Explain their role.
+
+### Core Features
+
+Show the most meaningful features.
+
+Each feature should explain:
+
+- What it does
+- Why it matters
+- How it was implemented
+
+### Engineering Challenges
+
+This should be one of the strongest sections.
+
+Show real problems encountered during development and how they were solved.
+
+For example:
+
+```text
+Problem
+   ↓
+Why the obvious approach wasn't enough
+   ↓
+Investigation
+   ↓
+Solution
+   ↓
+Result / trade-off
+```
+
+Only use challenges that can actually be supported by the code/history.
+
+### API
+
+Show the API design and relevant endpoints.
+
+Potentially provide:
+
+- Endpoint
+- HTTP method
+- Purpose
+- Example request
+- Example response
+
+Do not overwhelm the page with every trivial endpoint.
+
+Highlight the endpoints that demonstrate meaningful engineering.
+
+Include a link to:
+
+**https://fahimimam.sytes.net/api/lunch**
+
+if appropriate.
+
+### Database / Data Model
+
+Explain the important entities and their relationships.
+
+Use diagrams where they genuinely improve understanding.
+
+### Engineering Decisions
+
+Highlight interesting decisions such as:
+
+- Why a particular architecture was selected
+- Why a particular database design was used
+- Why caching was or wasn't used
+- How consistency was handled
+- How validation works
+- How errors are handled
+- How deployment works
+
+Again, base these on the actual implementation.
+
+### Testing
+
+If tests exist, explain:
+
+- What is tested
+- Testing strategy
+- Important test cases
+
+If testing is limited, **do not pretend otherwise**.
+
+### Deployment
+
+Explain how the application gets from source code to production, based on what can actually be determined from the repository.
+
+Avoid exposing infrastructure secrets.
+
+### Lessons Learned
+
+This should feel authentic.
+
+Discuss:
+
+- What worked
+- What didn't
+- What would be improved today
+- Engineering lessons from the project
+
+---
+
+# 6. Make It Technically Impressive Without Becoming Bloated
+
+The goal is **not** to dump the entire codebase onto a webpage.
+
+The goal is to demonstrate:
+
+> "I built this system, I understand how it works, I understand the engineering problems involved, and I can explain the decisions behind it."
+
+Prioritize **engineering depth over marketing language**.
+
+Avoid generic phrases such as:
+
+- "cutting-edge"
+- "revolutionary"
+- "highly scalable" without evidence
+- "robust architecture" without explaining why
+- "seamless experience"
+
+Every technical claim should have evidence in the codebase.
+
+---
+
+# 7. Preserve the Existing Portfolio
+
+Do not unnecessarily rewrite unrelated parts of the portfolio.
+
+Before modifying anything:
+
+1. Understand the current architecture.
+2. Identify reusable components.
+3. Follow existing conventions.
+4. Make the smallest architectural changes necessary.
+5. Avoid breaking existing pages.
+6. Avoid introducing unnecessary dependencies.
+
+If you believe a larger architectural change would substantially improve the result, explain why before doing it.
+
+---
+
+# 8. UX / Visual Requirements
+
+The final result should feel like a **high-quality software engineer's portfolio**, not a documentation website.
+
+It should be:
+
+- Clean
+- Modern
+- Technical
+- Visually interesting
+- Easy to scan
+- Responsive
+- Mobile-friendly
+- Accessible
+- Fast
+- Consistent with the rest of the portfolio
+
+Use visual hierarchy to distinguish:
+
+**Product → Architecture → Engineering → Challenges → Implementation → Results**
+
+Code snippets, diagrams, cards, timelines, metrics, endpoint examples, and interactive elements can be used where appropriate.
+
+But don't add visual elements merely for decoration.
+
+---
+
+# 9. Be Autonomous
+
+I don't want you to constantly ask me what to do.
+
+Operate like a **Principal Engineer receiving ownership of this feature**.
+
+You should:
+
+1. Inspect.
+2. Understand.
+3. Plan.
+4. Implement.
+5. Validate.
+6. Refine.
+
+Only ask me questions when you encounter a genuine ambiguity that **cannot reasonably be resolved from the codebase or existing project conventions**.
+
+Otherwise make the engineering decision yourself.
+
+---
+
+# 10. Important Accuracy Rule
+
+**Never fabricate project details.**
+
+If the repository says X, document X.
+
+If Git history demonstrates Y, explain Y.
+
+If something is uncertain, investigate further.
+
+If something cannot be established, don't make it up.
+
+The portfolio should be technically credible because another engineer may inspect it.
+
+---
+
+# 11. Final Quality Check
+
+Before considering the task complete, verify:
+
+### Portfolio
+
+- [ ] Existing pages still work
+- [ ] Existing project section still works
+- [ ] Lunch Tracker appears correctly
+- [ ] Dedicated project page works
+- [ ] Navigation works
+- [ ] Responsive design works
+- [ ] Mobile layout works
+- [ ] No broken links
+- [ ] No console/runtime errors
+- [ ] No unnecessary dependencies
+- [ ] Existing visual language is preserved
+
+### Lunch Tracker Presentation
+
+- [ ] Clear problem statement
+- [ ] Clear product explanation
+- [ ] Features documented
+- [ ] Architecture explained
+- [ ] Technology choices explained
+- [ ] API documented appropriately
+- [ ] Real engineering challenges included
+- [ ] Development story included where evidence exists
+- [ ] Database/data flow explained where useful
+- [ ] Deployment explained where possible
+- [ ] Lessons learned included
+- [ ] Live API linked
+- [ ] No secrets exposed
+- [ ] No fabricated claims
+
+---
+
+# 12. Most Important Goal
+
+When someone visits this page, I want them to come away thinking:
+
+> **"This isn't just a project he made. He understands the entire system—from the problem and product requirements to architecture, database design, API design, implementation, debugging, deployment, and the engineering trade-offs involved."**
+
+Build the portfolio experience around that goal.
+
+**Start by inspecting both repositories. Do not modify anything until you have a sufficiently complete understanding of Lunch Tracker and the existing Portfolio architecture.**
+

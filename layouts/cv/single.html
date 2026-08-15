@@ -19,19 +19,19 @@
 
 {{- if os.FileExists (print "static/" $pdfPath) }}
 <div class="cv-actions">
-  <a class="cv-btn" href="/{{ $pdfPath }}" target="_blank" rel="noopener">
+  <a class="cv-btn" href="{{ $pdfPath | relURL }}" target="_blank" rel="noopener">
     <span>⬇</span> Download PDF
   </a>
-  <a class="cv-btn secondary" href="/{{ $pdfPath }}" target="_blank" rel="noopener">
+  <a class="cv-btn secondary" href="{{ $pdfPath | relURL }}" target="_blank" rel="noopener">
     <span>↗</span> Open in new tab
   </a>
 </div>
 
 <div class="cv-wrapper">
-  <object data="/{{ $pdfPath }}" type="application/pdf" aria-label="CV PDF">
+  <object data="{{ $pdfPath | relURL }}" type="application/pdf" aria-label="CV PDF">
     <p>
       Your browser doesn't support embedded PDFs.
-      <a href="/{{ $pdfPath }}">Download the PDF</a> to view it.
+      <a href="{{ $pdfPath | relURL }}">Download the PDF</a> to view it.
     </p>
   </object>
 </div>

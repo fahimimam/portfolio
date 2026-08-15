@@ -1,0 +1,2150 @@
+{{ define "main" }}
+
+{{/*
+  Dedicated showcase page for the Lunch Tracker (HRMS lunch-eligibility
+  countdown). Renders a custom hero + structured sections + the markdown
+  body in the middle, with a live API status card at the top.
+
+  Designed to extend PaperMod's single.html without inheriting the
+  post-meta / share-buttons footer (the project page doesn't need them).
+*/}}
+
+<article class="post-single lunch-tracker-showcase">
+
+  {{ partial "breadcrumbs.html" . }}
+
+  {{/* ============== HERO ============== */}}
+  <section class="lt-hero">
+    <div class="lt-hero-grid">
+      <div class="lt-hero-text">
+        <div class="lt-eyebrow">
+          <span class="lt-eyebrow-dot"></span>
+          <span>Engineering Case Study</span>
+        </div>
+        <h1 class="lt-title">Lunch Tracker</h1>
+        <p class="lt-tagline">
+          A two-part system that keeps a personal lunch-eligibility countdown in
+          sync between the Pathao HRMS web UI and a tiny Go backend on a VPS —
+          so you always know when you're allowed to step away.
+        </p>
+
+        <ul class="lt-hero-meta">
+          <li>
+            <span class="lt-meta-label">Role</span>
+            <span class="lt-meta-value">Sole author · backend, userscript, deploy</span>
+          </li>
+          <li>
+            <span class="lt-meta-label">Stack</span>
+            <span class="lt-meta-value">Go (stdlib) · Vanilla JS · Tampermonkey · Nginx · systemd</span>
+          </li>
+          <li>
+            <span class="lt-meta-label">Status</span>
+            <span class="lt-meta-value lt-status-live">
+              <span class="lt-status-dot"></span> Live since Aug&nbsp;2026
+            </span>
+          </li>
+          <li>
+            <span class="lt-meta-label">Surface</span>
+            <span class="lt-meta-value">HRMS userscript · standalone widget · Chrome new-tab (LunchLine)</span>
+          </li>
+        </ul>
+
+        <div class="lt-hero-cta">
+          <a class="lt-btn primary" href="https://fahimimam.sytes.net/api/lunch/state"
+             target="_blank" rel="noopener">
+            <span class="lt-btn-icon">↗</span> Live API
+          </a>
+          <a class="lt-btn" href="https://fahimimam.sytes.net/api/lunch/widget"
+             target="_blank" rel="noopener">
+            <span class="lt-btn-icon">▣</span> Widget
+          </a>
+          <a class="lt-btn" href="https://github.com/fahimimam/lunch-tracker"
+             target="_blank" rel="noopener">
+            <span class="lt-btn-icon">⌘</span> Source
+          </a>
+        </div>
+      </div>
+
+      {{/* ============== LIVE STATUS CARD ============== */}}
+      <aside class="lt-live-card" aria-label="Live lunch eligibility state">
+        <div class="lt-live-header">
+          <span class="lt-live-dot" id="lt-live-dot"></span>
+          <span class="lt-live-title">Live State</span>
+          <span class="lt-live-date" id="lt-live-date">—</span>
+        </div>
+        <div class="lt-live-status" id="lt-live-status">Loading…</div>
+        <div class="lt-live-message" id="lt-live-message">Fetching from /api/lunch/state …</div>
+
+        <div class="lt-live-rows" id="lt-live-rows" hidden>
+          <div class="lt-live-row">
+            <span class="lt-live-label">Clock&nbsp;in</span>
+            <span class="lt-live-value" id="lt-live-clockin">—</span>
+          </div>
+          <div class="lt-live-row">
+            <span class="lt-live-label">Target</span>
+            <span class="lt-live-value" id="lt-live-target">—</span>
+          </div>
+          <div class="lt-live-row">
+            <span class="lt-live-label">Countdown</span>
+            <span class="lt-live-value lt-mono" id="lt-live-countdown">—</span>
+          </div>
+        </div>
+
+        <div class="lt-live-badges">
+          <span class="lt-live-badge" id="lt-live-badge-weekend" hidden>Weekend</span>
+          <span class="lt-live-badge" id="lt-live-badge-leave" hidden>On leave</span>
+          <span class="lt-live-badge ok" id="lt-live-badge-eligible" hidden>Eligible</span>
+        </div>
+
+        <div class="lt-live-footer">
+          <span>Polled from <code>https://fahimimam.sytes.net/api/lunch/state</code></span>
+          <button class="lt-refresh" id="lt-live-refresh" type="button" title="Re-fetch">↻</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {{/* ============== THE PROBLEM ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">01</span>
+      <h2>The problem</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>
+        My employer's policy is simple: <strong>6 hours and 45 minutes after
+        you clock in, you're eligible for lunch</strong>. Knowing when that is
+        is the whole product. The catch is that "when you clocked in" lives
+        inside a third-party HRMS page, in someone else's React tree, behind
+        a session cookie, on a page that re-renders asynchronously.
+      </p>
+      <p>
+        That means the timer has to live somewhere outside the HRMS page. It
+        also has to survive:
+      </p>
+      <ul class="lt-bullets">
+        <li>The HRMS SPA re-rendering the DOM underneath the timer.</li>
+        <li>Tab refreshes — the new render would otherwise wipe localStorage state.</li>
+        <li>Cross-midnight — at 00:00 the "today" reference changes.</li>
+        <li>Cross-TZ — the server's UTC clock silently disagrees with the user's local day for six hours.</li>
+        <li>Friday/Saturday off-days (Sunday is a regular workday) and explicit leave days.</li>
+      </ul>
+    </div>
+  </section>
+
+  {{/* ============== PRODUCT ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">02</span>
+      <h2>What it is</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>
+        Two pieces, one source of truth:
+      </p>
+      <ol class="lt-bullets">
+        <li>
+          <strong>A Tampermonkey userscript</strong> that lives inside the
+          Pathao HRMS page, reads the "Checked In" time from the DOM,
+          renders an inline section at the bottom of the page with the
+          live countdown, and silently POSTs the clock-in to the backend.
+        </li>
+        <li>
+          <strong>A tiny Go HTTP service</strong> on the VPS that stores
+          one record per local day in a JSON file, computes a canonical
+          "state" payload, and serves that payload to:
+          <ul>
+            <li>The userscript itself (so the countdown survives HRMS page refreshes),</li>
+            <li>A standalone glassmorphism widget at <code>/api/lunch/widget</code>,</li>
+            <li>A separate Chrome new-tab extension (LunchLine) that I run separately.</li>
+          </ul>
+        </li>
+      </ol>
+      <p class="lt-callout">
+        The state machine — five variants: <code>Weekend</code>,
+        <code>OnLeave</code>, <code>NotClockedIn</code>, <code>ClockedIn</code>,
+        <code>Eligible</code> — lives in <code>computeState()</code> on the Go side
+        and is mirrored 1:1 in the userscript so each surface can render
+        without round-tripping on every tick.
+      </p>
+    </div>
+  </section>
+
+  {{/* ============== ARCHITECTURE ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">03</span>
+      <h2>Architecture</h2>
+    </header>
+    <div class="lt-section-body">
+
+      <div class="lt-arch">
+        <div class="lt-arch-row">
+          <div class="lt-arch-node user">
+            <span class="lt-arch-icon">👤</span>
+            <span class="lt-arch-name">User</span>
+            <span class="lt-arch-sub">on Pathao HRMS</span>
+          </div>
+        </div>
+        <div class="lt-arch-arrow">↓</div>
+        <div class="lt-arch-row lt-arch-pair">
+          <div class="lt-arch-node page">
+            <span class="lt-arch-icon">📄</span>
+            <span class="lt-arch-name">HRMS React page</span>
+            <span class="lt-arch-sub">renders &lt;h6&gt;Checked In&lt;/h6&gt;</span>
+          </div>
+          <div class="lt-arch-node script">
+            <span class="lt-arch-icon">🧩</span>
+            <span class="lt-arch-name">Tampermonkey userscript</span>
+            <span class="lt-arch-sub">MutationObserver + polling</span>
+          </div>
+        </div>
+        <div class="lt-arch-arrow">↓ HTTPS POST</div>
+        <div class="lt-arch-row">
+          <div class="lt-arch-node proxy">
+            <span class="lt-arch-icon">🌐</span>
+            <span class="lt-arch-name">Nginx</span>
+            <span class="lt-arch-sub">TLS · /api/lunch/* → 127.0.0.1:5000</span>
+          </div>
+        </div>
+        <div class="lt-arch-arrow">↓</div>
+        <div class="lt-arch-row">
+          <div class="lt-arch-node go">
+            <span class="lt-arch-icon">⚙️</span>
+            <span class="lt-arch-name">Go service :5000</span>
+            <span class="lt-arch-sub">stdlib only · 6 routes · &lt; 10MB RAM</span>
+          </div>
+        </div>
+        <div class="lt-arch-arrow">↓ atomic tmp + rename</div>
+        <div class="lt-arch-row">
+          <div class="lt-arch-node store">
+            <span class="lt-arch-icon">💾</span>
+            <span class="lt-arch-name">data.json</span>
+            <span class="lt-arch-sub">one record per local YYYY-MM-DD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lt-arch-readers">
+        <span class="lt-arch-reader">↘ userscript polls <code>/state</code> every 60s</span>
+        <span class="lt-arch-reader">↘ widget page one-shot render at <code>/widget</code></span>
+        <span class="lt-arch-reader">↘ LunchLine Chrome new-tab polls <code>/state</code></span>
+      </div>
+
+      <div class="lt-grid-2">
+        <div class="lt-card">
+          <h3>Single source of truth</h3>
+          <p>
+            <code>computeState(snapshot, now)</code> in <code>main.go</code>
+            is the one place the variant decision is made. The
+            <code>/api/lunch/state</code> endpoint, the widget HTML, and
+            the userscript's mirror all consume the same contract.
+          </p>
+        </div>
+        <div class="lt-card">
+          <h3>No external services</h3>
+          <p>
+            One binary, one JSON file, one systemd unit, one Nginx
+            vhost. Total RAM usage on the VPS: ~10&nbsp;MB. No database,
+            no Docker, no message queue. Drop the binary, restart, done.
+          </p>
+        </div>
+        <div class="lt-card">
+          <h3>Atomic writes</h3>
+          <p>
+            Every clock-in is written to a tmp file, fsynced, then
+            <code>rename(2)</code>'d over the destination. A crash
+            mid-write cannot corrupt <code>data.json</code>.
+          </p>
+        </div>
+        <div class="lt-card">
+          <h3>Cross-TZ correctness</h3>
+          <p>
+            <code>time.Local</code> is pinned to
+            <code>Asia/Dhaka</code> at boot (override via
+            <code>LUNCH_TZ</code>). The variant decision and date
+            string both render in the user's local zone — not UTC.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== TECH STACK ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">04</span>
+      <h2>Tech stack &amp; why</h2>
+    </header>
+    <div class="lt-section-body">
+      <table class="lt-stack">
+        <thead>
+          <tr><th>Layer</th><th>Choice</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Backend</td>
+            <td>Go · stdlib only</td>
+            <td>Six routes. A framework would be more code, not less. Zero deps means the cross-compiled binary just runs on the VPS.</td>
+          </tr>
+          <tr>
+            <td>Storage</td>
+            <td>Single JSON file</td>
+            <td>One user, at most five rows per week. A Postgres container is operational overkill. <code>cp</code> is a complete backup.</td>
+          </tr>
+          <tr>
+            <td>Atomic write</td>
+            <td>tmp + fsync + <code>rename(2)</code></td>
+            <td>Survives SIGKILL and power loss without half-written state.</td>
+          </tr>
+          <tr>
+            <td>TLS / proxy</td>
+            <td>Nginx</td>
+            <td>Already on the VPS. Reverse-proxy <code>/api/lunch/*</code> to the Go service; CORS and shared-secret validation live here.</td>
+          </tr>
+          <tr>
+            <td>Supervision</td>
+            <td>systemd</td>
+            <td>Restart-on-failure with a 2-second back-off; logs go to journald.</td>
+          </tr>
+          <tr>
+            <td>Userscript</td>
+            <td>Vanilla JS + Tampermonkey APIs</td>
+            <td>No build step, no framework. <code>GM_setValue</code> survives SPA navigations; <code>MutationObserver</code> watches the DOM.</td>
+          </tr>
+          <tr>
+            <td>Widget</td>
+            <td>Server-rendered HTML + embedded JS</td>
+            <td>The variant decision is server-side; the page embeds <code>targetMs</code> so the live tick is pure JS arithmetic.</td>
+          </tr>
+          <tr>
+            <td>Timezone</td>
+            <td>Pin <code>time.Local = Asia/Dhaka</code></td>
+            <td>A VPS runs UTC. Without this, every "today" string silently disagreed with the user's local day for 6 hours.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {{/* ============== FEATURES ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">05</span>
+      <h2>What it does</h2>
+    </header>
+    <div class="lt-section-body">
+      <div class="lt-feature-grid">
+        <div class="lt-feature">
+          <div class="lt-feature-icon">🟢</div>
+          <h3>Live countdown in the HRMS page</h3>
+          <p>
+            An inline section appended to <code>&lt;body&gt;</code> with a
+            HH:MM:SS tick down to the 6h&nbsp;45m threshold. Survives SPA
+            re-renders, tab refreshes, and 00:00 rollovers. Toggles to a
+            green "Eligible — step away!" pill at the threshold.
+          </p>
+        </div>
+        <div class="lt-feature">
+          <div class="lt-feature-icon">📅</div>
+          <h3>Friday/Saturday off-day handling</h3>
+          <p>
+            The variant decision treats Friday and Saturday as
+            <code>Weekend</code> (no countdown, no leave button). Sunday
+            is a regular workday — verified by a regression test in
+            <code>state_test.go</code> that pins the policy.
+          </p>
+        </div>
+        <div class="lt-feature">
+          <div class="lt-feature-icon">🛌</div>
+          <h3>Leave toggle</h3>
+          <p>
+            One button on the inline section flips today's
+            <code>Leave</code> flag. The flag survives HRMS SPA
+            navigations via <code>GM_setValue</code> and clears at local
+            midnight.
+          </p>
+        </div>
+        <div class="lt-feature">
+          <div class="lt-feature-icon">⏱</div>
+          <h3>Clock-out &amp; frozen verdict</h3>
+          <p>
+            Pressing "Clock out" captures the user's wall-clock time,
+            POSTs it to <code>/api/lunch/clockout</code>, and freezes the
+            section into a final <code>ClockedOut</code> verdict: either
+            "Eligible for lunch (Worked 7h 45m)" or "Not eligible
+            (Worked 4h 12m)" — held until midnight.
+          </p>
+        </div>
+        <div class="lt-feature">
+          <div class="lt-feature-icon">📱</div>
+          <h3>Phone-friendly standalone widget</h3>
+          <p>
+            <code>/api/lunch/widget</code> is a self-contained
+            dark-glassmorphism HTML page rendered server-side from the
+            same state machine. Open it from any device; the live tick
+            uses <code>targetMs</code> embedded in the HTML so it never
+            re-fetches.
+          </p>
+        </div>
+        <div class="lt-feature">
+          <div class="lt-feature-icon">🗂</div>
+          <h3>Per-day history table</h3>
+          <p>
+            The widget renders every persisted record — date, clock-in,
+            clock-out, computed target — so the previous week's pattern
+            is auditable at a glance. Records roll over on the next
+            Sunday: <code>data.json</code> is bounded to one workweek
+            (≤ 5 rows).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== ENGINEERING CHALLENGES ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">06</span>
+      <h2>Engineering challenges</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>
+        Every project has bugs that cost an evening. The seven below are
+        the ones that actually bit — each one is grounded in a commit,
+        a test, or a code path you can read.
+      </p>
+
+      <article class="lt-challenge">
+        <header>
+          <span class="lt-challenge-tag">Timezones</span>
+          <h3>Sunday should be a workday, not a weekend</h3>
+        </header>
+        <p>
+          <strong>Symptom.</strong> Opening the widget on a Sunday
+          rendered <code>Weekend — Off day — enjoy!</code>, and the
+          userscript hid the countdown.
+        </p>
+        <p>
+          <strong>Why the obvious approach wasn't enough.</strong>
+          The first version of <code>isPathaoWeekend</code> treated
+          Fri/Sat/Sun as a weekend — that's the calendar weekend in
+          Bangladesh but not the company's policy.
+        </p>
+        <p>
+          <strong>Fix.</strong> <code>isPathaoWeekend</code> now returns
+          true only on Friday and Saturday. Sunday is a workday in both
+          the Go backend and the userscript mirror.
+        </p>
+        <p>
+          <strong>Guard.</strong> <code>TestSundayNotWeekend</code> and
+          <code>TestFriSatWeekend</code> in <code>state_test.go</code>
+          pin the policy across three separate days.
+        </p>
+      </article>
+
+      <article class="lt-challenge">
+        <header>
+          <span class="lt-challenge-tag">Bug</span>
+          <h3>Widget stuck on yesterday's data</h3>
+        </header>
+        <p>
+          <strong>Symptom.</strong> Open the widget on Monday morning
+          and it shows Sunday's clock-in, the Sunday status, and a
+          0-second countdown.
+        </p>
+        <p>
+          <strong>Cause.</strong> <code>handleWidget</code> originally
+          looked up "the most recently saved record" and rendered that.
+          After midnight on a weekend, that record was a weekday entry
+          the user didn't actually want to see today.
+        </p>
+        <p>
+          <strong>Fix.</strong> <code>handleWidget</code> now always
+          calls <code>computeState(snapshot, time.Now())</code> so the
+          active variant is "today" in the server's local TZ. The
+          history table at the bottom still shows every record for
+          auditing.
+        </p>
+      </article>
+
+      <article class="lt-challenge">
+        <header>
+          <span class="lt-challenge-tag">Deployment</span>
+          <h3>Mach-O binary deployed to a Linux VPS</h3>
+        </header>
+        <p>
+          <strong>Symptom.</strong>
+        </p>
+<pre><code>$ curl -s https://&lt;your-domain&gt;/api/lunch/state | jq .
+jq: parse error: Invalid numeric literal at line 1, column 7</code></pre>
+        <p>
+          <strong>Cause.</strong> I'd built <code>lunch-tracker.linux</code>
+          on macOS without <code>GOOS=linux GOARCH=amd64</code>, so the
+          artifact was a Mach-O arm64 binary. The Linux VPS couldn't
+          <code>execve()</code> it → systemd reported
+          <code>status=203/EXEC</code> → Nginx returned a 502 HTML page
+          → jq tried to parse HTML as JSON. The MD5 of the binary
+          matched what I thought I shipped, which made the mismatch
+          harder to spot. <code>file lunch-tracker.linux</code> would
+          have caught it instantly.
+        </p>
+        <p>
+          <strong>Fix.</strong> The Makefile's <code>linux</code>
+          target now always cross-compiles with <code>GOOS=linux
+          GOARCH=amd64</code> and runs <code>file</code> on the output
+          as a guard. <code>make ship</code> prints the
+          scp/ssh/restart/curl sequence.
+        </p>
+      </article>
+
+      <article class="lt-challenge">
+        <header>
+          <span class="lt-challenge-tag">Timezones</span>
+          <h3>Date showed Aug 8 when today is Aug 9</h3>
+        </header>
+        <p>
+          <strong>Symptom.</strong> It was Aug 9 (Sunday) in
+          Asia/Dhaka. The VPS clock was UTC, around 18:00 on Aug 8. The
+          widget and <code>/api/lunch/state</code> both returned
+          <code>"date": "2026-08-08"</code>.
+        </p>
+        <p>
+          <strong>Cause.</strong>
+          <code>time.Now().Format("2006-01-02")</code> returned the
+          <em>server's</em> local date (UTC), not the user's. Around
+          18:00–00:00 UTC the date and day-of-week seen by the API
+          silently disagreed with what the user in BD was experiencing.
+        </p>
+        <p>
+          <strong>Fix.</strong> <code>resolveLocalTZ()</code> loads
+          <code>Asia/Dhaka</code> and assigns it to
+          <code>time.Local</code> at boot. The <code>LUNCH_TZ</code>
+          env var lets non-BD deployments override it.
+          <code>TestDateRolloverAcrossTimezones</code> and
+          <code>TestProductionHotPath</code> pin the behaviour.
+        </p>
+        <p class="lt-callout">
+          Subtle point that bit us once: <code>time.Time.Format</code>
+          formats against the <em>time's</em> location, not
+          <code>time.Local</code>. So <code>now.Format(...)</code> is
+          fine once <code>time.Local = Asia/Dhaka</code>, but
+          <code>t.Format(...)</code> for a <code>t</code> built in UTC
+          will still format against UTC. The fix in
+          <code>parseClockInAt</code> is to construct the parsed time
+          in the anchor's location to begin with.
+        </p>
+      </article>
+
+      <article class="lt-challenge">
+        <header>
+          <span class="lt-challenge-tag">UI</span>
+          <h3>HRMS sidebar overshadowing the inline section</h3>
+        </header>
+        <p>
+          <strong>Symptom.</strong> When the Pathao left sidebar was
+          expanded, it visually covered the inline section at the bottom
+          of the page.
+        </p>
+        <p>
+          <strong>Cause.</strong> Pathao's sidebar uses
+          <code>position:fixed/relative</code> with a high
+          <code>z-index</code> when expanded. The original floating
+          widget sat at a fixed position that the sidebar would overlap.
+        </p>
+        <p>
+          <strong>Fix.</strong> The section is now appended to
+          <code>&lt;body&gt;</code> with
+          <code>position:relative; z-index: 2147483000</code> so it
+          paints on top of any overlapping sidebar element. Earlier
+          attempts to mount the section inside an HRMS-supplied grid
+          column disappeared after the SPA re-rendered, so we reverted
+          to <code>document.body.appendChild</code>. The
+          <code>document.body.appendChild</code> approach is dumb but
+          robust — Pathao's re-render path doesn't reach our node.
+        </p>
+      </article>
+
+      <article class="lt-challenge">
+        <header>
+          <span class="lt-challenge-tag">CORS</span>
+          <h3>Preflight from the Chrome new-tab page</h3>
+        </header>
+        <p>
+          <strong>Symptom.</strong> LunchLine's Chrome new-tab page
+          couldn't read <code>/api/lunch/state</code> from
+          <code>https://www.google.com</code>.
+        </p>
+        <p>
+          <strong>Cause.</strong> The default CORS handler only allowed
+          <code>*.pathao.com</code> and the production domain. A
+          cross-origin fetch from <code>www.google.com</code> needed
+          that origin on the allow-list.
+        </p>
+        <p>
+          <strong>Fix.</strong> Added <code>https://www.google.com</code>
+          (and <code>chrome-extension://*</code>) to
+          <code>allowedOrigins</code>. The preflight
+          (<code>OPTIONS</code>) is short-circuited with
+          <code>204 No Content</code> and a 24-hour
+          <code>Access-Control-Max-Age</code>.
+        </p>
+      </article>
+
+      <article class="lt-challenge">
+        <header>
+          <span class="lt-challenge-tag">Reliability</span>
+          <h3>Leave-clear silently failed</h3>
+        </header>
+        <p>
+          <strong>Symptom.</strong> Clicking "Clear leave" on the
+          widget or the userscript visibly fired the request, but the
+          UI kept rendering <code>OnLeave</code> on the next refresh.
+        </p>
+        <p>
+          <strong>Cause.</strong> <code>handleLeave</code> had a string
+          field for the body's <code>leave</code> flag and ignored it
+          — every POST stored <code>Leave: true</code>, regardless of
+          what the body said. The two near-identical render functions
+          (mark / clear) had drifted so far apart that the "clear"
+          path was, structurally, the "mark" path with a different
+          label.
+        </p>
+        <p>
+          <strong>Fix.</strong> The field is parsed as
+          <code>*bool</code> (pointer so we can distinguish "absent"
+          from "false"), defaults to <code>true</code> for backwards
+          compatibility with the widget's "Mark on leave" button, and
+          the value is written through to the store.
+          <code>TestOnLeaveTransition</code> is a regression test
+          against this specific bug.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  {{/* ============== API ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">07</span>
+      <h2>API surface</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>
+        Six routes. All return JSON except <code>/api/lunch/widget</code>
+        which renders HTML and <code>/healthz</code> which returns JSON.
+        CORS is allow-listed at the Nginx layer; the same list is mirrored
+        in <code>allowedOrigins</code> for browser-origin callers.
+      </p>
+
+      <div class="lt-endpoints">
+        <article class="lt-endpoint">
+          <header>
+            <span class="lt-method post">POST</span>
+            <code class="lt-path">/api/lunch/clockin</code>
+          </header>
+          <p>Persist (or replace) today's clock-in. Idempotent per date.</p>
+          <div class="lt-endpoint-grid">
+            <div>
+              <h4>Request</h4>
+<pre><code>{
+  "date":    "2026-08-06",
+  "clockIn": "9:31:02 AM"
+}</code></pre>
+            </div>
+            <div>
+              <h4>Response</h4>
+<pre><code>{
+  "ok":      true,
+  "savedAt": 1754470860,
+  "record": {
+    "date":    "2026-08-06",
+    "clockIn": "9:31:02 AM",
+    "savedAt": 1754470860,
+    "leave":   false
+  }
+}</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article class="lt-endpoint">
+          <header>
+            <span class="lt-method post">POST</span>
+            <code class="lt-path">/api/lunch/clockout</code>
+          </header>
+          <p>Record today's clock-out. Merges with any existing record so the prior clock-in and Leave flag survive.</p>
+          <div class="lt-endpoint-grid">
+            <div>
+              <h4>Request</h4>
+<pre><code>{
+  "date":     "2026-08-06",
+  "clockOut": "5:15:00 PM"
+}</code></pre>
+            </div>
+            <div>
+              <h4>Response</h4>
+<pre><code>{
+  "ok":      true,
+  "savedAt": 1754499300,
+  "record": { "date": "2026-08-06", "clockIn": "9:31:02 AM", "clockOut": "5:15:00 PM", "leave": false }
+}</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article class="lt-endpoint">
+          <header>
+            <span class="lt-method post">POST</span>
+            <code class="lt-path">/api/lunch/leave</code>
+          </header>
+          <p>Mark or clear the leave flag for a date.</p>
+          <div class="lt-endpoint-grid">
+            <div>
+              <h4>Request</h4>
+<pre><code>{ "date": "2026-08-09", "leave": true }</code></pre>
+            </div>
+            <div>
+              <h4>Response</h4>
+<pre><code>{ "ok": true, "date": "2026-08-09", "leave": true }</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article class="lt-endpoint">
+          <header>
+            <span class="lt-method get">GET</span>
+            <code class="lt-path">/api/lunch/state</code>
+          </header>
+          <p>The canonical state payload. Polled every 60s by the userscript and LunchLine.</p>
+          <div class="lt-endpoint-grid">
+            <div>
+              <h4>Response</h4>
+<pre><code>{
+  "status":     "ClockedIn",
+  "date":       "2026-08-09",
+  "clockIn":    "9:31:02 AM",
+  "targetExit": "4:16:02 PM",
+  "targetMs":   1754735762000,
+  "savedAt":    1754729400,
+  "eligible":   false,
+  "weekend":    false,
+  "leave":      false,
+  "message":    "06:31:18 until lunch eligibility",
+  "updatedAt":  1754729400,
+  "nowMs":      1754732160000
+}</code></pre>
+            </div>
+            <div class="lt-endpoint-aside">
+              <h4>Fields worth knowing</h4>
+              <ul class="lt-bullets compact">
+                <li><code>status</code> — canonical variant. The widget template and userscript both branch on this string.</li>
+                <li><code>targetMs</code> — unix-ms of the threshold; widget uses it for the live tick without re-fetching.</li>
+                <li><code>nowMs</code> — for client-side clock-drift detection.</li>
+              </ul>
+              <p class="lt-endpoint-link">
+                ↗ <a href="https://fahimimam.sytes.net/api/lunch/state" target="_blank" rel="noopener">Try it live</a>
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="lt-endpoint">
+          <header>
+            <span class="lt-method get">GET</span>
+            <code class="lt-path">/api/lunch/widget</code>
+          </header>
+          <p>Self-contained HTML widget (dark glassmorphism). Server-rendered from the same state machine.</p>
+          <p class="lt-endpoint-link">
+            ↗ <a href="https://fahimimam.sytes.net/api/lunch/widget" target="_blank" rel="noopener">Open the widget</a>
+          </p>
+        </article>
+
+        <article class="lt-endpoint">
+          <header>
+            <span class="lt-method get">GET</span>
+            <code class="lt-path">/healthz</code>
+          </header>
+          <p>Liveness probe. <code>access_log off</code> in Nginx so uptime checks don't fill the log.</p>
+<pre><code>{ "ok": true, "records": 5, "time": "2026-08-15T20:15:28+06:00" }</code></pre>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== STATE MACHINE ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">08</span>
+      <h2>The state machine</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>
+        <code>computeState(snapshot, now)</code> is the one place the
+        variant decision is made. Order matters — the function returns
+        on the first matching branch.
+      </p>
+      <ol class="lt-states">
+        <li class="lt-state lt-state-weekend">
+          <span class="lt-state-pill">Weekend</span>
+          <p>Today is Friday or Saturday. No leave button, no countdown. Even if a clock-in is stored for the day, the active card still reads "Off day — enjoy!" — the record appears only in the history table.</p>
+        </li>
+        <li class="lt-state lt-state-leave">
+          <span class="lt-state-pill">OnLeave</span>
+          <p>The user pressed "Mark on leave" (or there's a stored record with <code>Leave: true</code>). Card shows "Marked as on leave" with a "Clear leave" button.</p>
+        </li>
+        <li class="lt-state lt-state-notin">
+          <span class="lt-state-pill">NotClockedIn</span>
+          <p>Weekday, no record for today, no leave flag. Card shows "Not clocked in yet today" with a "Mark on leave" button.</p>
+        </li>
+        <li class="lt-state lt-state-clocked">
+          <span class="lt-state-pill">ClockedIn</span>
+          <p>Clock-in exists and <code>now &lt; clockIn + 6h45m</code>. Live HH:MM:SS countdown. Pill turns cyan when ≤ 5 minutes remain; switches to green at the threshold.</p>
+        </li>
+        <li class="lt-state lt-state-eligible">
+          <span class="lt-state-pill">Eligible</span>
+          <p><code>now ≥ clockIn + 6h45m</code>. Green pill "Eligible — step away!" with the elapsed-since-threshold time surfaced.</p>
+        </li>
+        <li class="lt-state lt-state-clockedout">
+          <span class="lt-state-pill">ClockedOut</span>
+          <p>User pressed "Clock out" or the day has ended. Worked-time is frozen at the clock-out instant; the verdict is "Eligible for lunch (Worked 7h 45m)" or "Not eligible (Worked 4h 12m)".</p>
+        </li>
+      </ol>
+      <p class="lt-callout">
+        The userscript mirrors this decision tree in JavaScript so the
+        inline section can re-render at 1 Hz without a network
+        round-trip on every tick. The Go side is the source of truth
+        for the widget; the JS is the source of truth for the HRMS page.
+      </p>
+    </div>
+  </section>
+
+  {{/* ============== DATA MODEL ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">09</span>
+      <h2>Data model &amp; lifecycle</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>One record per local YYYY-MM-DD:</p>
+<pre><code>{
+  "2026-08-09": {
+    "date":    "2026-08-09",
+    "clockIn": "9:31:02 AM",
+    "clockOut":"5:15:00 PM",
+    "savedAt": 1754729400,
+    "leave":   false
+  },
+  "2026-08-10": { ... }
+}</code></pre>
+      <p>
+        The map is keyed by date so "give me today" is
+        <code>O(1)</code> and duplicates per date are impossible by
+        construction. On any write, every record that predates the
+        most-recent Sunday is dropped — bounding the file to one
+        Pathao workweek (≤ 5 rows). A fresh Sunday therefore wipes the
+        previous week automatically.
+      </p>
+      <div class="lt-callout">
+        The prune is a defensive predicate in
+        <code>pruneOldRecordsLocked</code>, called inside
+        <code>Store.Set</code> under the write lock. Every clock-in
+        write passes through it.
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== TESTING ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">10</span>
+      <h2>Testing</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>
+        The Go side ships <strong>13 unit tests</strong> across two files;
+        the userscript has no automated test (a jsdom harness exists in
+        <code>package.json</code> but is currently dormant). Tests run
+        in well under 100&nbsp;ms with <code>go test ./...</code>.
+      </p>
+
+      <div class="lt-grid-2">
+        <div class="lt-card">
+          <h3>State machine (<code>state_test.go</code>)</h3>
+          <ul class="lt-bullets compact">
+            <li><code>TestSundayNotWeekend</code> · <code>TestFriSatWeekend</code> — pins the Friday/Saturday off-day policy.</li>
+            <li><code>TestDateRolloverAcrossTimezones</code> · <code>TestProductionHotPath</code> — pins the Asia/Dhaka rollover.</li>
+            <li><code>TestOnLeaveTransition</code> — regression for the leave-clear bug.</li>
+            <li><code>TestClockedOutWorkedMath</code> · <code>TestClockedOutWorkedIsFrozen</code> · <code>TestClockedOutMalformedDoesNotCorruptRecord</code> — clock-out math and parser resilience.</li>
+            <li><code>TestComputeStateIgnoresFutureClockInForToday</code> · <code>TestComputeStateHonorsFutureClockInForPastDate</code> — the "stale HRMS text on a new day" guard.</li>
+            <li><code>TestHandleClockOutMergePreservesClockInAndLeave</code> · <code>TestHandleClockOutRejectsWithoutClockIn</code> — HTTP-layer merge logic.</li>
+          </ul>
+        </div>
+        <div class="lt-card">
+          <h3>CORS (<code>cors_test.go</code>)</h3>
+          <ul class="lt-bullets compact">
+            <li><code>TestMatchOrigin</code> — exact, wildcard-suffix, prefix, empty.</li>
+            <li><code>TestOriginAllowed</code> — full allow-list positive and negative cases.</li>
+            <li><code>TestOriginOrStar</code> — echo-origin vs <code>*</code>.</li>
+          </ul>
+          <p>
+            <strong>Storage</strong> (<code>state_test.go</code>):
+            <code>TestStoreRetainsOnlyCurrentWorkweek</code>,
+            <code>TestStoreUnderCapNoPrune</code>,
+            <code>TestStoreSundayRolloverWipesPreviousWeek</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== DEPLOYMENT ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">11</span>
+      <h2>Deployment</h2>
+    </header>
+    <div class="lt-section-body">
+      <p>From source to production in one command, with a binary guard that catches the most embarrassing bug:</p>
+<pre><code>make ship      # prints:
+#   GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -trimpath -o lunch-tracker.linux main.go
+#   file lunch-tracker.linux   # ← must say ELF, not Mach-O
+#   scp lunch-tracker.linux vps:/tmp/lunch-tracker.linux.new
+#   ssh vps 'sudo install -m 0755 /tmp/lunch-tracker.linux.new /usr/local/bin/lunch-tracker && \
+#            sudo systemctl restart lunch-tracker.service'
+#   curl -s https://&lt;your-domain&gt;/api/lunch/state | jq .</code></pre>
+      <div class="lt-grid-2">
+        <div class="lt-card">
+          <h3>Nginx</h3>
+          <p>
+            Single server block, TLS terminated at Nginx, reverse-proxy
+            <code>/api/lunch/*</code> to the local Go service.
+            <code>proxy_read_timeout 15s</code> matches the
+            Go <code>WriteTimeout</code>; the shared secret check is
+            performed at the Nginx layer so the Go backend never sees
+            unauthenticated traffic.
+          </p>
+        </div>
+        <div class="lt-card">
+          <h3>systemd</h3>
+          <p>
+            <code>lunch-tracker.service</code> restarts on failure with
+            a 2-second back-off. Logs flow to journald. The service
+            runs as <code>www-data</code> with the working directory
+            pinned to <code>/srv/lunch-tracker</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== LESSONS ============== */}}
+  <section class="lt-section">
+    <header class="lt-section-header">
+      <span class="lt-section-num">12</span>
+      <h2>Lessons learned</h2>
+    </header>
+    <div class="lt-section-body">
+      <div class="lt-lesson-grid">
+        <div class="lt-lesson">
+          <h3>Picking a timezone once, at boot, is a force multiplier</h3>
+          <p>
+            Every other date / weekday / 00:00-rollover bug in this
+            codebase went away once <code>time.Local</code> was pinned
+            at boot. The fix is one line in <code>main</code>; the bug
+            class it eliminated took three evenings to find in the first
+            place.
+          </p>
+        </div>
+        <div class="lt-lesson">
+          <h3>Stdlib is enough until it isn't</h3>
+          <p>
+            Six routes, no middleware, no framework. The Go stdlib
+            mux + <code>http.Server</code> with explicit timeouts is
+            fewer lines than a router would be, and zero deps means the
+            cross-compiled binary just runs on the VPS. Resist the
+            framework reflex.
+          </p>
+        </div>
+        <div class="lt-lesson">
+          <h3>Two near-identical functions will diverge</h3>
+          <p>
+            The leave-clear bug came from two render functions that
+            were 90% the same. The fix was a single function with a
+            boolean parameter, plus a regression test. Single-source-of-truth
+            for any UI flow that has symmetric "in / out" semantics.
+          </p>
+        </div>
+        <div class="lt-lesson">
+          <h3>Atomic file writes are not a luxury</h3>
+          <p>
+            <code>os.CreateTemp</code> + <code>Sync</code> +
+            <code>os.Rename</code> is ~10 lines of code and makes a
+            crash mid-write a non-event. For a single-file store, this
+            is the only correct pattern.
+          </p>
+        </div>
+        <div class="lt-lesson">
+          <h3>Mirror the source of truth at the edge</h3>
+          <p>
+            The Go side computes the variant once; the userscript
+            mirrors the same logic in JS so the HRMS page can render
+            at 1&nbsp;Hz without round-tripping. The trade-off is
+            two implementations to keep in sync, gated by tests on the
+            Go side and shared comment blocks on both sides.
+          </p>
+        </div>
+        <div class="lt-lesson">
+          <h3>Deployment guards pay for themselves</h3>
+          <p>
+            The <code>file lunch-tracker.linux</code> guard is a single
+            shell line that prevents an entire class of "the
+            production server is up but returns garbage" debugging
+            sessions. <code>make linux</code> runs it automatically.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== LINKS / FOOTER ============== */}}
+  <section class="lt-section lt-section-final">
+    <header class="lt-section-header">
+      <h2>Source &amp; live system</h2>
+    </header>
+    <div class="lt-section-body">
+      <div class="lt-final-links">
+        <a class="lt-btn primary" href="https://fahimimam.sytes.net/api/lunch/state" target="_blank" rel="noopener">
+          <span class="lt-btn-icon">↗</span> GET /api/lunch/state
+        </a>
+        <a class="lt-btn" href="https://fahimimam.sytes.net/api/lunch/widget" target="_blank" rel="noopener">
+          <span class="lt-btn-icon">▣</span> /api/lunch/widget
+        </a>
+        <a class="lt-btn" href="https://fahimimam.sytes.net/healthz" target="_blank" rel="noopener">
+          <span class="lt-btn-icon">♥</span> /healthz
+        </a>
+        <a class="lt-btn" href="https://github.com/fahimimam/lunch-tracker" target="_blank" rel="noopener">
+          <span class="lt-btn-icon">⌘</span> github.com/fahimimam/lunch-tracker
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {{/* ============== CODE SAMPLES ============== */}}
+  {{ $snipDecodeJSON := `// decodeJSON rejects non-JSON Content-Type, decodes the body into
+// dst, and rejects unknown fields. Returns true on success; on
+// failure it has already written the error response.
+func decodeJSON(w http.ResponseWriter, r *http.Request, dst any) bool {
+    if ct := r.Header.Get("Content-Type"); ct != "" &&
+        !strings.HasPrefix(ct, "application/json") {
+        http.Error(w, "Content-Type must be application/json", http.StatusUnsupportedMediaType)
+        return false
+    }
+    dec := json.NewDecoder(r.Body)
+    dec.DisallowUnknownFields()
+    if err := dec.Decode(dst); err != nil {
+        writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid JSON: " + err.Error()})
+        return false
+    }
+    return true
+}` }}
+
+  {{ $snipClockIn := `// handleClockIn persists the latest clock-in for a date.
+func (s *server) handleClockIn(w http.ResponseWriter, r *http.Request) {
+    defer r.Body.Close()
+
+    var rec ClockIn
+    if !decodeJSON(w, r, &rec) {
+        return
+    }
+
+    date, err := time.ParseInLocation("2006-01-02", rec.Date, time.Local)
+    if err != nil {
+        writeJSON(w, http.StatusBadRequest, map[string]string{"error": "date must be YYYY-MM-DD"})
+        return
+    }
+    ci, err := parseClockIn(rec.ClockIn)
+    if err != nil {
+        writeJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
+        return
+    }
+
+    // Reject clock-ins that are noticeably in the future relative to
+    // the server's wall-clock. The HRMS page sometimes shows a stale
+    // "Checked In" text from the previous day; without this guard the
+    // userscript would happily store a 1:15 PM record for an 11:00 AM
+    // today.
+    now := time.Now()
+    if ci.After(now.Add(clockInFutureSlack)) {
+        writeJSON(w, http.StatusBadRequest, map[string]string{
+            "error": fmt.Sprintf("clock-in %s is in the future (now=%s); refusing to store a stale or fake record",
+                rec.ClockIn, now.Format("3:04:05 PM")),
+        })
+        return
+    }
+    // ...date-in-future guard, persist, respond
+}` }}
+
+  {{ $snipPrune := `// Caller must hold s.mu (write).
+func pruneOldRecordsLocked(records map[string]ClockIn) {
+    if len(records) == 0 {
+        return
+    }
+    // Fast path: under the cap, and no stale weekday entries are
+    // possible because a workweek holds at most maxRetainedDays rows.
+    if len(records) <= maxRetainedDays {
+        // Even under the cap, defensive prune: drop anything that
+        // somehow pre-dates the current Sunday (e.g. legacy data.json
+        // from before this rule shipped). The loop is cheap and
+        // guarantees the invariant.
+        boundary := currentWorkweekStart(time.Now())
+        for d := range records {
+            if d < boundary {
+                delete(records, d)
+            }
+        }
+        return
+    }
+    // ...fall-through: full prune + oldest-first truncation
+}` }}
+
+  {{ $snipFlush := `// flushLocked writes the in-memory map atomically: encode to a
+// temp file in the same directory and rename over the destination.
+// Caller must hold writeMu.
+func (s *Store) flushLocked() error {
+    s.mu.RLock()
+    buf, err := json.MarshalIndent(s.records, "", "  ")
+    s.mu.RUnlock()
+    if err != nil {
+        return fmt.Errorf("encode %s: %w", s.path, err)
+    }
+
+    dir := filepath.Dir(s.path)
+    tmp, err := os.CreateTemp(dir, "data-*.json.tmp")
+    if err != nil {
+        return fmt.Errorf("create temp: %w", err)
+    }
+    tmpName := tmp.Name()
+    cleanup := func() { _ = os.Remove(tmpName) }
+
+    if _, err := tmp.Write(buf); err != nil {
+        _ = tmp.Close()
+        cleanup()
+        return fmt.Errorf("write temp: %w", err)
+    }
+    if err := tmp.Sync(); err != nil {
+        _ = tmp.Close()
+        cleanup()
+        return fmt.Errorf("sync temp: %w", err)
+    }
+    if err := tmp.Close(); err != nil {
+        cleanup()
+        return fmt.Errorf("close temp: %w", err)
+    }
+    if err := os.Rename(tmpName, s.path); err != nil {
+        cleanup()
+        return fmt.Errorf("rename: %w", err)
+    }
+    return nil
+}` }}
+
+  {{ $snipOrigin := `// matchOrigin returns true if pattern matches origin. The single
+// wildcard "*" matches everything; otherwise the match is exact.
+func matchOrigin(pattern, origin string) bool {
+    if pattern == "*" {
+        return true
+    }
+    if !strings.HasPrefix(pattern, "https://") &&
+        !strings.HasPrefix(pattern, "http://") {
+        return false
+    }
+    return pattern == origin
+}` }}
+
+  <section class="lt-section lt-code">
+    <header class="lt-section-header">
+      <span class="lt-section-num">12</span>
+      <h2 class="lt-section-title">Code samples</h2>
+      <p class="lt-section-tag">
+        Five functions straight out of <code>main.go</code>. The same
+        conventions show up across the codebase — small, locked,
+        explicit about failure.
+      </p>
+    </header>
+
+    <article class="lt-code-block">
+      <h3>Strict JSON decoding</h3>
+      <p class="lt-code-lead">
+        Every POST handler routes its body through
+        <code>decodeJSON</code>. The <code>DisallowUnknownFields()</code>
+        call catches client typos before they silently end up as
+        zero-values on disk.
+      </p>
+      {{ highlight $snipDecodeJSON "go" "linenos=table,hl_lines=7 8" }}
+    </article>
+
+    <article class="lt-code-block">
+      <h3>Clock-in guard against stale UI text</h3>
+      <p class="lt-code-lead">
+        The Pathao HRMS page sometimes serves a stale "Checked In"
+        timestamp from the previous day. The <code>+15m</code> guard
+        rejects any record noticeably in the future, so the persistent
+        store never silently accumulates ghost entries.
+      </p>
+      {{ highlight $snipClockIn "go" "linenos=table,hl_lines=22 23" }}
+    </article>
+
+    <article class="lt-code-block">
+      <h3>Bounded workweek pruning</h3>
+      <p class="lt-code-lead">
+        <code>pruneOldRecordsLocked</code> is invoked on every write.
+        The Pathao workweek runs Sunday→Thursday, so anything strictly
+        before last Sunday is dropped — the in-memory map is
+        effectively bounded to ~5 rows at all times.
+      </p>
+      {{ highlight $snipPrune "go" "linenos=table,hl_lines=7 8 9" }}
+    </article>
+
+    <article class="lt-code-block">
+      <h3>Atomic file writes</h3>
+      <p class="lt-code-lead">
+        Every <code>Set</code> lands in <code>data.json</code> via
+        <em>temp file → fsync → rename</em>. A crash anywhere in the
+        sequence leaves the previous file intact — there is no
+        half-written JSON on disk, ever.
+      </p>
+      {{ highlight $snipFlush "go" "linenos=table,hl_lines=20 21 22" }}
+    </article>
+
+    <article class="lt-code-block">
+      <h3>CORS origin matching with wildcards</h3>
+      <p class="lt-code-lead">
+        The widget runs on the production domain, the userscript on
+        Pathao's HRMS, and the LunchLine extension on a unique
+        <code>chrome-extension://abcdefgh…</code> origin. The matcher
+        handles both exact matches and the literal <code>"*"</code>
+        wildcard.
+      </p>
+      {{ highlight $snipOrigin "go" "linenos=table,hl_lines=4 5 6" }}
+    </article>
+  </section>
+
+</article>
+
+{{/* ============== INLINE STYLES + LIVE STATE SCRIPT ============== */}}
+<style>
+  /* ---- Showcase container ------------------------------------------- */
+  .lunch-tracker-showcase {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ---- Hero --------------------------------------------------------- */
+  .lt-hero {
+    margin: 1rem 0 2.5rem;
+    padding: 2rem 0 1rem;
+    border-bottom: 1px solid var(--cyber-border);
+  }
+  .lt-hero-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (max-width: 960px) {
+    .lt-hero-grid { grid-template-columns: 1fr; }
+  }
+  .lt-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--neon-blue);
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .lt-eyebrow-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--neon-orange);
+    box-shadow: 0 0 10px var(--neon-orange);
+    animation: lt-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes lt-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .lt-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    color: var(--neon-blue);
+    text-shadow: 0 0 14px rgba(0, 243, 255, 0.45);
+    margin: 0 0 0.6rem;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+  }
+  .lt-tagline {
+    color: var(--text-primary);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    max-width: 56ch;
+    margin: 0 0 1.5rem;
+  }
+  .lt-hero-meta {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 1.5rem;
+  }
+  .lt-hero-meta li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .lt-meta-label {
+    color: var(--neon-orange);
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .lt-meta-value {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+  }
+  .lt-status-live {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+  }
+  .lt-status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+  }
+  .lt-hero-cta {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+  }
+
+  /* ---- Buttons ------------------------------------------------------ */
+  .lt-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--text-secondary);
+    border-radius: 8px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 600;
+    background: transparent;
+    transition: all 0.2s ease;
+  }
+  .lt-btn:hover {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+  }
+  .lt-btn.primary {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+  }
+  .lt-btn.primary:hover {
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+  }
+  .lt-btn-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  /* ---- Live status card -------------------------------------------- */
+  .lt-live-card {
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(5, 8, 17, 0.95) 100%);
+    border: 1px solid var(--cyber-border);
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    box-shadow: 0 0 24px rgba(0, 243, 255, 0.18), 0 20px 60px rgba(0,0,0,0.45);
+    backdrop-filter: blur(8px);
+  }
+  .lt-live-header {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--cyber-border);
+  }
+  .lt-live-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+    animation: lt-pulse 1.6s ease-in-out infinite;
+  }
+  .lt-live-title {
+    color: var(--neon-blue);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+  }
+  .lt-live-date {
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-family: inherit;
+  }
+  .lt-live-status {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--neon-orange);
+    letter-spacing: 0.3px;
+    margin-bottom: 0.4rem;
+  }
+  .lt-live-status.ClockedIn,
+  .lt-live-status.ClockedOut  { color: var(--neon-blue); }
+  .lt-live-status.Eligible    { color: var(--neon-green); text-shadow: 0 0 14px rgba(74, 222, 128, 0.5); }
+  .lt-live-status.Weekend     { color: var(--neon-purple); }
+  .lt-live-status.OnLeave     { color: var(--neon-orange); }
+  .lt-live-status.NotClockedIn{ color: var(--text-secondary); }
+
+  .lt-live-message {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.85rem;
+  }
+  .lt-live-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px dashed var(--cyber-border);
+    border-radius: 10px;
+    background: rgba(10, 14, 39, 0.4);
+  }
+  .lt-live-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.86rem;
+  }
+  .lt-live-label {
+    color: var(--neon-orange);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .lt-live-value {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .lt-mono {
+    font-variant-numeric: tabular-nums;
+  }
+  .lt-live-badges {
+    display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem;
+  }
+  .lt-live-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-secondary);
+    background: rgba(160, 160, 160, 0.1);
+  }
+  .lt-live-badge.ok {
+    color: var(--neon-green);
+    border-color: var(--neon-green);
+    background: rgba(74, 222, 128, 0.1);
+  }
+  .lt-live-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--cyber-border);
+    padding-top: 0.6rem;
+  }
+  .lt-live-footer code {
+    background: transparent;
+    border: none;
+    color: var(--neon-blue);
+    padding: 0;
+  }
+  .lt-refresh {
+    background: transparent;
+    border: 1px solid var(--cyber-border);
+    color: var(--neon-blue);
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  .lt-refresh:hover {
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+  }
+
+  /* ---- Sections ----------------------------------------------------- */
+  .lt-section { margin: 3rem 0; }
+  .lt-section-header {
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.5rem;
+  }
+  .lt-section-num {
+    color: var(--neon-purple);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .lt-section h2 {
+    color: var(--neon-blue);
+    margin: 0;
+    font-size: 1.5rem;
+    letter-spacing: 0.4px;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .lt-section-body { color: var(--text-primary); line-height: 1.75; }
+  .lt-section-body > p { margin: 0 0 0.9rem; }
+  .lt-section-body > ul.lt-bullets,
+  .lt-section-body > ol.lt-bullets { margin: 0 0 1rem; }
+
+  .lt-bullets { padding-left: 1.4rem; }
+  .lt-bullets li { margin-bottom: 0.45rem; }
+  .lt-bullets.compact { padding-left: 1.2rem; }
+  .lt-bullets.compact li { margin-bottom: 0.25rem; font-size: 0.93rem; }
+  .lt-bullets li::marker { color: var(--neon-blue); }
+
+  .lt-callout {
+    background: rgba(255, 107, 53, 0.06);
+    border-left: 3px solid var(--neon-orange);
+    padding: 0.85rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 8px 8px 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+  .lt-callout code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.08);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+  }
+  .lt-callout strong { color: var(--text-primary); }
+
+  /* ---- Code samples ------------------------------------------------- */
+  .lt-section-tag {
+    margin: 0.6rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .lt-section-tag code {
+    color: var(--neon-orange);
+    background: rgba(255, 107, 53, 0.08);
+    padding: 0.05em 0.35em;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 107, 53, 0.25);
+    font-size: 0.9em;
+  }
+  .lt-code-block {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    box-shadow: var(--cyber-glow);
+  }
+  .lt-code-block h3 {
+    color: var(--neon-orange);
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.4rem;
+  }
+  .lt-code-lead {
+    margin: 0 0 1rem;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+  .lt-code-lead code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.08);
+    padding: 0.05em 0.35em;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    font-size: 0.9em;
+  }
+  .lt-code-block em {
+    color: var(--neon-blue);
+    font-style: normal;
+    font-weight: 600;
+  }
+  .lt-code-block pre {
+    margin: 0;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+
+  /* ---- Architecture diagram ---------------------------------------- */
+  .lt-arch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 1.2rem 0 1rem;
+    padding: 1.2rem;
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    background: rgba(10, 14, 39, 0.5);
+  }
+  .lt-arch-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+  }
+  .lt-arch-row.lt-arch-pair {
+    flex-wrap: wrap;
+  }
+  .lt-arch-node {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    min-width: 180px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .lt-arch-node:hover {
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+  }
+  .lt-arch-node.user   { border-color: var(--neon-orange); }
+  .lt-arch-node.go     { border-color: var(--neon-blue); }
+  .lt-arch-node.store  { border-color: var(--neon-purple); }
+  .lt-arch-icon { display: block; font-size: 1.4rem; margin-bottom: 0.3rem; }
+  .lt-arch-name {
+    display: block;
+    color: var(--neon-blue);
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-bottom: 0.2rem;
+  }
+  .lt-arch-sub {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.74rem;
+    line-height: 1.4;
+  }
+  .lt-arch-arrow {
+    color: var(--neon-blue);
+    font-size: 1rem;
+    line-height: 1;
+    text-shadow: 0 0 8px var(--neon-blue);
+  }
+  .lt-arch-readers {
+    display: flex; flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 1rem 0 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+  }
+  .lt-arch-readers code {
+    background: rgba(0, 243, 255, 0.08);
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    color: var(--neon-blue);
+    padding: 0.05em 0.4em;
+    border-radius: 4px;
+  }
+
+  /* ---- Cards (2-col grids) ----------------------------------------- */
+  .lt-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 720px) {
+    .lt-grid-2 { grid-template-columns: 1fr; }
+    .lt-hero-meta { grid-template-columns: 1fr; }
+  }
+  .lt-card {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    backdrop-filter: blur(6px);
+  }
+  .lt-card h3 {
+    color: var(--neon-orange);
+    margin: 0 0 0.6rem;
+    font-size: 1.02rem;
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.4rem;
+    letter-spacing: 0.3px;
+  }
+  .lt-card p { color: var(--text-primary); font-size: 0.93rem; margin: 0; line-height: 1.65; }
+  .lt-card code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.08);
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    font-size: 0.88em;
+  }
+
+  /* ---- Tech stack table -------------------------------------------- */
+  .lt-stack {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  .lt-stack th, .lt-stack td {
+    border: 1px solid var(--cyber-border);
+    padding: 0.65rem 0.85rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .lt-stack th {
+    background: rgba(0, 243, 255, 0.08);
+    color: var(--neon-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+  .lt-stack td:first-child {
+    color: var(--neon-orange);
+    font-weight: 700;
+    width: 12%;
+  }
+  .lt-stack td:nth-child(2) {
+    color: var(--neon-blue);
+    font-weight: 600;
+    width: 22%;
+  }
+  .lt-stack td:last-child {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+  }
+
+  /* ---- Feature grid ------------------------------------------------- */
+  .lt-feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 720px) {
+    .lt-feature-grid { grid-template-columns: 1fr; }
+  }
+  .lt-feature {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    transition: all 0.25s ease;
+  }
+  .lt-feature:hover {
+    transform: translateY(-3px);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 14px rgba(0, 243, 255, 0.25);
+  }
+  .lt-feature-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+  .lt-feature h3 {
+    color: var(--neon-orange);
+    margin: 0 0 0.5rem;
+    font-size: 1.02rem;
+    letter-spacing: 0.3px;
+  }
+  .lt-feature p {
+    color: var(--text-primary);
+    font-size: 0.93rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .lt-feature code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.08);
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    font-size: 0.88em;
+  }
+
+  /* ---- Engineering challenges -------------------------------------- */
+  .lt-challenge {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-left: 3px solid var(--neon-orange);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+  .lt-challenge header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .lt-challenge h3 {
+    color: var(--neon-blue);
+    margin: 0;
+    font-size: 1.08rem;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .lt-challenge-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    background: rgba(255, 107, 53, 0.15);
+    color: var(--neon-orange);
+    border: 1px solid var(--neon-orange);
+  }
+  .lt-challenge p { margin: 0.4rem 0; font-size: 0.93rem; color: var(--text-primary); }
+  .lt-challenge strong { color: var(--neon-blue); }
+  .lt-challenge pre {
+    background: var(--code-block-bg);
+    border: 1px solid var(--cyber-border);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    margin: 0.4rem 0;
+    font-size: 0.85rem;
+    overflow-x: auto;
+  }
+  .lt-challenge code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.08);
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    font-size: 0.88em;
+  }
+  .lt-challenge pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+  }
+
+  /* ---- Endpoints ---------------------------------------------------- */
+  .lt-endpoints {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .lt-endpoint {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+  .lt-endpoint header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .lt-endpoint p {
+    color: var(--text-primary);
+    font-size: 0.93rem;
+    margin: 0.4rem 0 0.7rem;
+  }
+  .lt-method {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .lt-method.get {
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--neon-green);
+    border: 1px solid var(--neon-green);
+  }
+  .lt-method.post {
+    background: rgba(0, 243, 255, 0.15);
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+  }
+  .lt-path {
+    color: var(--text-primary);
+    background: rgba(0, 243, 255, 0.08);
+    border: 1px solid var(--cyber-border);
+    padding: 0.2rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+  .lt-endpoint-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  @media (max-width: 720px) {
+    .lt-endpoint-grid { grid-template-columns: 1fr; }
+  }
+  .lt-endpoint-grid h4 {
+    color: var(--neon-orange);
+    margin: 0 0 0.4rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+  .lt-endpoint-grid pre {
+    background: var(--code-block-bg);
+    border: 1px solid var(--cyber-border);
+    border-radius: 8px;
+    padding: 0.65rem 0.8rem;
+    margin: 0;
+    font-size: 0.82rem;
+    overflow-x: auto;
+  }
+  .lt-endpoint-grid pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 0.82rem;
+  }
+  .lt-endpoint-aside h4 { color: var(--neon-orange); }
+  .lt-endpoint-link {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0.5rem 0 0;
+  }
+  .lt-endpoint-link a {
+    color: var(--neon-blue);
+    border-bottom: 1px dashed var(--neon-blue);
+  }
+
+  /* ---- State machine list ------------------------------------------ */
+  .lt-states {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .lt-state {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+  }
+  .lt-state-pill {
+    flex-shrink: 0;
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    background: rgba(0, 243, 255, 0.15);
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+    margin-top: 0.15rem;
+    min-width: 8rem;
+    text-align: center;
+  }
+  .lt-state-weekend   .lt-state-pill { background: rgba(191, 64, 191, 0.15); color: var(--neon-purple); border-color: var(--neon-purple); }
+  .lt-state-leave     .lt-state-pill { background: rgba(255, 107, 53, 0.15); color: var(--neon-orange); border-color: var(--neon-orange); }
+  .lt-state-notin     .lt-state-pill { background: rgba(160, 160, 160, 0.15); color: var(--text-secondary); border-color: var(--text-secondary); }
+  .lt-state-clocked   .lt-state-pill { background: rgba(0, 243, 255, 0.15); color: var(--neon-blue); border-color: var(--neon-blue); }
+  .lt-state-eligible  .lt-state-pill { background: rgba(74, 222, 128, 0.15); color: var(--neon-green); border-color: var(--neon-green); }
+  .lt-state-clockedout .lt-state-pill { background: rgba(96, 165, 250, 0.18); color: #93c5fd; border-color: #93c5fd; }
+  .lt-state p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 0.93rem;
+    line-height: 1.65;
+  }
+  .lt-state code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.08);
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    font-size: 0.88em;
+  }
+
+  /* ---- Lessons ------------------------------------------------------ */
+  .lt-lesson-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 720px) {
+    .lt-lesson-grid { grid-template-columns: 1fr; }
+  }
+  .lt-lesson {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+  }
+  .lt-lesson h3 {
+    color: var(--neon-orange);
+    font-size: 1rem;
+    margin: 0 0 0.5rem;
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.4rem;
+    letter-spacing: 0.3px;
+  }
+  .lt-lesson p {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .lt-lesson code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.08);
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    font-size: 0.88em;
+  }
+
+  /* ---- Final -------------------------------------------------------- */
+  .lt-section-final .lt-section-header {
+    border-bottom-color: var(--neon-blue);
+  }
+  .lt-final-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  // Live state card: poll /api/lunch/state every 30s and re-render the
+  // hero card. Uses fetch + manual JSON; no framework.
+  var ENDPOINT = 'https://fahimimam.sytes.net/api/lunch/state';
+
+  var statusEl    = document.getElementById('lt-live-status');
+  var messageEl   = document.getElementById('lt-live-message');
+  var dateEl      = document.getElementById('lt-live-date');
+  var rowsEl      = document.getElementById('lt-live-rows');
+  var clockinEl   = document.getElementById('lt-live-clockin');
+  var targetEl    = document.getElementById('lt-live-target');
+  var countdownEl = document.getElementById('lt-live-countdown');
+  var badgeWeekend  = document.getElementById('lt-live-badge-weekend');
+  var badgeLeave    = document.getElementById('lt-live-badge-leave');
+  var badgeEligible = document.getElementById('lt-live-badge-eligible');
+  var refreshBtn  = document.getElementById('lt-live-refresh');
+
+  var targetMs = 0;
+  var tickHandle = null;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function fmtDuration(ms) {
+    if (ms == null || isNaN(ms)) return '—';
+    if (ms < 0) ms = 0;
+    var s = Math.floor(ms / 1000);
+    return pad(Math.floor(s / 3600)) + ':' +
+           pad(Math.floor((s % 3600) / 60)) + ':' +
+           pad(s % 60);
+  }
+
+  function render(state) {
+    if (!state || !statusEl) return;
+
+    // Status pill — colour by variant.
+    statusEl.className = 'lt-live-status ' + state.status;
+    statusEl.textContent = state.message || state.status;
+
+    // Date label in the card header.
+    if (dateEl) dateEl.textContent = state.date || '—';
+
+    // Message line below the pill.
+    if (messageEl) messageEl.textContent = state.message || '';
+
+    // Clock-in / target rows — hide unless we have a clock-in or are clocked out.
+    if (rowsEl) {
+      var hasRows = state.clockIn || state.status === 'Weekend';
+      rowsEl.hidden = !hasRows;
+    }
+    if (clockinEl) clockinEl.textContent = state.clockIn || '—';
+    if (targetEl)  targetEl.textContent  = state.targetExit || '—';
+
+    targetMs = state.targetMs || 0;
+
+    // Badges.
+    if (badgeWeekend)  badgeWeekend.hidden  = !state.weekend;
+    if (badgeLeave)    badgeLeave.hidden    = !state.leave;
+    if (badgeEligible) badgeEligible.hidden = !state.eligible;
+
+    // Restart the live tick if we have a target.
+    if (tickHandle) { clearInterval(tickHandle); tickHandle = null; }
+    if (targetMs > 0 && (state.status === 'ClockedIn' || state.status === 'Eligible')) {
+      tick();
+      tickHandle = setInterval(tick, 1000);
+    } else if (countdownEl) {
+      countdownEl.textContent = '—';
+    }
+  }
+
+  function tick() {
+    if (!countdownEl) return;
+    var remain = targetMs - Date.now();
+    if (remain <= 0) {
+      var passed = Math.abs(remain);
+      countdownEl.textContent = fmtDuration(passed) + ' past';
+    } else {
+      countdownEl.textContent = fmtDuration(remain);
+    }
+  }
+
+  function fetchState() {
+    if (statusEl) statusEl.textContent = 'Loading…';
+    if (messageEl) messageEl.textContent = 'Fetching from /api/lunch/state …';
+    fetch(ENDPOINT, { method: 'GET', cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(render)
+      .catch(function (err) {
+        if (statusEl) {
+          statusEl.className = 'lt-live-status';
+          statusEl.textContent = 'Offline';
+        }
+        if (messageEl) messageEl.textContent =
+          'Could not reach the live API (' + (err && err.message ? err.message : err) +
+          '). It runs on a tiny VPS behind Nginx; an outage here does not mean the project is broken.';
+      });
+  }
+
+  if (refreshBtn) refreshBtn.addEventListener('click', fetchState);
+  fetchState();
+  setInterval(fetchState, 30000);
+})();
+</script>
+
+{{ end }}

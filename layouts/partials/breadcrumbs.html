@@ -1,0 +1,32 @@
+{{- /*
+  Override of PaperMod's breadcrumbs.html.
+
+  Why this file exists: PaperMod's home link uses absLangURL and the
+  intermediate crumbs use Permalink, both of which prepend site.BaseURL.
+  Clicking a breadcrumb on a page served from a non-canonical domain
+  (e.g. localhost or fahimimam.sytes.net) silently bounces the visitor
+  to fahimimam.pro.bd — exactly the navigation redirect this site
+  tries to avoid.
+
+  This override swaps both to host-relative forms so the browser
+  appends the path to whatever host the visitor is on.
+*/ -}}
+{{- if (.Param "ShowBreadCrumbs") -}}
+<div class="breadcrumbs">
+    {{- $url := replace .Parent.Permalink (printf "%s" site.Home.Permalink) "" }}
+    {{- $lang_url := strings.TrimPrefix (printf "%s/" .Lang) $url -}}
+
+    <a href="{{ "" | relLangURL }}">{{ i18n "home" | default "Home" }}</a>
+    {{- $scratch := newScratch }}
+    {{- range $index, $element := split $lang_url "/" }}
+
+    {{- $scratch.Add "path" (printf "%s/" $element )}}
+    {{- $bc_pg := site.GetPage ($scratch.Get "path") -}}
+
+    {{- if (and ($bc_pg) (gt (len . ) 0))}}
+    {{- print "&nbsp;»&nbsp;" | safeHTML -}}<a href="{{ $bc_pg.RelPermalink }}">{{ $bc_pg.Name }}</a>
+    {{- end }}
+
+    {{- end -}}
+</div>
+{{- end -}}

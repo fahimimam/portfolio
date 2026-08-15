@@ -1,158 +1,62 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="dark">
+<!doctype html><html lang=en dir=auto data-theme=dark><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Blog | Fahim Imam - Software Developer</title><meta name=keywords content><meta name=description content="Notes on Go, deployment, and whatever I'm currently wrestling with."><meta name=author content><link rel=canonical href=http://fahimimam.pro.bd/blog/><link crossorigin=anonymous href=/assets/css/stylesheet.3994cd0fd4629636603c0d2d617e34f27354f46561157bc06a4f0510213566fa.css integrity="sha256-OZTND9RiljZgPA0tYX408nNU9GVhFXvAak8FECE1Zvo=" rel="preload stylesheet" as=style><link rel=icon href=/favicon.svg><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=apple-touch-icon href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=http://fahimimam.pro.bd/blog/index.xml title=rss><link rel=alternate hreflang=en href=http://fahimimam.pro.bd/blog/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><script>(function(){try{var e=localStorage.getItem("lt.theme");e&&e!=="cyberpunk"&&document.documentElement.setAttribute("data-theme",e)}catch{}})()</script><script defer src=/js/matrix.js></script><script defer src=/js/theme-dashboard.js></script><meta property="og:url" content="http://fahimimam.pro.bd/blog/"><meta property="og:site_name" content="Fahim Imam - Software Developer"><meta property="og:title" content="Blog"><meta property="og:description" content="Notes on Go, deployment, and whatever I'm currently wrestling with."><meta property="og:locale" content="en-us"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="Blog"><meta name=twitter:description content="Notes on Go, deployment, and whatever I'm currently wrestling with."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Blog","item":"http://fahimimam.pro.bd/blog/"}]}</script></head><body class=list id=top><header class=header><nav class=nav><div class=logo><a href=/ accesskey=h title="Fahim Imam - Software Developer (Alt + H)">Fahim Imam - Software Developer</a><div class=logo-switches></div></div><ul id=menu><li><a href=/projects/ title=Projects><span>Projects</span></a></li><li><a href=/blog/ title=Blog><span class=active>Blog</span></a></li><li><a href=/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=/cv/ title=CV><span>CV</span></a></li><li><a href=/about/ title=About><span>About</span></a></li><li><a href=/now/ title=Now><span>Now</span></a></li><li><a href=/uses/ title=Uses><span>Uses</span></a></li></ul></nav></header><main class=main><div class=blog-list><header class=page-header><div class=breadcrumbs><a href=/>Home</a></div><h1>Blog</h1><div class=post-description>Notes on Go, deployment, and whatever I&rsquo;m currently wrestling with.</div></header><div class=post-content><p>Short write-ups about things I&rsquo;ve figured out — usually the hard way.
+Mostly Go, Linux, and deployment oddities. Each post is a real lesson
+from a real project, not a &ldquo;10 things you didn&rsquo;t know about X&rdquo; roundup.</p><p>You&rsquo;ll see a lot of posts about the <a href=/projects/lunch-tracker/>lunch-tracker</a>
+backend and the <a href=/projects/portfolio-website/>portfolio</a> itself — those
+two systems are where most of the work happens.</p><p>Looking for something specific? Hit <a href=/search/>/search/</a>, or browse by
+<a href=/tags/>tags</a>.</p></div><aside class=blog-write-cta aria-label="Start a new blog post"><div class=blog-write-cta-head><span class=blog-write-cta-tag>workflow</span><h2>Start a new post</h2><p>Run the command, edit the scaffolded file, flip <code>draft: false</code>. The archetype handles every field the rest of the site reads.</p></div><div class=blog-write-cta-cmd><code class=blog-write-cta-code>hugo new blog/your-slug.md</code>
+<button type=button class=blog-write-cta-copy aria-label="Copy command to clipboard">
+<span class=blog-write-cta-copy-label>copy</span></button></div><details class=blog-write-cta-details><summary>Show the archetype template</summary><pre class=blog-write-cta-archetype><code>---
+title: &#34;{{ replace .File.ContentBaseName &#34;-&#34; &#34; &#34; | title }}&#34;
+date: {{ .Date }}
+draft: true
+summary: &#34;&#34;
+tags: []
+categories: [&#34;Blog&#34;]
+series: &#34;&#34;
+series_part: 0
+cover: { image: &#34;&#34;, alt: &#34;&#34; }
+ShowToc: false
+hideFromSearch: false
+---
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=55484&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Blog | Fahim Imam - Software Developer</title>
-<meta name="keywords" content="">
-<meta name="description" content="Notes on Go, deployment, and whatever I&#39;m currently wrestling with.">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:55484/blog/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.6af42518f357b564660da8ed0c1adbac00c2dd2cf35e9527602dd0cfe446bde8.css" integrity="sha256-avQlGPNXtWRmDajtDBrbrADC3SzzXpUnYC3Qz&#43;RGveg=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:55484/favicon.svg">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:55484/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:55484/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:55484/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:55484/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:55484/blog/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="http://localhost:55484/blog/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
+Write your post body here.
 
-    </style>
-</noscript>
-<script defer src="/js/matrix.js"></script>
+Conventions:
 
-</head>
-<body class="list" id="top">
-    <header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:55484/" accesskey="h" title="Fahim Imam - Software Developer (Alt + H)">Fahim Imam - Software Developer</a>
-            <div class="logo-switches">
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:55484/projects/" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:55484/blog/" title="Blog">
-                    <span class="active">Blog</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:55484/cv/" title="CV">
-                    <span>CV</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:55484/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="http://localhost:55484/">Home</a></div>
-  <h1>
-    Blog
-  </h1>
-  <div class="post-description">
-    Notes on Go, deployment, and whatever I&rsquo;m currently wrestling with.
-  </div>
-</header>
-<div class="post-content"><p>Short write-ups about things I&rsquo;ve figured out — usually the hard way. Mostly Go, Linux, and deployment oddities.</p>
-
-
-</div>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Optimizing VPS Deployment: Binary Uploads vs Docker
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>How I optimized my VPS deployment strategy to save resources</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-02-06 00:00:00 +0000 UTC'>February 6, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>211 words</span></footer>
-  <a class="entry-link" aria-label="post link to Optimizing VPS Deployment: Binary Uploads vs Docker" href="http://localhost:55484/blog/my-first-post/"></a>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:55484/">Fahim Imam - Software Developer</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-</body>
-
-</html>
+- One paragraph per line — the renderer doesn&#39;t care, but diffs do.
+- Wrap code blocks with triple backticks and a language tag for
+  syntax highlighting.
+- Cross-link to a project page with `/projects/&lt;slug&gt;/` (host-relative,
+  works on both domains).
+- If the post is part of a multi-part series, set `series` to the series
+  title and `series_part` to the position (1-indexed). The post_meta
+  override renders this as a `Part N of &lt;Series&gt;` badge under the title.
+- If the post is the canonical index for a series (the &#34;table of
+  contents&#34; page), leave `series_part: 0`.
+- Set `hideFromSearch: true` for posts that are stubs or in-progress
+  notes you don&#39;t want showing up in `/search/`.
+- Set `ShowToc: true` for posts long enough to benefit from a heading
+  sidebar (usually &gt; 1000 words).
+- The first paragraph is excerpted into the list-card preview if you
+  set `summary`, otherwise the renderer falls back to the first
+  ~160 chars of the body.
+</code></pre></details><div class=blog-write-cta-foot><a class=blog-write-cta-link href=https://github.com/fahimimam/portfolio/blob/main/archetypes/blog.md target=_blank rel=noopener>Edit the archetype on GitHub &nbsp;→</a></div></aside><nav class=blog-tag-chips aria-label="Filter by tag"><a class="blog-tag-chip blog-tag-chip-all" href=/blog/>All</a>
+<a class=blog-tag-chip href=/tags/bugs/>Bugs<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/canvas/>Canvas<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/devops/>DevOps<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/docker/>Docker<span class=blog-tag-count>2</span></a>
+<a class=blog-tag-chip href=/tags/frontend/>Frontend<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/go/>Go<span class=blog-tag-count>5</span></a>
+<a class=blog-tag-chip href=/tags/hugo/>Hugo<span class=blog-tag-count>2</span></a>
+<a class=blog-tag-chip href=/tags/javascript/>JavaScript<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/linux/>Linux<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/multi-domain/>Multi-Domain<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/papermod/>PaperMod<span class=blog-tag-count>2</span></a>
+<a class=blog-tag-chip href=/tags/performance/>Performance<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/persistence/>Persistence<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/posix/>POSIX<span class=blog-tag-count>1</span></a>
+<a class=blog-tag-chip href=/tags/vps/>VPS<span class=blog-tag-count>1</span></a></nav><article class="post-entry first-entry"><header class=entry-header><h2 class=entry-hint-parent>The bug that locked every visitor to one domain</h2></header><div class=entry-content><p>Hugo’s baseURL makes every internal link absolute. That’s fine for one domain. The moment you serve the same site from two domains, it’s a navigation bug.</p></div><footer class=entry-footer><span title='2026-08-15 00:00:00 +0000 UTC'>August 15, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>611 words</span>&nbsp;·&nbsp;<span class=post-meta-series>Part 1 of Hugo deployment postmortems</span></footer><a class=entry-link aria-label="post link to The bug that locked every visitor to one domain" href=http://fahimimam.pro.bd/blog/host-locked-navigation/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Atomic writes in Go: temp file, fsync, rename</h2></header><div class=entry-content><p>Every write to data.json in lunch-tracker goes through a temp file in the same directory, an explicit fsync, then a rename. Three lines of reasoning turn that into correctness.</p></div><footer class=entry-footer><span title='2026-08-15 00:00:00 +0000 UTC'>August 15, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>774 words</span></footer><a class=entry-link aria-label="post link to Atomic writes in Go: temp file, fsync, rename" href=http://fahimimam.pro.bd/blog/atomic-file-writes-go/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>60 forced reflows a second: fixing the matrix rain</h2></header><div class=entry-content><p>The first version of the matrix-rain canvas called getComputedStyle() every animation frame to read the active –neon-blue token. Three small changes turned 60 reflows/sec into zero.</p></div><footer class=entry-footer><span title='2026-08-15 00:00:00 +0000 UTC'>August 15, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>719 words</span></footer><a class=entry-link aria-label="post link to 60 forced reflows a second: fixing the matrix rain" href=http://fahimimam.pro.bd/blog/matrix-rain-performance/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Optimizing VPS Deployment: Binary Uploads vs Docker</h2></header><div class=entry-content><p>How I optimized my VPS deployment strategy to save resources</p></div><footer class=entry-footer><span title='2024-02-06 00:00:00 +0000 UTC'>February 6, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>211 words</span></footer><a class=entry-link aria-label="post link to Optimizing VPS Deployment: Binary Uploads vs Docker" href=http://fahimimam.pro.bd/blog/my-first-post/></a></article></div><style>.blog-list{max-width:880px;margin:0 auto}.blog-list .page-header{margin-bottom:1.5rem}.blog-tag-chips{display:flex;flex-wrap:wrap;gap:.4rem .5rem;margin:1.5rem 0 2rem;padding:.75rem 0;border-top:1px solid var(--cyber-border);border-bottom:1px solid var(--cyber-border)}.blog-tag-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .7rem;background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:999px;color:var(--neon-blue);font-size:.85rem;text-decoration:none;transition:all .2s ease}.blog-tag-chip:hover{background:var(--neon-blue);color:var(--cyber-bg);border-color:var(--neon-blue);box-shadow:0 0 10px rgba(0,243,255,.4)}.blog-tag-chip-all{color:var(--neon-orange);border-color:var(--neon-orange)}.blog-tag-chip-all:hover{background:var(--neon-orange);color:var(--cyber-bg);border-color:var(--neon-orange);box-shadow:0 0 10px rgba(255,107,53,.4)}.blog-tag-count{background:rgba(0,243,255,.18);border-radius:999px;padding:0 .4rem;font-size:.75rem;color:var(--neon-blue)}.blog-tag-chip:hover .blog-tag-count{background:rgba(0,0,0,.25);color:var(--cyber-bg)}.blog-list .first-entry{background:linear-gradient(135deg,rgba(0,243,255,5%),rgba(255,107,53,5%));border-color:rgba(0,243,255,.25)}.blog-write-cta{position:relative;margin:0 0 1.75rem;padding:1.25rem 1.5rem 1.1rem;border:1px solid var(--cyber-border);border-radius:12px;background:linear-gradient(135deg,rgba(0,243,255,8%),rgba(255,107,53,6%) 60%,rgba(0,243,255,4%)),var(--cyber-surface);box-shadow:var(--cyber-glow);backdrop-filter:blur(6px);overflow:hidden}.blog-write-cta::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--neon-blue),var(--neon-orange));pointer-events:none}.blog-write-cta-head{margin-bottom:.85rem}.blog-write-cta-tag{display:inline-block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;padding:.15rem .55rem;border-radius:999px;border:1px solid var(--neon-orange);color:var(--neon-orange);background:rgba(255,107,53,8%);margin-bottom:.5rem}.blog-write-cta-head h2{margin:0 0 .4rem;color:var(--neon-orange);font-size:1.2rem;letter-spacing:.5px}.blog-write-cta-head p{margin:0;color:var(--text-secondary);font-size:.92rem;line-height:1.55}.blog-write-cta-head p code{background:rgba(0,243,255,.1);color:var(--neon-blue);border:1px solid rgba(0,243,255,.3);padding:.05em .35em;border-radius:4px;font-size:.85em}.blog-write-cta-cmd{display:flex;align-items:stretch;gap:0;margin:.85rem 0 .75rem;border:1px solid var(--cyber-border);border-radius:8px;overflow:hidden;background:var(--code-block-bg)}.blog-write-cta-code{flex:1;display:block;padding:.65rem .9rem;margin:0;background:0 0!important;border:none!important;color:var(--neon-blue);font-family:inherit;font-size:.95rem;white-space:nowrap;overflow-x:auto}.blog-write-cta-copy{flex:none;padding:0 .95rem;border:none;border-left:1px solid var(--cyber-border);background:rgba(0,243,255,8%);color:var(--neon-blue);font-family:inherit;font-size:.82rem;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s ease}.blog-write-cta-copy:hover{background:var(--neon-blue);color:var(--cyber-bg);text-shadow:none}.blog-write-cta-copy.is-copied{background:var(--neon-orange);color:var(--cyber-bg);border-color:var(--neon-orange)}.blog-write-cta-copy:focus-visible{outline:2px solid var(--neon-blue);outline-offset:2px}.blog-write-cta-details{margin-top:.25rem;border:1px dashed var(--cyber-border);border-radius:8px;background:rgba(5,8,17,.5)}.blog-write-cta-details summary{cursor:pointer;padding:.55rem .85rem;color:var(--neon-blue);font-size:.88rem;letter-spacing:.3px;list-style:none}.blog-write-cta-details summary::-webkit-details-marker{display:none}.blog-write-cta-details summary::before{content:"▸";display:inline-block;margin-right:.45rem;color:var(--neon-orange);transition:transform .15s ease}.blog-write-cta-details[open] summary::before{transform:rotate(90deg)}.blog-write-cta-details summary:hover{color:var(--neon-orange)}.blog-write-cta-archetype{margin:0;padding:.9rem 1rem;border-top:1px solid var(--cyber-border);border-radius:0;background:var(--code-block-bg);overflow-x:auto;font-size:.82rem;line-height:1.55;color:var(--text-primary)}.blog-write-cta-archetype code{background:0 0!important;border:none!important;padding:0!important;color:var(--text-primary)!important;font-family:inherit}.blog-write-cta-empty{padding:.75rem 1rem;color:var(--text-secondary);font-size:.85rem;margin:0}.blog-write-cta-foot{margin-top:.85rem;display:flex;justify-content:flex-end}.blog-write-cta-link{font-size:.82rem;color:var(--neon-blue);text-decoration:none;border-bottom:1px dashed var(--neon-blue);transition:color .2s ease,border-color .2s ease}.blog-write-cta-link:hover{color:var(--neon-orange);border-bottom-color:var(--neon-orange);text-shadow:0 0 6px rgba(255,107,53,.4)}</style><script>(function(){if(window.__blogWriteCTAWired)return;window.__blogWriteCTAWired=!0,document.querySelectorAll(".blog-write-cta-copy").forEach(function(t){t.addEventListener("click",function(){var s,o=t.parentElement&&t.parentElement.querySelector(".blog-write-cta-code"),n=o?(o.textContent||"").trim():"";if(!n)return;s=function(){var e=t.querySelector(".blog-write-cta-copy-label");e&&(e.textContent="copied"),t.classList.add("is-copied"),setTimeout(function(){e&&(e.textContent="copy"),t.classList.remove("is-copied")},1500)},navigator.clipboard&&window.isSecureContext?navigator.clipboard.writeText(n).then(s).catch(function(){e(n)&&s()}):e(n)&&s()})});function e(e){var n,t=document.createElement("textarea");t.value=e,t.setAttribute("readonly",""),t.style.position="absolute",t.style.left="-9999px",document.body.appendChild(t),t.select(),n=!1;try{n=document.execCommand("copy")}catch{n=!1}return document.body.removeChild(t),n}})()</script></main><footer class=footer><span>&copy; 2026 <a href=/>Fahim Imam - Software Developer</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script></body></html>

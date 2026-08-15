@@ -32,6 +32,16 @@ ShowWordCount = true
 [params.assets]
 favicon = "/favicon.svg"
 
+[params.search]
+enable = true
+type = "fastsearch"
+placeholder = "Search posts and projects…"
+
+[params.fuseOpts]
+isCaseSensitive = false
+minMatchCharLength = 2
+threshold = 0.3
+
 [[params.socialIcons]]
 name = "github"
 url = "https://github.com/fahimimam"
@@ -58,6 +68,12 @@ url = "/blog/"
 weight = 20
 
 [[menu.main]]
+identifier = "search"
+name = "Search"
+url = "/search/"
+weight = 25
+
+[[menu.main]]
 identifier = "cv"
 name = "CV"
 url = "/cv/"
@@ -68,6 +84,18 @@ identifier = "about"
 name = "About"
 url = "/about/"
 weight = 40
+
+[[menu.main]]
+identifier = "now"
+name = "Now"
+url = "/now/"
+weight = 45
+
+[[menu.main]]
+identifier = "uses"
+name = "Uses"
+url = "/uses/"
+weight = 50
 
 [taxonomies]
 tag = "tags"

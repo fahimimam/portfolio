@@ -5,9 +5,170 @@
  * The landing page (/layouts/index.html) carries its own inline stylesheet with
  * the same tokens; the duplication is intentional so the home page can be
  * shipped without a second CSS request.
+ *
+ * Theme palettes (cyberpunk / synthwave / solarized / terminal) are
+ * defined here and switched via :root[data-theme="X"] on <html>.
+ * Theme switching happens via /js/theme-dashboard.js.
  */
 
-:root[data-theme="dark"] {
+:root[data-theme="cyberpunk"] {
+    --neon-blue: #00f3ff;
+    --neon-orange: #ff6b35;
+    --neon-purple: #bf40bf;
+    --neon-green: #4ade80;
+    --cyber-bg: #050811;
+    --cyber-bg-2: #0a0e27;
+    --cyber-bg-3: #0f1538;
+    --cyber-surface: rgba(10, 14, 39, 0.85);
+    --cyber-border: rgba(0, 243, 255, 0.35);
+    --cyber-glow: 0 0 20px rgba(0, 243, 255, 0.3);
+    --cyber-glow-strong: 0 0 30px rgba(0, 243, 255, 0.5);
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(15, 21, 56, 0.7);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(0, 243, 255, 0.15);
+    --content: var(--text-primary);
+    --code-block-bg: #06091a;
+    --code-bg: #0a0f2a;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="synthwave"] {
+    --neon-blue: #22d3ee;
+    --neon-orange: #ff2e93;
+    --neon-purple: #a855f7;
+    --neon-green: #34d399;
+    --cyber-bg: #0c0420;
+    --cyber-bg-2: #1a0b3a;
+    --cyber-bg-3: #2d1454;
+    --cyber-surface: rgba(26, 11, 58, 0.88);
+    --cyber-border: rgba(255, 46, 147, 0.45);
+    --cyber-glow: 0 0 20px rgba(255, 46, 147, 0.4);
+    --cyber-glow-strong: 0 0 30px rgba(168, 85, 247, 0.55);
+    --text-primary: #f5e8ff;
+    --text-secondary: #b794d4;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(45, 20, 84, 0.7);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-orange);
+    --tertiary: rgba(255, 46, 147, 0.18);
+    --content: var(--text-primary);
+    --code-block-bg: #160a2e;
+    --code-bg: #1f0e3d;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="solarized"] {
+    --neon-blue: #2aa198;
+    --neon-orange: #cb4b16;
+    --neon-purple: #8a3fa6;
+    --neon-green: #859900;
+    --cyber-bg: #fdf6e3;
+    --cyber-bg-2: #eee8d5;
+    --cyber-bg-3: #e4debf;
+    --cyber-surface: rgba(253, 246, 227, 0.92);
+    --cyber-border: rgba(7, 54, 66, 0.20);
+    --cyber-glow: 0 0 18px rgba(42, 161, 152, 0.18);
+    --cyber-glow-strong: 0 0 28px rgba(203, 75, 22, 0.20);
+    --text-primary: #073642;
+    --text-secondary: #586e75;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(238, 232, 213, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(42, 161, 152, 0.12);
+    --content: var(--text-primary);
+    --code-block-bg: #eee8d5;
+    --code-bg: #e4debf;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="terminal"] {
+    --neon-blue: #ffb000;
+    --neon-orange: #ff5e1a;
+    --neon-purple: #cc7722;
+    --neon-green: #7fff00;
+    --cyber-bg: #0a0a08;
+    --cyber-bg-2: #16140e;
+    --cyber-bg-3: #1f1c12;
+    --cyber-surface: rgba(16, 14, 8, 0.92);
+    --cyber-border: rgba(255, 176, 0, 0.40);
+    --cyber-glow: 0 0 18px rgba(255, 176, 0, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(255, 176, 0, 0.45);
+    --text-primary: #ffcb66;
+    --text-secondary: #a08658;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(22, 20, 14, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(255, 176, 0, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #100e08;
+    --code-bg: #16140e;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="nord"] {
+    --neon-blue: #88c0d0;
+    --neon-orange: #ebcb8b;
+    --neon-purple: #b48ead;
+    --neon-green: #a3be8c;
+    --cyber-bg: #2e3440;
+    --cyber-bg-2: #3b4252;
+    --cyber-bg-3: #434c5e;
+    --cyber-surface: rgba(46, 52, 64, 0.92);
+    --cyber-border: rgba(136, 192, 208, 0.45);
+    --cyber-glow: 0 0 18px rgba(136, 192, 208, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(180, 142, 173, 0.40);
+    --text-primary: #eceff4;
+    --text-secondary: #b8bec9;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(59, 66, 82, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(136, 192, 208, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #3b4252;
+    --code-bg: #434c5e;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="monokai"] {
+    --neon-blue: #f92672;
+    --neon-orange: #fd971f;
+    --neon-purple: #ae81ff;
+    --neon-green: #a6e22e;
+    --cyber-bg: #272822;
+    --cyber-bg-2: #1e1f1c;
+    --cyber-bg-3: #3e3d32;
+    --cyber-surface: rgba(39, 40, 34, 0.94);
+    --cyber-border: rgba(249, 38, 114, 0.45);
+    --cyber-glow: 0 0 18px rgba(249, 38, 114, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(174, 129, 255, 0.45);
+    --text-primary: #f8f8f2;
+    --text-secondary: #a59f85;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(62, 61, 50, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(249, 38, 114, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #1e1f1c;
+    --code-bg: #3e3d32;
+    --border: var(--cyber-border);
+}
+
+/* Default (cyberpunk) for pages that haven't opted into a theme. */
+:root {
     --neon-blue: #00f3ff;
     --neon-orange: #ff6b35;
     --neon-purple: #bf40bf;
@@ -34,7 +195,7 @@
 }
 
 body,
-[data-theme="dark"] body {
+[data-theme] body {
     background: var(--cyber-bg);
     color: var(--text-primary);
     font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Courier New', monospace;
@@ -216,6 +377,18 @@ body,
     background: var(--neon-blue) !important;
     color: var(--cyber-bg) !important;
     box-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* Series badge in post meta (added by post_meta.html override). */
+.post-meta-series {
+    background: rgba(255, 107, 53, 0.08);
+    border: 1px solid var(--neon-orange);
+    border-radius: 999px;
+    padding: 0.05em 0.6em;
+    color: var(--neon-orange) !important;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    font-size: 0.9em;
 }
 
 .footer {

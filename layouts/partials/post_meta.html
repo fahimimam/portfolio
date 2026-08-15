@@ -1,0 +1,48 @@
+{{- /*
+  Override of PaperMod's post_meta.html. Same shape (a Scratch-backed
+  slice of <span> strings, joined with " · "), plus an optional series
+  badge appended to the slice.
+
+  When `.Params.series` is set, renders:
+    <span class="post-meta-series">Part N of <Series></span>
+
+  `.Params.series_part` defaults to 1. When set to 0, the badge is
+  suppressed entirely (so a series index page can declare
+  `series: "Foo"` without claiming to be part of Foo).
+
+  Used by both the post header (single.html) and the list-card footer
+  (list.html).
+*/ -}}
+{{- $scratch := newScratch }}
+
+{{- if not .Date.IsZero -}}
+{{- $scratch.Add "meta" (slice (printf "<span title='%s'>%s</span>" (.Date) (.Date | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+{{- end }}
+
+{{- if (.Param "ShowReadingTime") -}}
+{{- $scratch.Add "meta" (slice (printf "<span>%s</span>" (i18n "read_time" .ReadingTime | default (printf "%d min" .ReadingTime)))) }}
+{{- end }}
+
+{{- if (.Param "ShowWordCount") -}}
+{{- $scratch.Add "meta" (slice (printf "<span>%s</span>" (i18n "words" .WordCount | default (printf "%d words" .WordCount)))) }}
+{{- end }}
+
+{{- if not (.Param "hideAuthor") -}}
+{{- with (partial "author.html" .) }}
+{{- $scratch.Add "meta" (slice (printf "<span>%s</span>" .)) }}
+{{- end }}
+{{- end }}
+
+{{/*
+  Series badge. `series_part` is the 1-indexed position; 0 means "this
+  is the series index, hide the badge." The `series` string is rendered
+  as plain text rather than a link until we ship a `/series/<slug>/`
+  taxonomy landing page.
+*/}}
+{{- if and .Params.series (gt (.Params.series_part | default 1) 0) -}}
+{{- $scratch.Add "meta" (slice (printf "<span class=\"post-meta-series\">Part %d of %s</span>" .Params.series_part .Params.series)) }}
+{{- end }}
+
+{{- with ($scratch.Get "meta") }}
+{{- delimit . "&nbsp;·&nbsp;" | safeHTML -}}
+{{- end -}}

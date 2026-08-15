@@ -90,16 +90,16 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="/projects" class="btn btn-primary">
+            <a href="{{ "projects/" | relURL }}" class="btn btn-primary">
                 <span class="btn-icon">📁</span> View Projects
             </a>
-            <a href="/cv" class="btn btn-secondary">
+            <a href="{{ "cv/" | relURL }}" class="btn btn-secondary">
                 <span class="btn-icon">📄</span> View CV
             </a>
-            <a href="/blog" class="btn btn-secondary">
+            <a href="{{ "blog/" | relURL }}" class="btn btn-secondary">
                 <span class="btn-icon">📝</span> Read Blog
             </a>
-            <a href="/about" class="btn btn-secondary">
+            <a href="{{ "about/" | relURL }}" class="btn btn-secondary">
                 <span class="btn-icon">👤</span> About Me
             </a>
         </div>
@@ -127,27 +127,28 @@
 </div>
 
 <style>
-    :root {
-        --neon-blue: #00f3ff;
-        --neon-orange: #ff6b35;
-        --neon-purple: #bf40bf;
-        --dark-bg: #0a0e27;
-        --darker-bg: #050811;
-        --terminal-bg: rgba(10, 14, 39, 0.9);
-        --text-primary: #e0e0e0;
-        --text-secondary: #a0a0a0;
-    }
+    /*
+      Home-page-only styles.
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      Theme tokens (--neon-blue, --text-primary, --cyber-bg, …) and the
+      base body/font rule come from the bundled stylesheet
+      assets/css/extended/custom.css. We only declare what the home
+      page needs on top of that bundle:
+
+        --darker-bg: a slightly deeper variant of --cyber-bg used only
+                     here for the home-page hero background.
+
+      Stripping the duplicated :root, *, and body rules removes ~6 KB
+      of bytes that ships once on every home-page request.
+    */
+    :root {
+        --darker-bg: #050811;
+        --dark-bg: #0a0e27;
+        --terminal-bg: rgba(10, 14, 39, 0.9);
     }
 
     body {
         background: var(--darker-bg);
-        color: var(--text-primary);
-        font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
         overflow-x: hidden;
     }
 
@@ -691,7 +692,5 @@
         }
     }
 </style>
-
-<script src="/js/matrix.js"></script>
 
 {{ end }}

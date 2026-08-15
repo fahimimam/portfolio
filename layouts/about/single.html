@@ -1,0 +1,483 @@
+{{ define "main" }}
+{{/*
+  Dedicated About layout. Mirrors the structure of static/cv/fahim-imam-cv.pdf
+  (so the live page can never drift from the PDF that's distributed as the CV).
+
+  Content shape — every section is a list of maps so the page is easy to
+  edit without touching layout markup. If the page is empty, falls back
+  to rendering the markdown body so this layout never breaks editing.
+*/}}
+
+<article class="post-single about-page">
+
+  {{ partial "breadcrumbs.html" . }}
+
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<div class="post-description">{{ . | markdownify }}</div>{{ end }}
+  </header>
+
+  {{/* ----- Hero card (name, title, location, contact) ----- */}}
+  {{ with .Params.hero }}
+  <section class="about-hero">
+    <h2 class="about-hero-name">{{ .name }}</h2>
+    <p class="about-hero-title">{{ .title }}</p>
+    {{ with .location }}<p class="about-hero-meta">{{ . }}</p>{{ end }}
+    {{ with .contact }}
+    <ul class="about-hero-contact">
+      {{ range . }}<li>{{ . | safeHTML }}</li>{{ end }}
+    </ul>
+    {{ end }}
+  </section>
+  {{ end }}
+
+  {{/* ----- Summary ----- */}}
+  {{ with .Params.summary }}
+  <section class="about-section">
+    <h2 class="about-section-title">Summary</h2>
+    {{ with .lead }}<p class="about-summary-lead">{{ . }}</p>{{ end }}
+    {{ with .bullets }}
+    <ul class="about-summary-bullets">
+      {{ range . }}<li>{{ . | safeHTML }}</li>{{ end }}
+    </ul>
+    {{ end }}
+  </section>
+  {{ end }}
+
+  {{/* ----- Experience ----- */}}
+  {{ with .Params.experience }}
+  <section class="about-section">
+    <h2 class="about-section-title">Experience</h2>
+    <div class="about-grid">
+      {{ range . }}
+      <article class="about-card about-card-experience">
+        <header class="about-card-header">
+          <h3>{{ .role }}</h3>
+          <p class="about-card-sub">{{ .company }}{{ with .location }} · {{ . }}{{ end }}</p>
+          <p class="about-card-when">{{ .when }}</p>
+        </header>
+        {{ with .bullets }}
+        <ul class="about-card-list">
+          {{ range . }}<li>{{ . | safeHTML }}</li>{{ end }}
+        </ul>
+        {{ end }}
+        {{ with .stack }}
+        <p class="about-card-stack"><span>Stack</span> {{ . }}</p>
+        {{ end }}
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{/* ----- Selected projects ----- */}}
+  {{ with .Params.projects }}
+  <section class="about-section">
+    <h2 class="about-section-title">Selected projects</h2>
+    <div class="about-grid">
+      {{ range . }}
+      <article class="about-card about-card-project">
+        <h3>
+          {{ $projName := .name }}
+          {{ with .link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $projName }}</a>{{ else }}{{ .name }}{{ end }}
+        </h3>
+        <p>{{ .summary | safeHTML }}</p>
+      </article>
+      {{ end }}
+    </div>
+    <p class="about-section-foot">
+      <a href="/projects/">All projects →</a>
+    </p>
+  </section>
+  {{ end }}
+
+  {{/* ----- Skills ----- */}}
+  {{ with .Params.skills }}
+  <section class="about-section">
+    <h2 class="about-section-title">Skills</h2>
+    <div class="about-grid">
+      {{ range . }}
+      <article class="about-card about-card-skill">
+        <h3>{{ .group }}</h3>
+        <p>{{ .items }}</p>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{/* ----- Education ----- */}}
+  {{ with .Params.education }}
+  <section class="about-section">
+    <h2 class="about-section-title">Education</h2>
+    {{ range . }}
+    <article class="about-card about-card-edu">
+      <header class="about-card-header">
+        <h3>{{ .degree }}</h3>
+        <p class="about-card-sub">{{ .institution }}{{ with .location }} · {{ . }}{{ end }}</p>
+        <p class="about-card-when">{{ .when }}</p>
+      </header>
+      {{ with .detail }}<p>{{ . | safeHTML }}</p>{{ end }}
+    </article>
+    {{ end }}
+  </section>
+  {{ end }}
+
+  {{/* ----- Certifications ----- */}}
+  {{ with .Params.certifications }}
+  <section class="about-section">
+    <h2 class="about-section-title">Certifications</h2>
+    <div class="about-grid">
+      {{ range . }}
+      <article class="about-card about-card-cert">
+        <h3>{{ .name }}</h3>
+        <p class="about-card-sub">{{ .issuer }}</p>
+        <p class="about-card-when">{{ .when }}</p>
+        {{ with .detail }}<p>{{ . | safeHTML }}</p>{{ end }}
+      </article>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{/* ----- Languages ----- */}}
+  {{ with .Params.languages }}
+  <section class="about-section">
+    <h2 class="about-section-title">Languages</h2>
+    <ul class="about-languages">
+      {{ range . }}<li><strong>{{ .name }}</strong> — {{ .level }}</li>{{ end }}
+    </ul>
+  </section>
+  {{ end }}
+
+  {{/* ----- Thesis ----- */}}
+  {{ with .Params.thesis }}
+  <section class="about-section">
+    <h2 class="about-section-title">Thesis</h2>
+    <article class="about-card about-card-thesis">
+      <h3>{{ .title }}</h3>
+      <p>{{ .summary | safeHTML }}</p>
+    </article>
+  </section>
+  {{ end }}
+
+  {{/* ----- Problem solving profiles ----- */}}
+  {{ with .Params.profiles }}
+  <section class="about-section">
+    <h2 class="about-section-title">Problem solving profiles</h2>
+    <ul class="about-profiles">
+      {{ range . }}
+      <li><a href="{{ .url }}" target="_blank" rel="noopener">{{ .label }}</a></li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+
+  {{/* ----- Closing CTA: links to the CV and contact ----- */}}
+  {{ with .Params.contact_again }}
+  <section class="about-section about-section-final">
+    <p>
+      {{ range . }}<a class="about-cta" href="{{ .url }}">{{ .label }}</a> {{ end }}
+    </p>
+  </section>
+  {{ end }}
+
+  {{/* ----- Free-form Markdown body (fallback / extra prose) ----- */}}
+  {{ with .Content }}
+  <section class="about-section about-markdown-body">
+    {{ . }}
+  </section>
+  {{ end }}
+
+</article>
+
+{{/* ----- Person schema.org JSON-LD for SEO / rich results ----- */}}
+{{/*
+  All string values below come from frontmatter and contain only
+  printable ASCII with no JSON-meta characters, so they're emitted
+  raw. Hardcoded values that may contain special characters are
+  hand-escaped. `.Permalink` is JSON-encoded via jsonify because it
+  can include `/` and `:` (both safe) but we don't want JSON-unsafe
+  surprises.
+*/}}
+{{ $name  := .Params.hero.name  | default "Kazi Fahim Imam" }}
+{{ $title := .Params.hero.title | default "Backend Software Engineer (Golang)" }}
+{{ $loc   := .Params.hero.location }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "{{ $name }}",
+  "jobTitle": "{{ $title }}",
+  {{ with $loc }}"homeLocation": {"@type": "Place", "address": "{{ . }}"},{{ end }}
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Pathao",
+    "sameAs": "https://pathao.com"
+  },
+  "url": {{ .Permalink | jsonify }},
+  "email": "mailto:fahimimam@iut-dhaka.edu",
+  "telephone": "+8801763869944",
+  "sameAs": [
+    "https://www.linkedin.com/in/kazi-fahim-imam-0027081a1/",
+    "https://www.github.com/fahimimam",
+    "https://codeforces.com/profile/fahimimam",
+    "https://leetcode.com/fahimimam/"
+  ],
+  "alumniOf": [
+    {"@type": "CollegeOrUniversity",     "name": "Islamic University of Technology (IUT)"},
+    {"@type": "EducationalOrganization", "name": "Govt. Rajendra College"},
+    {"@type": "EducationalOrganization", "name": "Faridpur Zilla School"}
+  ],
+  "knowsAbout": [
+    "Go (Golang)", "PostgreSQL", "Redis", "Kubernetes", "Docker",
+    "Microservices", "System Design", "Distributed Systems",
+    "Concurrency", "REST APIs"
+  ]
+}
+</script>
+
+{{/* ----- Page-specific styles (extends custom.css .about-grid / .about-card) ----- */}}
+<style>
+  .about-page { max-width: 980px; margin: 0 auto; }
+  .about-page .page-header { margin-bottom: 1.5rem; }
+
+  /* Hero card */
+  .about-hero {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2.5rem;
+    backdrop-filter: blur(6px);
+    box-shadow: var(--cyber-glow);
+  }
+  .about-hero-name {
+    color: var(--neon-blue);
+    font-size: 1.6rem;
+    margin: 0 0 0.25rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
+  }
+  .about-hero-title {
+    color: var(--neon-orange);
+    font-size: 1rem;
+    margin: 0 0 0.4rem;
+    letter-spacing: 0.4px;
+  }
+  .about-hero-meta {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0 0 1rem;
+  }
+  .about-hero-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    color: var(--text-primary);
+    font-size: 0.92rem;
+  }
+  .about-hero-contact a {
+    color: var(--neon-blue);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--neon-blue);
+  }
+  .about-hero-contact a:hover { color: var(--neon-orange); border-bottom-color: var(--neon-orange); }
+
+  /* Section shell */
+  .about-section { margin: 2.5rem 0; }
+  .about-section-title {
+    color: var(--neon-blue);
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--cyber-border);
+    letter-spacing: 0.5px;
+  }
+
+  /* Summary */
+  .about-summary-lead {
+    font-size: 1.02rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin: 0 0 1rem;
+  }
+  .about-summary-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .about-summary-bullets li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--text-primary);
+    line-height: 1.65;
+    font-size: 0.95rem;
+  }
+  .about-summary-bullets li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--neon-orange);
+  }
+
+  /* Cards (extends .about-grid / .about-card) */
+  .about-card-header { margin-bottom: 0.6rem; }
+  .about-card-header h3 { margin: 0; color: var(--neon-orange); font-size: 1.05rem; }
+  .about-card-sub {
+    margin: 0.1rem 0;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .about-card-when {
+    margin: 0.1rem 0 0;
+    color: var(--neon-blue);
+    font-size: 0.82rem;
+    letter-spacing: 0.4px;
+  }
+  .about-card-list {
+    margin: 0.5rem 0 0.6rem;
+    padding-left: 1.2rem;
+    color: var(--text-primary);
+    font-size: 0.93rem;
+    line-height: 1.65;
+  }
+  .about-card-list li { margin-bottom: 0.35rem; }
+  .about-card-list li::marker { color: var(--neon-blue); }
+  .about-card-stack {
+    margin: 0.6rem 0 0;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--cyber-border);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  .about-card-stack span {
+    color: var(--neon-orange);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-right: 0.4rem;
+  }
+  .about-card-skill p {
+    color: var(--text-primary);
+    font-size: 0.93rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .about-card-project h3 a {
+    color: var(--neon-orange);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--neon-orange);
+  }
+  .about-card-project h3 a:hover {
+    color: var(--neon-blue);
+    border-bottom-color: var(--neon-blue);
+  }
+  .about-card-cert p { margin: 0.2rem 0; font-size: 0.92rem; }
+  .about-card-edu p { margin: 0.4rem 0 0; font-size: 0.92rem; color: var(--text-primary); }
+
+  /* Languages list */
+  .about-languages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .about-languages li {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 8px;
+    padding: 0.5rem 0.9rem;
+    color: var(--text-primary);
+    font-size: 0.92rem;
+  }
+  .about-languages strong { color: var(--neon-blue); }
+
+  /* Thesis card */
+  .about-card-thesis h3 {
+    color: var(--neon-orange);
+    font-size: 1.05rem;
+    margin: 0 0 0.5rem;
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.4rem;
+  }
+  .about-card-thesis p {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Problem-solving profile chips */
+  .about-profiles {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .about-profiles li a {
+    display: inline-block;
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 8px;
+    padding: 0.45rem 0.85rem;
+    color: var(--neon-blue);
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .about-profiles li a:hover {
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+    box-shadow: var(--cyber-glow);
+  }
+
+  /* Section footer link */
+  .about-section-foot {
+    margin: 1rem 0 0;
+    font-size: 0.92rem;
+  }
+  .about-section-foot a {
+    color: var(--neon-blue);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--neon-blue);
+  }
+  .about-section-foot a:hover { color: var(--neon-orange); border-bottom-color: var(--neon-orange); }
+
+  /* Final CTA row */
+  .about-section-final { text-align: center; margin-top: 3rem; }
+  .about-cta {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    margin: 0 0.4rem;
+    border: 1px solid var(--neon-blue);
+    border-radius: 8px;
+    color: var(--neon-blue);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: all 0.2s ease;
+  }
+  .about-cta:hover {
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+    box-shadow: var(--cyber-glow);
+  }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .about-hero-name { font-size: 1.35rem; }
+    .about-hero-title { font-size: 0.92rem; }
+  }
+</style>
+
+{{ end }}

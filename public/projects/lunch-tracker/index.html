@@ -1,310 +1,540 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="dark">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=55484&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Lunch Tracker | Fahim Imam - Software Developer</title>
-<meta name="keywords" content="Go, SQLite, REST">
-<meta name="description" content="A daily lunch logger — track what I eat, where, and the cost. Surfaces patterns over time.">
-<meta name="author" content="">
-<link rel="canonical" href="http://localhost:55484/projects/lunch-tracker/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.6af42518f357b564660da8ed0c1adbac00c2dd2cf35e9527602dd0cfe446bde8.css" integrity="sha256-avQlGPNXtWRmDajtDBrbrADC3SzzXpUnYC3Qz&#43;RGveg=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:55484/favicon.svg">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:55484/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:55484/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:55484/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:55484/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:55484/projects/lunch-tracker/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-</noscript>
-<script defer src="/js/matrix.js"></script>
-
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:55484/" accesskey="h" title="Fahim Imam - Software Developer (Alt + H)">Fahim Imam - Software Developer</a>
-            <div class="logo-switches">
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:55484/projects/" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:55484/blog/" title="Blog">
-                    <span>Blog</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:55484/cv/" title="CV">
-                    <span>CV</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:55484/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:55484/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:55484/projects/">Projects</a></div>
-    <h1 class="post-title entry-hint-parent">
-      Lunch Tracker
-    </h1>
-    <div class="post-meta"><span title='2026-08-09 00:00:00 +0000 UTC'>August 9, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>140 words</span>
-
-</div>
-  </header> 
-  <div class="post-content"><h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
-<p>Born from a simple question: <em>&ldquo;How much am I actually spending on lunch, and where?&rdquo;</em>
-A two-tap logging app: tap to record today&rsquo;s lunch, optional place and price, done.</p>
-<h2 id="stack">Stack<a hidden class="anchor" aria-hidden="true" href="#stack">#</a></h2>
-<ul>
-<li><strong>Backend:</strong> Go</li>
-<li><strong>Storage:</strong> SQLite (single file, easy backup, zero ops)</li>
-<li><strong>API:</strong> Plain REST + a tiny static HTML client</li>
-<li><strong>Deployment:</strong> Same VPS as everything else</li>
-</ul>
-<h2 id="status">Status<a hidden class="anchor" aria-hidden="true" href="#status">#</a></h2>
-<p>🚧 Active development. Logging works; stats and weekly view are next.</p>
-<h2 id="features">Features<a hidden class="anchor" aria-hidden="true" href="#features">#</a></h2>
-<ul>
-<li>One-tap logging from a static HTML page</li>
-<li>Optional place (home, office canteen, restaurant name, …)</li>
-<li>Optional price</li>
-<li>Edit / delete from the same day</li>
-<li>Weekly and monthly aggregates: total spend, average per lunch, top 3 places</li>
-<li>Simple CSV export</li>
-</ul>
-<h2 id="why-sqlite">Why SQLite<a hidden class="anchor" aria-hidden="true" href="#why-sqlite">#</a></h2>
-<p>A personal lunch log is small (one row per day, forever) and read-mostly.
-PostgreSQL would be overkill, and a single-file database means a <code>cp</code> is a complete backup.</p>
-<h2 id="repository">Repository<a hidden class="anchor" aria-hidden="true" href="#repository">#</a></h2>
-<p><a href="https://github.com/fahimimam/lunch-tracker">github.com/fahimimam/lunch-tracker</a></p>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="http://localhost:55484/tags/go/">Go</a></li>
-      <li><a href="http://localhost:55484/tags/sqlite/">SQLite</a></li>
-      <li><a href="http://localhost:55484/tags/rest/">REST</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="http://localhost:55484/projects/expense-tracker/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>Expense Tracker</span>
-  </a>
-  <a class="next" href="http://localhost:55484/projects/portfolio-website/">
-    <span class="title">Next »</span>
-    <br>
-    <span>Portfolio Website</span>
-  </a>
-</nav>
-
-
-<ul class="share-buttons">
-    <li>
-        <a target="_blank" rel="noopener noreferrer" aria-label="share Lunch Tracker on x"
-            href="https://x.com/intent/tweet/?text=Lunch%20Tracker&amp;url=http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f&amp;hashtags=Go%2cSQLite%2cREST">
-            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
-                <path
-                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a target="_blank" rel="noopener noreferrer" aria-label="share Lunch Tracker on linkedin"
-            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f&amp;title=Lunch%20Tracker&amp;summary=Lunch%20Tracker&amp;source=http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f">
-            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
-                <path
-                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a target="_blank" rel="noopener noreferrer" aria-label="share Lunch Tracker on reddit"
-            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f&title=Lunch%20Tracker">
-            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
-                <path
-                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a target="_blank" rel="noopener noreferrer" aria-label="share Lunch Tracker on facebook"
-            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f">
-            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
-                <path
-                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a target="_blank" rel="noopener noreferrer" aria-label="share Lunch Tracker on whatsapp"
-            href="https://api.whatsapp.com/send?text=Lunch%20Tracker%20-%20http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f">
-            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
-                <path
-                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a target="_blank" rel="noopener noreferrer" aria-label="share Lunch Tracker on telegram"
-            href="https://telegram.me/share/url?text=Lunch%20Tracker&amp;url=http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f">
-            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
-                <path
-                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a target="_blank" rel="noopener noreferrer" aria-label="share Lunch Tracker on ycombinator"
-            href="https://news.ycombinator.com/submitlink?t=Lunch%20Tracker&u=http%3a%2f%2flocalhost%3a55484%2fprojects%2flunch-tracker%2f">
-            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
-                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
-                <path
-                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
-            </svg>
-        </a>
-    </li>
-</ul>
-
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:55484/">Fahim Imam - Software Developer</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+<!doctype html><html lang=en dir=auto data-theme=dark><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Lunch Tracker | Fahim Imam - Software Developer</title><meta name=keywords content="Go,Vanilla JS,Tampermonkey,Nginx,systemd"><meta name=description content="A personal lunch-eligibility countdown kept in sync between the Pathao HRMS web UI and a tiny Go backend — so I always know when I'm allowed to step away for lunch."><meta name=author content><link rel=canonical href=http://fahimimam.pro.bd/projects/lunch-tracker/><link crossorigin=anonymous href=/assets/css/stylesheet.3994cd0fd4629636603c0d2d617e34f27354f46561157bc06a4f0510213566fa.css integrity="sha256-OZTND9RiljZgPA0tYX408nNU9GVhFXvAak8FECE1Zvo=" rel="preload stylesheet" as=style><link rel=icon href=/favicon.svg><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=apple-touch-icon href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://fahimimam.pro.bd/projects/lunch-tracker/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><script>(function(){try{var e=localStorage.getItem("lt.theme");e&&e!=="cyberpunk"&&document.documentElement.setAttribute("data-theme",e)}catch{}})()</script><script defer src=/js/matrix.js></script><script defer src=/js/theme-dashboard.js></script><meta property="og:url" content="http://fahimimam.pro.bd/projects/lunch-tracker/"><meta property="og:site_name" content="Fahim Imam - Software Developer"><meta property="og:title" content="Lunch Tracker"><meta property="og:description" content="A personal lunch-eligibility countdown kept in sync between the Pathao HRMS web UI and a tiny Go backend — so I always know when I'm allowed to step away for lunch."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="projects"><meta property="article:published_time" content="2026-08-15T00:00:00+00:00"><meta property="article:modified_time" content="2026-08-15T00:00:00+00:00"><meta property="article:tag" content="Go"><meta property="article:tag" content="Vanilla JS"><meta property="article:tag" content="Tampermonkey"><meta property="article:tag" content="Nginx"><meta property="article:tag" content="Systemd"><meta name=twitter:card content="summary"><meta name=twitter:title content="Lunch Tracker"><meta name=twitter:description content="A personal lunch-eligibility countdown kept in sync between the Pathao HRMS web UI and a tiny Go backend — so I always know when I'm allowed to step away for lunch."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Projects","item":"http://fahimimam.pro.bd/projects/"},{"@type":"ListItem","position":2,"name":"Lunch Tracker","item":"http://fahimimam.pro.bd/projects/lunch-tracker/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Lunch Tracker","name":"Lunch Tracker","description":"A personal lunch-eligibility countdown kept in sync between the Pathao HRMS web UI and a tiny Go backend — so I always know when I'm allowed to step away for lunch.","keywords":["Go","Vanilla JS","Tampermonkey","Nginx","systemd"],"articleBody":"A personal lunch-eligibility tracker. The policy at my workplace is 6 hours 45 minutes after clock-in → eligible for lunch, and this project exists so I never have to remember the math. The full engineering case study — problem, architecture, challenges, API, deployment, lessons — is rendered on the page below.\n","wordCount":"51","inLanguage":"en","datePublished":"2026-08-15T00:00:00Z","dateModified":"2026-08-15T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"http://fahimimam.pro.bd/projects/lunch-tracker/"},"publisher":{"@type":"Organization","name":"Fahim Imam - Software Developer","logo":{"@type":"ImageObject","url":"http://fahimimam.pro.bd/favicon.svg"}}}</script></head><body id=top><header class=header><nav class=nav><div class=logo><a href=/ accesskey=h title="Fahim Imam - Software Developer (Alt + H)">Fahim Imam - Software Developer</a><div class=logo-switches></div></div><ul id=menu><li><a href=/projects/ title=Projects><span>Projects</span></a></li><li><a href=/blog/ title=Blog><span>Blog</span></a></li><li><a href=/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=/cv/ title=CV><span>CV</span></a></li><li><a href=/about/ title=About><span>About</span></a></li><li><a href=/now/ title=Now><span>Now</span></a></li><li><a href=/uses/ title=Uses><span>Uses</span></a></li></ul></nav></header><main class=main><article class="post-single lunch-tracker-showcase"><div class=breadcrumbs><a href=/>Home</a>&nbsp;»&nbsp;<a href=/projects/>Projects</a></div><section class=lt-hero><div class=lt-hero-grid><div class=lt-hero-text><div class=lt-eyebrow><span class=lt-eyebrow-dot></span>
+<span>Engineering Case Study</span></div><h1 class=lt-title>Lunch Tracker</h1><p class=lt-tagline>A two-part system that keeps a personal lunch-eligibility countdown in
+sync between the Pathao HRMS web UI and a tiny Go backend on a VPS —
+so you always know when you're allowed to step away.</p><ul class=lt-hero-meta><li><span class=lt-meta-label>Role</span>
+<span class=lt-meta-value>Sole author · backend, userscript, deploy</span></li><li><span class=lt-meta-label>Stack</span>
+<span class=lt-meta-value>Go (stdlib) · Vanilla JS · Tampermonkey · Nginx · systemd</span></li><li><span class=lt-meta-label>Status</span>
+<span class="lt-meta-value lt-status-live"><span class=lt-status-dot></span> Live since Aug&nbsp;2026</span></li><li><span class=lt-meta-label>Surface</span>
+<span class=lt-meta-value>HRMS userscript · standalone widget · Chrome new-tab (LunchLine)</span></li></ul><div class=lt-hero-cta><a class="lt-btn primary" href=https://fahimimam.sytes.net/api/lunch/state target=_blank rel=noopener><span class=lt-btn-icon>↗</span> Live API
+</a><a class=lt-btn href=https://fahimimam.sytes.net/api/lunch/widget target=_blank rel=noopener><span class=lt-btn-icon>▣</span> Widget
+</a><a class=lt-btn href=https://github.com/fahimimam/lunch-tracker target=_blank rel=noopener><span class=lt-btn-icon>⌘</span> Source</a></div></div><aside class=lt-live-card aria-label="Live lunch eligibility state"><div class=lt-live-header><span class=lt-live-dot id=lt-live-dot></span>
+<span class=lt-live-title>Live State</span>
+<span class=lt-live-date id=lt-live-date>—</span></div><div class=lt-live-status id=lt-live-status>Loading…</div><div class=lt-live-message id=lt-live-message>Fetching from /api/lunch/state …</div><div class=lt-live-rows id=lt-live-rows hidden><div class=lt-live-row><span class=lt-live-label>Clock&nbsp;in</span>
+<span class=lt-live-value id=lt-live-clockin>—</span></div><div class=lt-live-row><span class=lt-live-label>Target</span>
+<span class=lt-live-value id=lt-live-target>—</span></div><div class=lt-live-row><span class=lt-live-label>Countdown</span>
+<span class="lt-live-value lt-mono" id=lt-live-countdown>—</span></div></div><div class=lt-live-badges><span class=lt-live-badge id=lt-live-badge-weekend hidden>Weekend</span>
+<span class=lt-live-badge id=lt-live-badge-leave hidden>On leave</span>
+<span class="lt-live-badge ok" id=lt-live-badge-eligible hidden>Eligible</span></div><div class=lt-live-footer><span>Polled from <code>https://fahimimam.sytes.net/api/lunch/state</code></span>
+<button class=lt-refresh id=lt-live-refresh type=button title=Re-fetch>↻</button></div></aside></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>01</span><h2>The problem</h2></header><div class=lt-section-body><p>My employer's policy is simple: <strong>6 hours and 45 minutes after
+you clock in, you're eligible for lunch</strong>. Knowing when that is
+is the whole product. The catch is that "when you clocked in" lives
+inside a third-party HRMS page, in someone else's React tree, behind
+a session cookie, on a page that re-renders asynchronously.</p><p>That means the timer has to live somewhere outside the HRMS page. It
+also has to survive:</p><ul class=lt-bullets><li>The HRMS SPA re-rendering the DOM underneath the timer.</li><li>Tab refreshes — the new render would otherwise wipe localStorage state.</li><li>Cross-midnight — at 00:00 the "today" reference changes.</li><li>Cross-TZ — the server's UTC clock silently disagrees with the user's local day for six hours.</li><li>Friday/Saturday off-days (Sunday is a regular workday) and explicit leave days.</li></ul></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>02</span><h2>What it is</h2></header><div class=lt-section-body><p>Two pieces, one source of truth:</p><ol class=lt-bullets><li><strong>A Tampermonkey userscript</strong> that lives inside the
+Pathao HRMS page, reads the "Checked In" time from the DOM,
+renders an inline section at the bottom of the page with the
+live countdown, and silently POSTs the clock-in to the backend.</li><li><strong>A tiny Go HTTP service</strong> on the VPS that stores
+one record per local day in a JSON file, computes a canonical
+"state" payload, and serves that payload to:<ul><li>The userscript itself (so the countdown survives HRMS page refreshes),</li><li>A standalone glassmorphism widget at <code>/api/lunch/widget</code>,</li><li>A separate Chrome new-tab extension (LunchLine) that I run separately.</li></ul></li></ol><p class=lt-callout>The state machine — five variants: <code>Weekend</code>,
+<code>OnLeave</code>, <code>NotClockedIn</code>, <code>ClockedIn</code>,
+<code>Eligible</code> — lives in <code>computeState()</code> on the Go side
+and is mirrored 1:1 in the userscript so each surface can render
+without round-tripping on every tick.</p></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>03</span><h2>Architecture</h2></header><div class=lt-section-body><div class=lt-arch><div class=lt-arch-row><div class="lt-arch-node user"><span class=lt-arch-icon>👤</span>
+<span class=lt-arch-name>User</span>
+<span class=lt-arch-sub>on Pathao HRMS</span></div></div><div class=lt-arch-arrow>↓</div><div class="lt-arch-row lt-arch-pair"><div class="lt-arch-node page"><span class=lt-arch-icon>📄</span>
+<span class=lt-arch-name>HRMS React page</span>
+<span class=lt-arch-sub>renders &lt;h6>Checked In&lt;/h6></span></div><div class="lt-arch-node script"><span class=lt-arch-icon>🧩</span>
+<span class=lt-arch-name>Tampermonkey userscript</span>
+<span class=lt-arch-sub>MutationObserver + polling</span></div></div><div class=lt-arch-arrow>↓ HTTPS POST</div><div class=lt-arch-row><div class="lt-arch-node proxy"><span class=lt-arch-icon>🌐</span>
+<span class=lt-arch-name>Nginx</span>
+<span class=lt-arch-sub>TLS · /api/lunch/* → 127.0.0.1:5000</span></div></div><div class=lt-arch-arrow>↓</div><div class=lt-arch-row><div class="lt-arch-node go"><span class=lt-arch-icon>⚙️</span>
+<span class=lt-arch-name>Go service :5000</span>
+<span class=lt-arch-sub>stdlib only · 6 routes · &lt; 10MB RAM</span></div></div><div class=lt-arch-arrow>↓ atomic tmp + rename</div><div class=lt-arch-row><div class="lt-arch-node store"><span class=lt-arch-icon>💾</span>
+<span class=lt-arch-name>data.json</span>
+<span class=lt-arch-sub>one record per local YYYY-MM-DD</span></div></div></div><div class=lt-arch-readers><span class=lt-arch-reader>↘ userscript polls <code>/state</code> every 60s</span>
+<span class=lt-arch-reader>↘ widget page one-shot render at <code>/widget</code></span>
+<span class=lt-arch-reader>↘ LunchLine Chrome new-tab polls <code>/state</code></span></div><div class=lt-grid-2><div class=lt-card><h3>Single source of truth</h3><p><code>computeState(snapshot, now)</code> in <code>main.go</code>
+is the one place the variant decision is made. The
+<code>/api/lunch/state</code> endpoint, the widget HTML, and
+the userscript's mirror all consume the same contract.</p></div><div class=lt-card><h3>No external services</h3><p>One binary, one JSON file, one systemd unit, one Nginx
+vhost. Total RAM usage on the VPS: ~10&nbsp;MB. No database,
+no Docker, no message queue. Drop the binary, restart, done.</p></div><div class=lt-card><h3>Atomic writes</h3><p>Every clock-in is written to a tmp file, fsynced, then
+<code>rename(2)</code>'d over the destination. A crash
+mid-write cannot corrupt <code>data.json</code>.</p></div><div class=lt-card><h3>Cross-TZ correctness</h3><p><code>time.Local</code> is pinned to
+<code>Asia/Dhaka</code> at boot (override via
+<code>LUNCH_TZ</code>). The variant decision and date
+string both render in the user's local zone — not UTC.</p></div></div></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>04</span><h2>Tech stack & why</h2></header><div class=lt-section-body><table class=lt-stack><thead><tr><th>Layer</th><th>Choice</th><th>Why</th></tr></thead><tbody><tr><td>Backend</td><td>Go · stdlib only</td><td>Six routes. A framework would be more code, not less. Zero deps means the cross-compiled binary just runs on the VPS.</td></tr><tr><td>Storage</td><td>Single JSON file</td><td>One user, at most five rows per week. A Postgres container is operational overkill. <code>cp</code> is a complete backup.</td></tr><tr><td>Atomic write</td><td>tmp + fsync + <code>rename(2)</code></td><td>Survives SIGKILL and power loss without half-written state.</td></tr><tr><td>TLS / proxy</td><td>Nginx</td><td>Already on the VPS. Reverse-proxy <code>/api/lunch/*</code> to the Go service; CORS and shared-secret validation live here.</td></tr><tr><td>Supervision</td><td>systemd</td><td>Restart-on-failure with a 2-second back-off; logs go to journald.</td></tr><tr><td>Userscript</td><td>Vanilla JS + Tampermonkey APIs</td><td>No build step, no framework. <code>GM_setValue</code> survives SPA navigations; <code>MutationObserver</code> watches the DOM.</td></tr><tr><td>Widget</td><td>Server-rendered HTML + embedded JS</td><td>The variant decision is server-side; the page embeds <code>targetMs</code> so the live tick is pure JS arithmetic.</td></tr><tr><td>Timezone</td><td>Pin <code>time.Local = Asia/Dhaka</code></td><td>A VPS runs UTC. Without this, every "today" string silently disagreed with the user's local day for 6 hours.</td></tr></tbody></table></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>05</span><h2>What it does</h2></header><div class=lt-section-body><div class=lt-feature-grid><div class=lt-feature><div class=lt-feature-icon>🟢</div><h3>Live countdown in the HRMS page</h3><p>An inline section appended to <code>&lt;body></code> with a
+HH:MM:SS tick down to the 6h&nbsp;45m threshold. Survives SPA
+re-renders, tab refreshes, and 00:00 rollovers. Toggles to a
+green "Eligible — step away!" pill at the threshold.</p></div><div class=lt-feature><div class=lt-feature-icon>📅</div><h3>Friday/Saturday off-day handling</h3><p>The variant decision treats Friday and Saturday as
+<code>Weekend</code> (no countdown, no leave button). Sunday
+is a regular workday — verified by a regression test in
+<code>state_test.go</code> that pins the policy.</p></div><div class=lt-feature><div class=lt-feature-icon>🛌</div><h3>Leave toggle</h3><p>One button on the inline section flips today's
+<code>Leave</code> flag. The flag survives HRMS SPA
+navigations via <code>GM_setValue</code> and clears at local
+midnight.</p></div><div class=lt-feature><div class=lt-feature-icon>⏱</div><h3>Clock-out & frozen verdict</h3><p>Pressing "Clock out" captures the user's wall-clock time,
+POSTs it to <code>/api/lunch/clockout</code>, and freezes the
+section into a final <code>ClockedOut</code> verdict: either
+"Eligible for lunch (Worked 7h 45m)" or "Not eligible
+(Worked 4h 12m)" — held until midnight.</p></div><div class=lt-feature><div class=lt-feature-icon>📱</div><h3>Phone-friendly standalone widget</h3><p><code>/api/lunch/widget</code> is a self-contained
+dark-glassmorphism HTML page rendered server-side from the
+same state machine. Open it from any device; the live tick
+uses <code>targetMs</code> embedded in the HTML so it never
+re-fetches.</p></div><div class=lt-feature><div class=lt-feature-icon>🗂</div><h3>Per-day history table</h3><p>The widget renders every persisted record — date, clock-in,
+clock-out, computed target — so the previous week's pattern
+is auditable at a glance. Records roll over on the next
+Sunday: <code>data.json</code> is bounded to one workweek
+(≤ 5 rows).</p></div></div></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>06</span><h2>Engineering challenges</h2></header><div class=lt-section-body><p>Every project has bugs that cost an evening. The seven below are
+the ones that actually bit — each one is grounded in a commit,
+a test, or a code path you can read.</p><article class=lt-challenge><header><span class=lt-challenge-tag>Timezones</span><h3>Sunday should be a workday, not a weekend</h3></header><p><strong>Symptom.</strong> Opening the widget on a Sunday
+rendered <code>Weekend — Off day — enjoy!</code>, and the
+userscript hid the countdown.</p><p><strong>Why the obvious approach wasn't enough.</strong>
+The first version of <code>isPathaoWeekend</code> treated
+Fri/Sat/Sun as a weekend — that's the calendar weekend in
+Bangladesh but not the company's policy.</p><p><strong>Fix.</strong> <code>isPathaoWeekend</code> now returns
+true only on Friday and Saturday. Sunday is a workday in both
+the Go backend and the userscript mirror.</p><p><strong>Guard.</strong> <code>TestSundayNotWeekend</code> and
+<code>TestFriSatWeekend</code> in <code>state_test.go</code>
+pin the policy across three separate days.</p></article><article class=lt-challenge><header><span class=lt-challenge-tag>Bug</span><h3>Widget stuck on yesterday's data</h3></header><p><strong>Symptom.</strong> Open the widget on Monday morning
+and it shows Sunday's clock-in, the Sunday status, and a
+0-second countdown.</p><p><strong>Cause.</strong> <code>handleWidget</code> originally
+looked up "the most recently saved record" and rendered that.
+After midnight on a weekend, that record was a weekday entry
+the user didn't actually want to see today.</p><p><strong>Fix.</strong> <code>handleWidget</code> now always
+calls <code>computeState(snapshot, time.Now())</code> so the
+active variant is "today" in the server's local TZ. The
+history table at the bottom still shows every record for
+auditing.</p></article><article class=lt-challenge><header><span class=lt-challenge-tag>Deployment</span><h3>Mach-O binary deployed to a Linux VPS</h3></header><p><strong>Symptom.</strong></p><pre><code>$ curl -s https://&lt;your-domain&gt;/api/lunch/state | jq .
+jq: parse error: Invalid numeric literal at line 1, column 7</code></pre><p><strong>Cause.</strong> I'd built <code>lunch-tracker.linux</code>
+on macOS without <code>GOOS=linux GOARCH=amd64</code>, so the
+artifact was a Mach-O arm64 binary. The Linux VPS couldn't
+<code>execve()</code> it → systemd reported
+<code>status=203/EXEC</code> → Nginx returned a 502 HTML page
+→ jq tried to parse HTML as JSON. The MD5 of the binary
+matched what I thought I shipped, which made the mismatch
+harder to spot. <code>file lunch-tracker.linux</code> would
+have caught it instantly.</p><p><strong>Fix.</strong> The Makefile's <code>linux</code>
+target now always cross-compiles with <code>GOOS=linux
+GOARCH=amd64</code> and runs <code>file</code> on the output
+as a guard. <code>make ship</code> prints the
+scp/ssh/restart/curl sequence.</p></article><article class=lt-challenge><header><span class=lt-challenge-tag>Timezones</span><h3>Date showed Aug 8 when today is Aug 9</h3></header><p><strong>Symptom.</strong> It was Aug 9 (Sunday) in
+Asia/Dhaka. The VPS clock was UTC, around 18:00 on Aug 8. The
+widget and <code>/api/lunch/state</code> both returned
+<code>"date": "2026-08-08"</code>.</p><p><strong>Cause.</strong>
+<code>time.Now().Format("2006-01-02")</code> returned the
+<em>server's</em> local date (UTC), not the user's. Around
+18:00–00:00 UTC the date and day-of-week seen by the API
+silently disagreed with what the user in BD was experiencing.</p><p><strong>Fix.</strong> <code>resolveLocalTZ()</code> loads
+<code>Asia/Dhaka</code> and assigns it to
+<code>time.Local</code> at boot. The <code>LUNCH_TZ</code>
+env var lets non-BD deployments override it.
+<code>TestDateRolloverAcrossTimezones</code> and
+<code>TestProductionHotPath</code> pin the behaviour.</p><p class=lt-callout>Subtle point that bit us once: <code>time.Time.Format</code>
+formats against the <em>time's</em> location, not
+<code>time.Local</code>. So <code>now.Format(...)</code> is
+fine once <code>time.Local = Asia/Dhaka</code>, but
+<code>t.Format(...)</code> for a <code>t</code> built in UTC
+will still format against UTC. The fix in
+<code>parseClockInAt</code> is to construct the parsed time
+in the anchor's location to begin with.</p></article><article class=lt-challenge><header><span class=lt-challenge-tag>UI</span><h3>HRMS sidebar overshadowing the inline section</h3></header><p><strong>Symptom.</strong> When the Pathao left sidebar was
+expanded, it visually covered the inline section at the bottom
+of the page.</p><p><strong>Cause.</strong> Pathao's sidebar uses
+<code>position:fixed/relative</code> with a high
+<code>z-index</code> when expanded. The original floating
+widget sat at a fixed position that the sidebar would overlap.</p><p><strong>Fix.</strong> The section is now appended to
+<code>&lt;body></code> with
+<code>position:relative; z-index: 2147483000</code> so it
+paints on top of any overlapping sidebar element. Earlier
+attempts to mount the section inside an HRMS-supplied grid
+column disappeared after the SPA re-rendered, so we reverted
+to <code>document.body.appendChild</code>. The
+<code>document.body.appendChild</code> approach is dumb but
+robust — Pathao's re-render path doesn't reach our node.</p></article><article class=lt-challenge><header><span class=lt-challenge-tag>CORS</span><h3>Preflight from the Chrome new-tab page</h3></header><p><strong>Symptom.</strong> LunchLine's Chrome new-tab page
+couldn't read <code>/api/lunch/state</code> from
+<code>https://www.google.com</code>.</p><p><strong>Cause.</strong> The default CORS handler only allowed
+<code>*.pathao.com</code> and the production domain. A
+cross-origin fetch from <code>www.google.com</code> needed
+that origin on the allow-list.</p><p><strong>Fix.</strong> Added <code>https://www.google.com</code>
+(and <code>chrome-extension://*</code>) to
+<code>allowedOrigins</code>. The preflight
+(<code>OPTIONS</code>) is short-circuited with
+<code>204 No Content</code> and a 24-hour
+<code>Access-Control-Max-Age</code>.</p></article><article class=lt-challenge><header><span class=lt-challenge-tag>Reliability</span><h3>Leave-clear silently failed</h3></header><p><strong>Symptom.</strong> Clicking "Clear leave" on the
+widget or the userscript visibly fired the request, but the
+UI kept rendering <code>OnLeave</code> on the next refresh.</p><p><strong>Cause.</strong> <code>handleLeave</code> had a string
+field for the body's <code>leave</code> flag and ignored it
+— every POST stored <code>Leave: true</code>, regardless of
+what the body said. The two near-identical render functions
+(mark / clear) had drifted so far apart that the "clear"
+path was, structurally, the "mark" path with a different
+label.</p><p><strong>Fix.</strong> The field is parsed as
+<code>*bool</code> (pointer so we can distinguish "absent"
+from "false"), defaults to <code>true</code> for backwards
+compatibility with the widget's "Mark on leave" button, and
+the value is written through to the store.
+<code>TestOnLeaveTransition</code> is a regression test
+against this specific bug.</p></article></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>07</span><h2>API surface</h2></header><div class=lt-section-body><p>Six routes. All return JSON except <code>/api/lunch/widget</code>
+which renders HTML and <code>/healthz</code> which returns JSON.
+CORS is allow-listed at the Nginx layer; the same list is mirrored
+in <code>allowedOrigins</code> for browser-origin callers.</p><div class=lt-endpoints><article class=lt-endpoint><header><span class="lt-method post">POST</span>
+<code class=lt-path>/api/lunch/clockin</code></header><p>Persist (or replace) today's clock-in. Idempotent per date.</p><div class=lt-endpoint-grid><div><h4>Request</h4><pre><code>{
+  "date":    "2026-08-06",
+  "clockIn": "9:31:02 AM"
+}</code></pre></div><div><h4>Response</h4><pre><code>{
+  "ok":      true,
+  "savedAt": 1754470860,
+  "record": {
+    "date":    "2026-08-06",
+    "clockIn": "9:31:02 AM",
+    "savedAt": 1754470860,
+    "leave":   false
+  }
+}</code></pre></div></div></article><article class=lt-endpoint><header><span class="lt-method post">POST</span>
+<code class=lt-path>/api/lunch/clockout</code></header><p>Record today's clock-out. Merges with any existing record so the prior clock-in and Leave flag survive.</p><div class=lt-endpoint-grid><div><h4>Request</h4><pre><code>{
+  "date":     "2026-08-06",
+  "clockOut": "5:15:00 PM"
+}</code></pre></div><div><h4>Response</h4><pre><code>{
+  "ok":      true,
+  "savedAt": 1754499300,
+  "record": { "date": "2026-08-06", "clockIn": "9:31:02 AM", "clockOut": "5:15:00 PM", "leave": false }
+}</code></pre></div></div></article><article class=lt-endpoint><header><span class="lt-method post">POST</span>
+<code class=lt-path>/api/lunch/leave</code></header><p>Mark or clear the leave flag for a date.</p><div class=lt-endpoint-grid><div><h4>Request</h4><pre><code>{ "date": "2026-08-09", "leave": true }</code></pre></div><div><h4>Response</h4><pre><code>{ "ok": true, "date": "2026-08-09", "leave": true }</code></pre></div></div></article><article class=lt-endpoint><header><span class="lt-method get">GET</span>
+<code class=lt-path>/api/lunch/state</code></header><p>The canonical state payload. Polled every 60s by the userscript and LunchLine.</p><div class=lt-endpoint-grid><div><h4>Response</h4><pre><code>{
+  "status":     "ClockedIn",
+  "date":       "2026-08-09",
+  "clockIn":    "9:31:02 AM",
+  "targetExit": "4:16:02 PM",
+  "targetMs":   1754735762000,
+  "savedAt":    1754729400,
+  "eligible":   false,
+  "weekend":    false,
+  "leave":      false,
+  "message":    "06:31:18 until lunch eligibility",
+  "updatedAt":  1754729400,
+  "nowMs":      1754732160000
+}</code></pre></div><div class=lt-endpoint-aside><h4>Fields worth knowing</h4><ul class="lt-bullets compact"><li><code>status</code> — canonical variant. The widget template and userscript both branch on this string.</li><li><code>targetMs</code> — unix-ms of the threshold; widget uses it for the live tick without re-fetching.</li><li><code>nowMs</code> — for client-side clock-drift detection.</li></ul><p class=lt-endpoint-link>↗ <a href=https://fahimimam.sytes.net/api/lunch/state target=_blank rel=noopener>Try it live</a></p></div></div></article><article class=lt-endpoint><header><span class="lt-method get">GET</span>
+<code class=lt-path>/api/lunch/widget</code></header><p>Self-contained HTML widget (dark glassmorphism). Server-rendered from the same state machine.</p><p class=lt-endpoint-link>↗ <a href=https://fahimimam.sytes.net/api/lunch/widget target=_blank rel=noopener>Open the widget</a></p></article><article class=lt-endpoint><header><span class="lt-method get">GET</span>
+<code class=lt-path>/healthz</code></header><p>Liveness probe. <code>access_log off</code> in Nginx so uptime checks don't fill the log.</p><pre><code>{ "ok": true, "records": 5, "time": "2026-08-15T20:15:28+06:00" }</code></pre></article></div></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>08</span><h2>The state machine</h2></header><div class=lt-section-body><p><code>computeState(snapshot, now)</code> is the one place the
+variant decision is made. Order matters — the function returns
+on the first matching branch.</p><ol class=lt-states><li class="lt-state lt-state-weekend"><span class=lt-state-pill>Weekend</span><p>Today is Friday or Saturday. No leave button, no countdown. Even if a clock-in is stored for the day, the active card still reads "Off day — enjoy!" — the record appears only in the history table.</p></li><li class="lt-state lt-state-leave"><span class=lt-state-pill>OnLeave</span><p>The user pressed "Mark on leave" (or there's a stored record with <code>Leave: true</code>). Card shows "Marked as on leave" with a "Clear leave" button.</p></li><li class="lt-state lt-state-notin"><span class=lt-state-pill>NotClockedIn</span><p>Weekday, no record for today, no leave flag. Card shows "Not clocked in yet today" with a "Mark on leave" button.</p></li><li class="lt-state lt-state-clocked"><span class=lt-state-pill>ClockedIn</span><p>Clock-in exists and <code>now &lt; clockIn + 6h45m</code>. Live HH:MM:SS countdown. Pill turns cyan when ≤ 5 minutes remain; switches to green at the threshold.</p></li><li class="lt-state lt-state-eligible"><span class=lt-state-pill>Eligible</span><p><code>now ≥ clockIn + 6h45m</code>. Green pill "Eligible — step away!" with the elapsed-since-threshold time surfaced.</p></li><li class="lt-state lt-state-clockedout"><span class=lt-state-pill>ClockedOut</span><p>User pressed "Clock out" or the day has ended. Worked-time is frozen at the clock-out instant; the verdict is "Eligible for lunch (Worked 7h 45m)" or "Not eligible (Worked 4h 12m)".</p></li></ol><p class=lt-callout>The userscript mirrors this decision tree in JavaScript so the
+inline section can re-render at 1 Hz without a network
+round-trip on every tick. The Go side is the source of truth
+for the widget; the JS is the source of truth for the HRMS page.</p></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>09</span><h2>Data model & lifecycle</h2></header><div class=lt-section-body><p>One record per local YYYY-MM-DD:</p><pre><code>{
+  "2026-08-09": {
+    "date":    "2026-08-09",
+    "clockIn": "9:31:02 AM",
+    "clockOut":"5:15:00 PM",
+    "savedAt": 1754729400,
+    "leave":   false
+  },
+  "2026-08-10": { ... }
+}</code></pre><p>The map is keyed by date so "give me today" is
+<code>O(1)</code> and duplicates per date are impossible by
+construction. On any write, every record that predates the
+most-recent Sunday is dropped — bounding the file to one
+Pathao workweek (≤ 5 rows). A fresh Sunday therefore wipes the
+previous week automatically.</p><div class=lt-callout>The prune is a defensive predicate in
+<code>pruneOldRecordsLocked</code>, called inside
+<code>Store.Set</code> under the write lock. Every clock-in
+write passes through it.</div></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>10</span><h2>Testing</h2></header><div class=lt-section-body><p>The Go side ships <strong>13 unit tests</strong> across two files;
+the userscript has no automated test (a jsdom harness exists in
+<code>package.json</code> but is currently dormant). Tests run
+in well under 100&nbsp;ms with <code>go test ./...</code>.</p><div class=lt-grid-2><div class=lt-card><h3>State machine (<code>state_test.go</code>)</h3><ul class="lt-bullets compact"><li><code>TestSundayNotWeekend</code> · <code>TestFriSatWeekend</code> — pins the Friday/Saturday off-day policy.</li><li><code>TestDateRolloverAcrossTimezones</code> · <code>TestProductionHotPath</code> — pins the Asia/Dhaka rollover.</li><li><code>TestOnLeaveTransition</code> — regression for the leave-clear bug.</li><li><code>TestClockedOutWorkedMath</code> · <code>TestClockedOutWorkedIsFrozen</code> · <code>TestClockedOutMalformedDoesNotCorruptRecord</code> — clock-out math and parser resilience.</li><li><code>TestComputeStateIgnoresFutureClockInForToday</code> · <code>TestComputeStateHonorsFutureClockInForPastDate</code> — the "stale HRMS text on a new day" guard.</li><li><code>TestHandleClockOutMergePreservesClockInAndLeave</code> · <code>TestHandleClockOutRejectsWithoutClockIn</code> — HTTP-layer merge logic.</li></ul></div><div class=lt-card><h3>CORS (<code>cors_test.go</code>)</h3><ul class="lt-bullets compact"><li><code>TestMatchOrigin</code> — exact, wildcard-suffix, prefix, empty.</li><li><code>TestOriginAllowed</code> — full allow-list positive and negative cases.</li><li><code>TestOriginOrStar</code> — echo-origin vs <code>*</code>.</li></ul><p><strong>Storage</strong> (<code>state_test.go</code>):
+<code>TestStoreRetainsOnlyCurrentWorkweek</code>,
+<code>TestStoreUnderCapNoPrune</code>,
+<code>TestStoreSundayRolloverWipesPreviousWeek</code>.</p></div></div></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>11</span><h2>Deployment</h2></header><div class=lt-section-body><p>From source to production in one command, with a binary guard that catches the most embarrassing bug:</p><pre><code>make ship      # prints:
+#   GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -trimpath -o lunch-tracker.linux main.go
+#   file lunch-tracker.linux   # ← must say ELF, not Mach-O
+#   scp lunch-tracker.linux vps:/tmp/lunch-tracker.linux.new
+#   ssh vps 'sudo install -m 0755 /tmp/lunch-tracker.linux.new /usr/local/bin/lunch-tracker && \
+#            sudo systemctl restart lunch-tracker.service'
+#   curl -s https://&lt;your-domain&gt;/api/lunch/state | jq .</code></pre><div class=lt-grid-2><div class=lt-card><h3>Nginx</h3><p>Single server block, TLS terminated at Nginx, reverse-proxy
+<code>/api/lunch/*</code> to the local Go service.
+<code>proxy_read_timeout 15s</code> matches the
+Go <code>WriteTimeout</code>; the shared secret check is
+performed at the Nginx layer so the Go backend never sees
+unauthenticated traffic.</p></div><div class=lt-card><h3>systemd</h3><p><code>lunch-tracker.service</code> restarts on failure with
+a 2-second back-off. Logs flow to journald. The service
+runs as <code>www-data</code> with the working directory
+pinned to <code>/srv/lunch-tracker</code>.</p></div></div></div></section><section class=lt-section><header class=lt-section-header><span class=lt-section-num>12</span><h2>Lessons learned</h2></header><div class=lt-section-body><div class=lt-lesson-grid><div class=lt-lesson><h3>Picking a timezone once, at boot, is a force multiplier</h3><p>Every other date / weekday / 00:00-rollover bug in this
+codebase went away once <code>time.Local</code> was pinned
+at boot. The fix is one line in <code>main</code>; the bug
+class it eliminated took three evenings to find in the first
+place.</p></div><div class=lt-lesson><h3>Stdlib is enough until it isn't</h3><p>Six routes, no middleware, no framework. The Go stdlib
+mux + <code>http.Server</code> with explicit timeouts is
+fewer lines than a router would be, and zero deps means the
+cross-compiled binary just runs on the VPS. Resist the
+framework reflex.</p></div><div class=lt-lesson><h3>Two near-identical functions will diverge</h3><p>The leave-clear bug came from two render functions that
+were 90% the same. The fix was a single function with a
+boolean parameter, plus a regression test. Single-source-of-truth
+for any UI flow that has symmetric "in / out" semantics.</p></div><div class=lt-lesson><h3>Atomic file writes are not a luxury</h3><p><code>os.CreateTemp</code> + <code>Sync</code> +
+<code>os.Rename</code> is ~10 lines of code and makes a
+crash mid-write a non-event. For a single-file store, this
+is the only correct pattern.</p></div><div class=lt-lesson><h3>Mirror the source of truth at the edge</h3><p>The Go side computes the variant once; the userscript
+mirrors the same logic in JS so the HRMS page can render
+at 1&nbsp;Hz without round-tripping. The trade-off is
+two implementations to keep in sync, gated by tests on the
+Go side and shared comment blocks on both sides.</p></div><div class=lt-lesson><h3>Deployment guards pay for themselves</h3><p>The <code>file lunch-tracker.linux</code> guard is a single
+shell line that prevents an entire class of "the
+production server is up but returns garbage" debugging
+sessions. <code>make linux</code> runs it automatically.</p></div></div></div></section><section class="lt-section lt-section-final"><header class=lt-section-header><h2>Source & live system</h2></header><div class=lt-section-body><div class=lt-final-links><a class="lt-btn primary" href=https://fahimimam.sytes.net/api/lunch/state target=_blank rel=noopener><span class=lt-btn-icon>↗</span> GET /api/lunch/state
+</a><a class=lt-btn href=https://fahimimam.sytes.net/api/lunch/widget target=_blank rel=noopener><span class=lt-btn-icon>▣</span> /api/lunch/widget
+</a><a class=lt-btn href=https://fahimimam.sytes.net/healthz target=_blank rel=noopener><span class=lt-btn-icon>♥</span> /healthz
+</a><a class=lt-btn href=https://github.com/fahimimam/lunch-tracker target=_blank rel=noopener><span class=lt-btn-icon>⌘</span> github.com/fahimimam/lunch-tracker</a></div></div></section><section class="lt-section lt-code"><header class=lt-section-header><span class=lt-section-num>12</span><h2 class=lt-section-title>Code samples</h2><p class=lt-section-tag>Five functions straight out of <code>main.go</code>. The same
+conventions show up across the codebase — small, locked,
+explicit about failure.</p></header><article class=lt-code-block><h3>Strict JSON decoding</h3><p class=lt-code-lead>Every POST handler routes its body through
+<code>decodeJSON</code>. The <code>DisallowUnknownFields()</code>
+call catches client typos before they silently end up as
+zero-values on disk.</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span></span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// decodeJSON rejects non-JSON Content-Type, decodes the body into</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// dst, and rejects unknown fields. Returns true on success; on</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// failure it has already written the error response.</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>decodeJSON</span>(<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ResponseWriter</span>, <span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>, <span style=color:#a6e22e>dst</span> <span style=color:#66d9ef>any</span>) <span style=color:#66d9ef>bool</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>ct</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Header</span>.<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;Content-Type&#34;</span>); <span style=color:#a6e22e>ct</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;&#34;</span> <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>        !<span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>HasPrefix</span>(<span style=color:#a6e22e>ct</span>, <span style=color:#e6db74>&#34;application/json&#34;</span>) {
+</span></span><span style=display:flex;background-color:#3c3d38><span>        <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Error</span>(<span style=color:#a6e22e>w</span>, <span style=color:#e6db74>&#34;Content-Type must be application/json&#34;</span>, <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>StatusUnsupportedMediaType</span>)
+</span></span><span style=display:flex;background-color:#3c3d38><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>dec</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>NewDecoder</span>(<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Body</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>dec</span>.<span style=color:#a6e22e>DisallowUnknownFields</span>()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>dec</span>.<span style=color:#a6e22e>Decode</span>(<span style=color:#a6e22e>dst</span>); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>writeJSON</span>(<span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>StatusBadRequest</span>, <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;error&#34;</span>: <span style=color:#e6db74>&#34;invalid JSON: &#34;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>err</span>.<span style=color:#a6e22e>Error</span>()})
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>}</span></span></code></pre></td></tr></table></div></div></article><article class=lt-code-block><h3>Clock-in guard against stale UI text</h3><p class=lt-code-lead>The Pathao HRMS page sometimes serves a stale "Checked In"
+timestamp from the previous day. The <code>+15m</code> guard
+rejects any record noticeably in the future, so the persistent
+store never silently accumulates ghost entries.</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span></span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// handleClockIn persists the latest clock-in for a date.</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>server</span>) <span style=color:#a6e22e>handleClockIn</span>(<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ResponseWriter</span>, <span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Body</span>.<span style=color:#a6e22e>Close</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>rec</span> <span style=color:#a6e22e>ClockIn</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> !<span style=color:#a6e22e>decodeJSON</span>(<span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>r</span>, <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>rec</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>date</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>ParseInLocation</span>(<span style=color:#e6db74>&#34;2006-01-02&#34;</span>, <span style=color:#a6e22e>rec</span>.<span style=color:#a6e22e>Date</span>, <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Local</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>writeJSON</span>(<span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>StatusBadRequest</span>, <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;error&#34;</span>: <span style=color:#e6db74>&#34;date must be YYYY-MM-DD&#34;</span>})
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ci</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>parseClockIn</span>(<span style=color:#a6e22e>rec</span>.<span style=color:#a6e22e>ClockIn</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>writeJSON</span>(<span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>StatusBadRequest</span>, <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;error&#34;</span>: <span style=color:#a6e22e>err</span>.<span style=color:#a6e22e>Error</span>()})
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// Reject clock-ins that are noticeably in the future relative to</span>
+</span></span><span style=display:flex;background-color:#3c3d38><span>    <span style=color:#75715e>// the server&#39;s wall-clock. The HRMS page sometimes shows a stale</span>
+</span></span><span style=display:flex;background-color:#3c3d38><span>    <span style=color:#75715e>// &#34;Checked In&#34; text from the previous day; without this guard the</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// userscript would happily store a 1:15 PM record for an 11:00 AM</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// today.</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>now</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>ci</span>.<span style=color:#a6e22e>After</span>(<span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#a6e22e>clockInFutureSlack</span>)) {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>writeJSON</span>(<span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>StatusBadRequest</span>, <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>{
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#34;error&#34;</span>: <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Sprintf</span>(<span style=color:#e6db74>&#34;clock-in %s is in the future (now=%s); refusing to store a stale or fake record&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>rec</span>.<span style=color:#a6e22e>ClockIn</span>, <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Format</span>(<span style=color:#e6db74>&#34;3:04:05 PM&#34;</span>)),
+</span></span><span style=display:flex><span>        })
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...date-in-future guard, persist, respond</span>
+</span></span><span style=display:flex><span>}</span></span></code></pre></td></tr></table></div></div></article><article class=lt-code-block><h3>Bounded workweek pruning</h3><p class=lt-code-lead><code>pruneOldRecordsLocked</code> is invoked on every write.
+The Pathao workweek runs Sunday→Thursday, so anything strictly
+before last Sunday is dropped — the in-memory map is
+effectively bounded to ~5 rows at all times.</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span></span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// Caller must hold s.mu (write).</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>pruneOldRecordsLocked</span>(<span style=color:#a6e22e>records</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#a6e22e>ClockIn</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> len(<span style=color:#a6e22e>records</span>) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// Fast path: under the cap, and no stale weekday entries are</span>
+</span></span><span style=display:flex;background-color:#3c3d38><span>    <span style=color:#75715e>// possible because a workweek holds at most maxRetainedDays rows.</span>
+</span></span><span style=display:flex;background-color:#3c3d38><span>    <span style=color:#66d9ef>if</span> len(<span style=color:#a6e22e>records</span>) <span style=color:#f92672>&lt;=</span> <span style=color:#a6e22e>maxRetainedDays</span> {
+</span></span><span style=display:flex;background-color:#3c3d38><span>        <span style=color:#75715e>// Even under the cap, defensive prune: drop anything that</span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// somehow pre-dates the current Sunday (e.g. legacy data.json</span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// from before this rule shipped). The loop is cheap and</span>
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// guarantees the invariant.</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>boundary</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>currentWorkweekStart</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>())
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>d</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>records</span> {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>d</span> &lt; <span style=color:#a6e22e>boundary</span> {
+</span></span><span style=display:flex><span>                delete(<span style=color:#a6e22e>records</span>, <span style=color:#a6e22e>d</span>)
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...fall-through: full prune + oldest-first truncation</span>
+</span></span><span style=display:flex><span>}</span></span></code></pre></td></tr></table></div></div></article><article class=lt-code-block><h3>Atomic file writes</h3><p class=lt-code-lead>Every <code>Set</code> lands in <code>data.json</code> via
+<em>temp file → fsync → rename</em>. A crash anywhere in the
+sequence leaves the previous file intact — there is no
+half-written JSON on disk, ever.</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span></span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// flushLocked writes the in-memory map atomically: encode to a</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// temp file in the same directory and rename over the destination.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Caller must hold writeMu.</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Store</span>) <span style=color:#a6e22e>flushLocked</span>() <span style=color:#66d9ef>error</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>mu</span>.<span style=color:#a6e22e>RLock</span>()
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>buf</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>MarshalIndent</span>(<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>records</span>, <span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#e6db74>&#34;  &#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>mu</span>.<span style=color:#a6e22e>RUnlock</span>()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;encode %s: %w&#34;</span>, <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>path</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>dir</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>filepath</span>.<span style=color:#a6e22e>Dir</span>(<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>path</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>tmp</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>CreateTemp</span>(<span style=color:#a6e22e>dir</span>, <span style=color:#e6db74>&#34;data-*.json.tmp&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;create temp: %w&#34;</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>tmpName</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>tmp</span>.<span style=color:#a6e22e>Name</span>()
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>cleanup</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>func</span>() { <span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Remove</span>(<span style=color:#a6e22e>tmpName</span>) }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex;background-color:#3c3d38><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>tmp</span>.<span style=color:#a6e22e>Write</span>(<span style=color:#a6e22e>buf</span>); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex;background-color:#3c3d38><span>        <span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>tmp</span>.<span style=color:#a6e22e>Close</span>()
+</span></span><span style=display:flex;background-color:#3c3d38><span>        <span style=color:#a6e22e>cleanup</span>()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;write temp: %w&#34;</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>tmp</span>.<span style=color:#a6e22e>Sync</span>(); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>tmp</span>.<span style=color:#a6e22e>Close</span>()
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>cleanup</span>()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;sync temp: %w&#34;</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>tmp</span>.<span style=color:#a6e22e>Close</span>(); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>cleanup</span>()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;close temp: %w&#34;</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Rename</span>(<span style=color:#a6e22e>tmpName</span>, <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>path</span>); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>cleanup</span>()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;rename: %w&#34;</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>}</span></span></code></pre></td></tr></table></div></div></article><article class=lt-code-block><h3>CORS origin matching with wildcards</h3><p class=lt-code-lead>The widget runs on the production domain, the userscript on
+Pathao's HRMS, and the LunchLine extension on a unique
+<code>chrome-extension://abcdefgh…</code> origin. The matcher
+handles both exact matches and the literal <code>"*"</code>
+wildcard.</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span></span><span style=background-color:#3c3d38><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span></span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;display:grid><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// matchOrigin returns true if pattern matches origin. The single</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// wildcard &#34;*&#34; matches everything; otherwise the match is exact.</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>matchOrigin</span>(<span style=color:#a6e22e>pattern</span>, <span style=color:#a6e22e>origin</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>bool</span> {
+</span></span><span style=display:flex;background-color:#3c3d38><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>pattern</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;*&#34;</span> {
+</span></span><span style=display:flex;background-color:#3c3d38><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex;background-color:#3c3d38><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> !<span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>HasPrefix</span>(<span style=color:#a6e22e>pattern</span>, <span style=color:#e6db74>&#34;https://&#34;</span>) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>        !<span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>HasPrefix</span>(<span style=color:#a6e22e>pattern</span>, <span style=color:#e6db74>&#34;http://&#34;</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>pattern</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>origin</span>
+</span></span><span style=display:flex><span>}</span></span></code></pre></td></tr></table></div></div></article></section></article><style>.lunch-tracker-showcase{max-width:1100px;margin:0 auto}.lt-hero{margin:1rem 0 2.5rem;padding:2rem 0 1rem;border-bottom:1px solid var(--cyber-border)}.lt-hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:2.5rem;align-items:center}@media(max-width:960px){.lt-hero-grid{grid-template-columns:1fr}}.lt-eyebrow{display:inline-flex;align-items:center;gap:.5rem;color:var(--neon-blue);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem}.lt-eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--neon-orange);box-shadow:0 0 10px var(--neon-orange);animation:lt-pulse 1.6s ease-in-out infinite}@keyframes lt-pulse{0%,100%{opacity:1}50%{opacity:.4}}.lt-title{font-size:clamp(2.2rem,5vw,3.2rem);color:var(--neon-blue);text-shadow:0 0 14px rgba(0,243,255,.45);margin:0 0 .6rem;letter-spacing:.5px;line-height:1.1}.lt-tagline{color:var(--text-primary);font-size:1.02rem;line-height:1.7;max-width:56ch;margin:0 0 1.5rem}.lt-hero-meta{list-style:none;padding:0;margin:0 0 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:.4rem 1.5rem}.lt-hero-meta li{display:flex;flex-direction:column;gap:.15rem}.lt-meta-label{color:var(--neon-orange);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}.lt-meta-value{color:var(--text-primary);font-size:.9rem}.lt-status-live{display:inline-flex;align-items:center;gap:.4rem}.lt-status-dot{width:8px;height:8px;border-radius:50%;background:var(--neon-green);box-shadow:0 0 10px var(--neon-green)}.lt-hero-cta{display:flex;gap:.6rem;flex-wrap:wrap}.lt-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1rem;border:1px solid var(--text-secondary);border-radius:8px;color:var(--text-primary);text-decoration:none;font-size:.86rem;font-weight:600;background:0 0;transition:all .2s ease}.lt-btn:hover{border-color:var(--neon-blue);color:var(--neon-blue);box-shadow:0 0 10px rgba(0,243,255,.4)}.lt-btn.primary{border-color:var(--neon-blue);color:var(--neon-blue)}.lt-btn.primary:hover{background:var(--neon-blue);color:var(--cyber-bg)}.lt-btn-icon{font-size:1rem;line-height:1}.lt-live-card{background:linear-gradient(135deg,rgba(10,14,39,.95) 0%,rgba(5,8,17,.95) 100%);border:1px solid var(--cyber-border);border-radius:14px;padding:1.25rem 1.4rem;box-shadow:0 0 24px rgba(0,243,255,.18),0 20px 60px rgba(0,0,0,.45);backdrop-filter:blur(8px)}.lt-live-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;padding-bottom:.6rem;border-bottom:1px solid var(--cyber-border)}.lt-live-dot{width:9px;height:9px;border-radius:50%;background:var(--neon-green);box-shadow:0 0 10px var(--neon-green);animation:lt-pulse 1.6s ease-in-out infinite}.lt-live-title{color:var(--neon-blue);font-weight:700;letter-spacing:1.5px;font-size:.78rem;text-transform:uppercase}.lt-live-date{margin-left:auto;color:var(--text-secondary);font-size:.78rem;font-family:inherit}.lt-live-status{font-size:1.45rem;font-weight:700;color:var(--neon-orange);letter-spacing:.3px;margin-bottom:.4rem}.lt-live-status.ClockedIn,.lt-live-status.ClockedOut{color:var(--neon-blue)}.lt-live-status.Eligible{color:var(--neon-green);text-shadow:0 0 14px rgba(74,222,128,.5)}.lt-live-status.Weekend{color:var(--neon-purple)}.lt-live-status.OnLeave{color:var(--neon-orange)}.lt-live-status.NotClockedIn{color:var(--text-secondary)}.lt-live-message{color:var(--text-secondary);font-size:.9rem;line-height:1.5;margin-bottom:.85rem}.lt-live-rows{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.85rem;padding:.7rem .8rem;border:1px dashed var(--cyber-border);border-radius:10px;background:rgba(10,14,39,.4)}.lt-live-row{display:flex;justify-content:space-between;align-items:center;font-size:.86rem}.lt-live-label{color:var(--neon-orange);font-weight:700;font-size:.72rem;letter-spacing:1px;text-transform:uppercase}.lt-live-value{color:var(--text-primary);font-weight:600}.lt-mono{font-variant-numeric:tabular-nums}.lt-live-badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem}.lt-live-badge{padding:.2rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border:1px solid var(--text-secondary);color:var(--text-secondary);background:rgba(160,160,160,.1)}.lt-live-badge.ok{color:var(--neon-green);border-color:var(--neon-green);background:rgba(74,222,128,.1)}.lt-live-footer{display:flex;align-items:center;justify-content:space-between;font-size:.74rem;color:var(--text-secondary);border-top:1px solid var(--cyber-border);padding-top:.6rem}.lt-live-footer code{background:0 0;border:none;color:var(--neon-blue);padding:0}.lt-refresh{background:0 0;border:1px solid var(--cyber-border);color:var(--neon-blue);border-radius:6px;padding:.2rem .55rem;cursor:pointer;font-family:inherit;font-size:.9rem;transition:all .2s ease}.lt-refresh:hover{background:var(--neon-blue);color:var(--cyber-bg)}.lt-section{margin:3rem 0}.lt-section-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.2rem;border-bottom:1px solid var(--cyber-border);padding-bottom:.5rem}.lt-section-num{color:var(--neon-purple);font-family:inherit;font-size:.9rem;font-weight:700;letter-spacing:2px}.lt-section h2{color:var(--neon-blue);margin:0;font-size:1.5rem;letter-spacing:.4px;border-bottom:none;padding-bottom:0}.lt-section-body{color:var(--text-primary);line-height:1.75}.lt-section-body>p{margin:0 0 .9rem}.lt-section-body>ul.lt-bullets,.lt-section-body>ol.lt-bullets{margin:0 0 1rem}.lt-bullets{padding-left:1.4rem}.lt-bullets li{margin-bottom:.45rem}.lt-bullets.compact{padding-left:1.2rem}.lt-bullets.compact li{margin-bottom:.25rem;font-size:.93rem}.lt-bullets li::marker{color:var(--neon-blue)}.lt-callout{background:rgba(255,107,53,6%);border-left:3px solid var(--neon-orange);padding:.85rem 1rem;margin:1rem 0;border-radius:0 8px 8px 0;color:var(--text-secondary);font-size:.95rem}.lt-callout code{color:var(--neon-blue);background:rgba(0,243,255,8%);padding:.1em .4em;border-radius:4px;border:1px solid rgba(0,243,255,.25)}.lt-callout strong{color:var(--text-primary)}.lt-section-tag{margin:.6rem 0 0;color:var(--text-secondary);font-size:.95rem;line-height:1.6}.lt-section-tag code{color:var(--neon-orange);background:rgba(255,107,53,8%);padding:.05em .35em;border-radius:3px;border:1px solid rgba(255,107,53,.25);font-size:.9em}.lt-code-block{margin:1.5rem 0;padding:1.25rem 1.5rem;background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:12px;box-shadow:var(--cyber-glow)}.lt-code-block h3{color:var(--neon-orange);margin:0 0 .5rem;font-size:1.1rem;border-bottom:1px solid var(--cyber-border);padding-bottom:.4rem}.lt-code-lead{margin:0 0 1rem;color:var(--text-secondary);font-size:.92rem;line-height:1.65}.lt-code-lead code{color:var(--neon-blue);background:rgba(0,243,255,8%);padding:.05em .35em;border-radius:3px;border:1px solid rgba(0,243,255,.25);font-size:.9em}.lt-code-block em{color:var(--neon-blue);font-style:normal;font-weight:600}.lt-code-block pre{margin:0;border-radius:6px;overflow-x:auto}.lt-arch{display:flex;flex-direction:column;align-items:center;gap:.4rem;margin:1.2rem 0 1rem;padding:1.2rem;border:1px solid var(--cyber-border);border-radius:12px;background:rgba(10,14,39,.5)}.lt-arch-row{width:100%;display:flex;justify-content:center;gap:1.2rem}.lt-arch-row.lt-arch-pair{flex-wrap:wrap}.lt-arch-node{background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:10px;padding:.7rem 1rem;min-width:180px;text-align:center;transition:all .2s ease}.lt-arch-node:hover{border-color:var(--neon-blue);box-shadow:0 0 12px rgba(0,243,255,.25)}.lt-arch-node.user{border-color:var(--neon-orange)}.lt-arch-node.go{border-color:var(--neon-blue)}.lt-arch-node.store{border-color:var(--neon-purple)}.lt-arch-icon{display:block;font-size:1.4rem;margin-bottom:.3rem}.lt-arch-name{display:block;color:var(--neon-blue);font-weight:700;font-size:.92rem;margin-bottom:.2rem}.lt-arch-sub{display:block;color:var(--text-secondary);font-size:.74rem;line-height:1.4}.lt-arch-arrow{color:var(--neon-blue);font-size:1rem;line-height:1;text-shadow:0 0 8px var(--neon-blue)}.lt-arch-readers{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin:1rem 0 .5rem;color:var(--text-secondary);font-size:.86rem}.lt-arch-readers code{background:rgba(0,243,255,8%);border:1px solid rgba(0,243,255,.25);color:var(--neon-blue);padding:.05em .4em;border-radius:4px}.lt-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}@media(max-width:720px){.lt-grid-2{grid-template-columns:1fr}.lt-hero-meta{grid-template-columns:1fr}}.lt-card{background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:12px;padding:1rem 1.2rem;backdrop-filter:blur(6px)}.lt-card h3{color:var(--neon-orange);margin:0 0 .6rem;font-size:1.02rem;border-bottom:1px solid var(--cyber-border);padding-bottom:.4rem;letter-spacing:.3px}.lt-card p{color:var(--text-primary);font-size:.93rem;margin:0;line-height:1.65}.lt-card code{color:var(--neon-blue);background:rgba(0,243,255,8%);padding:.05em .35em;border-radius:4px;border:1px solid rgba(0,243,255,.25);font-size:.88em}.lt-stack{width:100%;border-collapse:collapse;margin:1rem 0}.lt-stack th,.lt-stack td{border:1px solid var(--cyber-border);padding:.65rem .85rem;text-align:left;vertical-align:top}.lt-stack th{background:rgba(0,243,255,8%);color:var(--neon-blue);text-transform:uppercase;letter-spacing:1px;font-size:.74rem;font-weight:700}.lt-stack td:first-child{color:var(--neon-orange);font-weight:700;width:12%}.lt-stack td:nth-child(2){color:var(--neon-blue);font-weight:600;width:22%}.lt-stack td:last-child{color:var(--text-primary);font-size:.92rem}.lt-feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}@media(max-width:720px){.lt-feature-grid{grid-template-columns:1fr}}.lt-feature{background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:12px;padding:1.1rem 1.2rem;transition:all .25s ease}.lt-feature:hover{transform:translateY(-3px);border-color:var(--neon-blue);box-shadow:0 0 14px rgba(0,243,255,.25)}.lt-feature-icon{font-size:1.4rem;margin-bottom:.4rem}.lt-feature h3{color:var(--neon-orange);margin:0 0 .5rem;font-size:1.02rem;letter-spacing:.3px}.lt-feature p{color:var(--text-primary);font-size:.93rem;line-height:1.65;margin:0}.lt-feature code{color:var(--neon-blue);background:rgba(0,243,255,8%);padding:.05em .35em;border-radius:4px;border:1px solid rgba(0,243,255,.25);font-size:.88em}.lt-challenge{background:var(--cyber-surface);border:1px solid var(--cyber-border);border-left:3px solid var(--neon-orange);border-radius:10px;padding:1rem 1.25rem;margin:1rem 0}.lt-challenge header{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;flex-wrap:wrap}.lt-challenge h3{color:var(--neon-blue);margin:0;font-size:1.08rem;border-bottom:none;padding-bottom:0}.lt-challenge-tag{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;padding:.15rem .55rem;border-radius:4px;background:rgba(255,107,53,.15);color:var(--neon-orange);border:1px solid var(--neon-orange)}.lt-challenge p{margin:.4rem 0;font-size:.93rem;color:var(--text-primary)}.lt-challenge strong{color:var(--neon-blue)}.lt-challenge pre{background:var(--code-block-bg);border:1px solid var(--cyber-border);border-radius:6px;padding:.6rem .8rem;margin:.4rem 0;font-size:.85rem;overflow-x:auto}.lt-challenge code{color:var(--neon-blue);background:rgba(0,243,255,8%);padding:.05em .35em;border-radius:4px;border:1px solid rgba(0,243,255,.25);font-size:.88em}.lt-challenge pre code{background:0 0;border:none;padding:0;color:var(--text-primary);font-size:.85rem}.lt-endpoints{display:flex;flex-direction:column;gap:1rem;margin:1rem 0}.lt-endpoint{background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:12px;padding:1rem 1.25rem}.lt-endpoint header{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;flex-wrap:wrap}.lt-endpoint p{color:var(--text-primary);font-size:.93rem;margin:.4rem 0 .7rem}.lt-method{display:inline-block;padding:.15rem .55rem;border-radius:6px;font-size:.7rem;font-weight:700;letter-spacing:1px}.lt-method.get{background:rgba(74,222,128,.15);color:var(--neon-green);border:1px solid var(--neon-green)}.lt-method.post{background:rgba(0,243,255,.15);color:var(--neon-blue);border:1px solid var(--neon-blue)}.lt-path{color:var(--text-primary);background:rgba(0,243,255,8%);border:1px solid var(--cyber-border);padding:.2rem .65rem;border-radius:6px;font-size:.92rem;font-weight:600}.lt-endpoint-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem}@media(max-width:720px){.lt-endpoint-grid{grid-template-columns:1fr}}.lt-endpoint-grid h4{color:var(--neon-orange);margin:0 0 .4rem;font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}.lt-endpoint-grid pre{background:var(--code-block-bg);border:1px solid var(--cyber-border);border-radius:8px;padding:.65rem .8rem;margin:0;font-size:.82rem;overflow-x:auto}.lt-endpoint-grid pre code{background:0 0;border:none;padding:0;color:var(--text-primary);font-size:.82rem}.lt-endpoint-aside h4{color:var(--neon-orange)}.lt-endpoint-link{color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0}.lt-endpoint-link a{color:var(--neon-blue);border-bottom:1px dashed var(--neon-blue)}.lt-states{list-style:none;padding:0;margin:1rem 0;display:flex;flex-direction:column;gap:.6rem}.lt-state{display:flex;align-items:flex-start;gap:1rem;background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:10px;padding:.8rem 1rem}.lt-state-pill{flex-shrink:0;display:inline-block;padding:.25rem .7rem;border-radius:999px;font-weight:700;font-size:.78rem;letter-spacing:.5px;background:rgba(0,243,255,.15);color:var(--neon-blue);border:1px solid var(--neon-blue);margin-top:.15rem;min-width:8rem;text-align:center}.lt-state-weekend .lt-state-pill{background:rgba(191,64,191,.15);color:var(--neon-purple);border-color:var(--neon-purple)}.lt-state-leave .lt-state-pill{background:rgba(255,107,53,.15);color:var(--neon-orange);border-color:var(--neon-orange)}.lt-state-notin .lt-state-pill{background:rgba(160,160,160,.15);color:var(--text-secondary);border-color:var(--text-secondary)}.lt-state-clocked .lt-state-pill{background:rgba(0,243,255,.15);color:var(--neon-blue);border-color:var(--neon-blue)}.lt-state-eligible .lt-state-pill{background:rgba(74,222,128,.15);color:var(--neon-green);border-color:var(--neon-green)}.lt-state-clockedout .lt-state-pill{background:rgba(96,165,250,.18);color:#93c5fd;border-color:#93c5fd}.lt-state p{margin:0;color:var(--text-primary);font-size:.93rem;line-height:1.65}.lt-state code{color:var(--neon-blue);background:rgba(0,243,255,8%);padding:.05em .35em;border-radius:4px;border:1px solid rgba(0,243,255,.25);font-size:.88em}.lt-lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}@media(max-width:720px){.lt-lesson-grid{grid-template-columns:1fr}}.lt-lesson{background:var(--cyber-surface);border:1px solid var(--cyber-border);border-radius:12px;padding:1rem 1.2rem}.lt-lesson h3{color:var(--neon-orange);font-size:1rem;margin:0 0 .5rem;border-bottom:1px solid var(--cyber-border);padding-bottom:.4rem;letter-spacing:.3px}.lt-lesson p{color:var(--text-primary);font-size:.92rem;line-height:1.65;margin:0}.lt-lesson code{color:var(--neon-blue);background:rgba(0,243,255,8%);padding:.05em .35em;border-radius:4px;border:1px solid rgba(0,243,255,.25);font-size:.88em}.lt-section-final .lt-section-header{border-bottom-color:var(--neon-blue)}.lt-final-links{display:flex;gap:.75rem;flex-wrap:wrap}</style><script>(function(){"use strict";var v="https://fahimimam.sytes.net/api/lunch/state",e=document.getElementById("lt-live-status"),t=document.getElementById("lt-live-message"),g=document.getElementById("lt-live-date"),r=document.getElementById("lt-live-rows"),m=document.getElementById("lt-live-clockin"),h=document.getElementById("lt-live-target"),n=document.getElementById("lt-live-countdown"),c=document.getElementById("lt-live-badge-weekend"),l=document.getElementById("lt-live-badge-leave"),d=document.getElementById("lt-live-badge-eligible"),u=document.getElementById("lt-live-refresh"),a=0,s=null;function i(e){return String(e).padStart(2,"0")}function f(e){if(e==null||isNaN(e))return"—";e<0&&(e=0);var t=Math.floor(e/1e3);return i(Math.floor(t/3600))+":"+i(Math.floor(t%3600/60))+":"+i(t%60)}function b(o){if(!o||!e)return;if(e.className="lt-live-status "+o.status,e.textContent=o.message||o.status,g&&(g.textContent=o.date||"—"),t&&(t.textContent=o.message||""),r){var i=o.clockIn||o.status==="Weekend";r.hidden=!i}m&&(m.textContent=o.clockIn||"—"),h&&(h.textContent=o.targetExit||"—"),a=o.targetMs||0,c&&(c.hidden=!o.weekend),l&&(l.hidden=!o.leave),d&&(d.hidden=!o.eligible),s&&(clearInterval(s),s=null),a>0&&(o.status==="ClockedIn"||o.status==="Eligible")?(p(),s=setInterval(p,1e3)):n&&(n.textContent="—")}function p(){if(!n)return;var t,e=a-Date.now();e<=0?(t=Math.abs(e),n.textContent=f(t)+" past"):n.textContent=f(e)}function o(){e&&(e.textContent="Loading…"),t&&(t.textContent="Fetching from /api/lunch/state …"),fetch(v,{method:"GET",cache:"no-store"}).then(function(e){if(!e.ok)throw new Error("HTTP "+e.status);return e.json()}).then(b).catch(function(n){e&&(e.className="lt-live-status",e.textContent="Offline"),t&&(t.textContent="Could not reach the live API ("+(n&&n.message?n.message:n)+"). It runs on a tiny VPS behind Nginx; an outage here does not mean the project is broken.")})}u&&u.addEventListener("click",o),o(),setInterval(o,3e4)})()</script></main><footer class=footer><span>&copy; 2026 <a href=/>Fahim Imam - Software Developer</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

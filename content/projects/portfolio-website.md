@@ -1,39 +1,24 @@
 ---
 title: "Portfolio Website"
-date: 2024-02-06
+date: 2026-08-15
 draft: false
 icon: "🌐"
 status: "live"
-tags: ["Hugo", "Static Site", "VPS"]
+tags: ["Hugo", "PaperMod", "Vanilla JS", "CSS Variables", "Nginx"]
 categories: ["Projects"]
-summary: "Hugo static site, deployed via rsync on a 1-core 2GB VPS using only ~10MB RAM."
+description: "A Hugo static site that ships its own design dashboard, a live matrix-rain background, and a four-theme palette engine — built and deployed on a 1-core VPS that uses about as much RAM as a single browser tab."
+summary: "The portfolio you're reading right now. Hugo + PaperMod with a custom cyberpunk overlay, a live matrix-rain background, and a four-theme design dashboard. See the full engineering case study below."
+layout: "portfolio-showcase"
+hideMeta: true
 links:
   - { label: "Source", url: "https://github.com/fahimimam/portfolio", primary: true }
+  - { label: "Live",   url: "https://fahimimam.pro.bd" }
 ---
 
-This very website! Built with Hugo and deployed on a resource-constrained VPS.
-
-## Why Hugo?
-
-- **Speed:** Static files served in milliseconds
-- **Efficiency:** Only ~10MB RAM usage for the entire site
-- **Simplicity:** No backend required
-- **Flexibility:** Can add dynamic features later
-
-## Deployment
-
-Built locally on MacBook Air M3, cross-compiled, and deployed via rsync:
-
-```bash
-hugo build --minify
-rsync -avz public/ vps:/var/www/portfolio/
-```
-
-## Stack
-
-- **Generator:** Hugo
-- **Theme:** [PaperMod](https://github.com/adityatelange/hugo-PaperMod) (heavily customized)
-- **Hosting:** Nginx on a 1-core, 2GB RAM VPS
-- **Deploy:** `deploy.sh` — single command
-
-The theme is PaperMod with a custom cyberpunk overlay — neon-blue accents, monospace fonts, animated terminal on the home page, and a subtle matrix-rain background on inner pages.
+This very website. Hugo on a 1-core VPS, deployed with a single rsync,
+and equipped with a few of my own pieces: a four-theme palette engine,
+a live matrix-rain background, a floating design dashboard with
+keyboard shortcuts, and a custom showcase layout for the deeper
+project pages. The full engineering case study — problem,
+architecture, challenges, theming system, deployment, lessons — is
+rendered on the page below.
