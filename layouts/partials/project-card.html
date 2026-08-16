@@ -1,0 +1,43 @@
+{{- /*
+Renders a single project card.
+
+Expects a dict context with these keys:
+- card: the project card data (from data/projects.json or a page)
+- page: an optional *page* (RegularPage) to link to "Details →"
+- isFallback: when true, the card is rendered from a page not in the data file
+*/ -}}
+<article class="project-card">
+    <div class="project-card-header">
+        <span aria-hidden="true" class="project-icon">{{ .card.icon | default "📦" }}</span>
+        {{- if .card.status }}
+        <span class="project-status {{ .card.status }}">
+        {{- if eq .card.status "live" }}● live
+        {{- else if eq .card.status "wip" }}◐ in progress
+        {{- else }}{{ .card.status }}
+        {{- end }}
+      </span>
+        {{- end }}
+    </div>
+    <h3>{{ .card.title }}</h3>
+    <p>{{ .card.summary }}</p>
+
+    {{- if .card.tags }}
+    <div class="project-tags">
+        {{- range .card.tags }}
+        <span class="project-tag">{{ . }}</span>
+        {{- end }}
+    </div>
+    {{- end }}
+
+    <div class="project-links">
+        {{- if .page }}
+        <a class="primary" href="{{ .page.RelPermalink }}">Details →</a>
+        {{- end }}
+        {{- range .card.links }}
+        <a class="{{ if .primary }}primary{{ end }}" href="{{ .url }}"
+           {{ if not (hasPrefix .url "/") }}target="_blank" rel="noopener"{{ end }}>
+            {{ .label }}
+        </a>
+        {{- end }}
+    </div>
+</article>

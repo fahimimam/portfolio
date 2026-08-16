@@ -1,0 +1,172 @@
+{{ define "main" }}
+{{/*
+/uses page. Same card vocabulary as /about and /now so the three
+pages share a visual language. Sections are arbitrary — the
+layout reads .Params.
+<section> as a list of {name, role, detail}.
+    */}}
+
+    <article class="post-single about-page uses-page">
+
+        {{ partial "breadcrumbs.html" . }}
+
+        <header class="page-header">
+            <h1>{{ .Title }}</h1>
+            <div class="now-updated">
+                <span class="now-updated-label">Last updated</span>
+                <time datetime="{{ .Params.last_updated }}">{{ .Params.last_updated | time.Format "2 January 2006" }}
+                </time>
+            </div>
+            {{ with .Description }}
+            <div class="post-description">{{ . | markdownify }}</div>
+            {{ end }}
+        </header>
+
+        {{ with .Params.intro }}
+        <section class="about-hero uses-hero">
+            <p class="uses-intro">{{ . | safeHTML }}</p>
+        </section>
+        {{ end }}
+
+        {{/*
+        Render each named section from frontmatter. Whitelisted order so
+        the page always opens with editors / terminal / dotfiles before
+        the more peripheral services / hardware.
+        */}}
+        {{ $sections := slice
+        (dict "key" "editors" "title" "Editor")
+        (dict "key" "terminal" "title" "Terminal & shell")
+        (dict "key" "dotfiles" "title" "Dotfiles")
+        (dict "key" "go_toolchain" "title" "Go toolchain")
+        (dict "key" "ops" "title" "Ops")
+        (dict "key" "services" "title" "Hosted services")
+        (dict "key" "hardware" "title" "Hardware")
+        (dict "key" "browser" "title" "Browser")
+        }}
+
+        {{ range $sections }}
+        {{ $key := .key }}
+        {{ $title := .title }}
+        {{ $items := index $.Params $key }}
+        {{ with $items }}
+        <section class="about-section">
+            <h2 class="about-section-title">{{ $title }}</h2>
+            <div class="about-grid">
+                {{ range . }}
+                <article class="about-card about-card-uses">
+                    <h3>{{ .name }}</h3>
+                    <p class="about-card-uses-role">{{ .role }}</p>
+                    {{ with .detail }}<p>{{ . | safeHTML }}</p>{{ end }}
+                    {{ with .alt }}<p class="about-card-uses-alt">{{ . | safeHTML }}</p>{{ end }}
+                </article>
+                {{ end }}
+            </div>
+        </section>
+        {{ end }}
+        {{ end }}
+
+        {{ with .Params.contact_again }}
+        <section class="about-section about-section-final">
+            <p>
+                {{ range . }}<a class="about-cta" href="{{ .url }}">{{ .label }}</a> {{ end }}
+            </p>
+        </section>
+        {{ end }}
+
+        {{ with .Content }}
+        <section class="about-section about-markdown-body">
+            {{ . }}
+        </section>
+        {{ end }}
+
+    </article>
+
+    <style>
+        /* /uses inherits .about-* from the about layout. /now-updated styles
+           are duplicated here because each page has its own scoped <style> —
+           that's intentional, keeps the layouts independent. */
+
+        .uses-page .page-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .uses-hero {
+            margin-bottom: 1.5rem;
+        }
+
+        .uses-intro {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .uses-intro a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--neon-blue);
+        }
+
+        .uses-intro a:hover {
+            color: var(--neon-orange);
+            border-bottom-color: var(--neon-orange);
+        }
+
+        .uses-intro code {
+            background: var(--cyber-bg-3);
+            border: 1px solid var(--cyber-border);
+            border-radius: 4px;
+            padding: 0.05rem 0.35rem;
+            font-size: 0.88em;
+            color: var(--neon-orange);
+        }
+
+        .about-card-uses h3 {
+            color: var(--neon-orange);
+        }
+
+        .about-card-uses-role {
+            margin: 0.15rem 0 0.5rem;
+            color: var(--neon-blue);
+            font-size: 0.82rem;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .about-card-uses p {
+            margin: 0.4rem 0 0;
+            color: var(--text-primary);
+            font-size: 0.93rem;
+            line-height: 1.65;
+        }
+
+        .about-card-uses p code {
+            background: var(--cyber-bg-3);
+            border: 1px solid var(--cyber-border);
+            border-radius: 4px;
+            padding: 0.05rem 0.35rem;
+            font-size: 0.88em;
+            color: var(--neon-orange);
+        }
+
+        .about-card-uses kbd {
+            background: var(--cyber-bg-3);
+            border: 1px solid var(--cyber-border);
+            border-radius: 4px;
+            padding: 0.05rem 0.4rem;
+            font-size: 0.82em;
+            color: var(--neon-blue);
+            font-family: inherit;
+        }
+
+        .about-card-uses-alt {
+            margin-top: 0.5rem !important;
+            padding-top: 0.5rem;
+            border-top: 1px dashed var(--cyber-border);
+            color: var(--text-secondary);
+            font-size: 0.85rem !important;
+            font-style: italic;
+        }
+    </style>
+
+    {{ end }}
