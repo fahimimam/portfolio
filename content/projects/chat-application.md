@@ -32,6 +32,11 @@ A real-time chat application built with Go, featuring WebSocket connections and 
 
 ## Challenges & Solutions
 
-The main challenge was horizontal scaling. With a single Go process, every WebSocket connection sits in the same memory space and a message can be routed to its recipient in O(1). With multiple Go processes behind a load balancer, two users connected to *different* nodes cannot message each other directly — they live in separate processes.
+The main challenge was horizontal scaling. With a single Go process, every WebSocket connection sits in the same memory
+space and a message can be routed to its recipient in O(1). With multiple Go processes behind a load balancer, two users
+connected to *different* nodes cannot message each other directly — they live in separate processes.
 
-The fix is Redis pub/sub: each node publishes every outgoing message to a Redis channel and subscribes to incoming messages from the same channel. When a message comes in, the node fans it out to whichever local sockets match the recipient. The result is a chat server that scales horizontally with no application-level awareness of how many nodes exist.
+The fix is Redis pub/sub: each node publishes every outgoing message to a Redis channel and subscribes to incoming
+messages from the same channel. When a message comes in, the node fans it out to whichever local sockets match the
+recipient. The result is a chat server that scales horizontally with no application-level awareness of how many nodes
+exist.

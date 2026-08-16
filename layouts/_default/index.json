@@ -1,34 +1,16 @@
-{{- $.Scratch.Add "index" slice -}}
-{{/*
-  Site-wide search index for PaperMod's fastsearch.js (Fuse.js).
-
-  Scopes the index to two section kinds:
-    - RegularPages in section "blog"     (Markdown posts under /blog/)
-    - RegularPages in section "projects" (project showcases)
-
-  Skipped:
-    - About / CV / Now / Uses (single-purpose pages, low search value)
-    - Tag and category landing pages (terms pages)
-    - The search page itself
-    - Any post with `hideFromSearch: true` in its frontmatter
-    - Drafts (`site.RegularPages` excludes drafts by default)
-
-  Output schema matches PaperMod's bundled index.json so fastsearch.js
-  keeps working without modification: title, content, permalink, summary.
-  We add tags, categories, section, and date as Fuse ranking hints.
-*/}}
-{{- range where site.RegularPages "Section" "in" (slice "blog" "projects") -}}
-    {{- if not .Params.hideFromSearch -}}
-    {{- $.Scratch.Add "index" (dict
-        "title" .Title
-        "content" .Plain
-        "permalink" .Permalink
-        "summary" .Summary
-        "tags" .Params.tags
-        "categories" .Params.categories
-        "section" .Section
-        "date" (.Date.Format "2006-01-02")
-    ) -}}
-    {{- end -}}
-{{- end -}}
-{{- $.Scratch.Get "index" | jsonify -}}
+{{- $index := slice }}
+{{- range where site.RegularPages "Section" "in" (slice "blog" "projects") }}
+{{- if not .Params.hideFromSearch }}
+{{- $index = $index | append (dict
+  "title" .Title
+  "content" .Plain
+  "permalink" .Permalink
+  "summary" .Summary
+  "tags" .Params.tags
+  "categories" .Params.categories
+  "section" .Section
+  "date" (.Date.Format "2006-01-02")
+) }}
+{{- end }}
+{{- end }}
+{{- $index | jsonify }}

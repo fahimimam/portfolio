@@ -1,23 +1,41 @@
 {{- /*
-  Extend head:
-    - Inline synchronous script: read the saved theme from localStorage
-      and set data-theme on <html> BEFORE first paint, so the saved
-      theme is correct on initial render (no flash of default).
-    - Matrix rain background.
-    - Theme + rain dashboard.
+Extend head:
+- Inline synchronous script: read the saved theme from localStorage
+and set data-theme on
+<html> BEFORE first paint, so the saved
+theme is correct on initial render (no flash of default).
+- Matrix rain background.
+- Theme + rain dashboard.
 
-  The synchronous boot script reads only `lt.theme` (the others are
-  picked up live by matrix.js / theme-dashboard.js once they load).
+The synchronous boot script reads only `lt.theme` (the others are
+picked up live by matrix.js / theme-dashboard.js once they load).
 */ -}}
 <script>
-(function () {
-  try {
-    var t = localStorage.getItem('lt.theme');
-    if (t && t !== 'cyberpunk') {
-      document.documentElement.setAttribute('data-theme', t);
-    }
-  } catch (e) { /* localStorage blocked -- default theme */ }
-})();
+    (function () {
+        try {
+            var t = localStorage.getItem('lt.theme');
+            if (t && t !== 'cyberpunk') {
+                document.documentElement.setAttribute('data-theme', t);
+            }
+        } catch (e) { /* localStorage blocked -- default theme */
+        }
+    })();
+</script>
+{{- /*
+Respect prefers-reduced-motion at the script level too. The CSS
+guards stop visual animations, but the matrix rain rAF loop still
+burns CPU even when its output is invisible. Setting the flag here
+lets matrix.js short-circuit before it even creates the canvas.
+*/ -}}
+<script>
+    (function () {
+        try {
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                localStorage.setItem('lt.rain.enabled', '0');
+            }
+        } catch (e) {
+        }
+    })();
 </script>
 <script defer src="/js/matrix.js"></script>
 <script defer src="/js/theme-dashboard.js"></script>

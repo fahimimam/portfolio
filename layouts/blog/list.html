@@ -1,412 +1,454 @@
 {{- define "main" }}
 {{/*
-  Blog section list. Overrides PaperMod's default section list for
-  /blog/ with:
+Blog section list. Overrides PaperMod's default section list for
+/blog/ with:
 
-   1. A hero band carrying the _index.md description.
-   2. A "Start a new post" CTA card (with a copy-to-clipboard button
-      for the `hugo new blog/...` command and a collapsible view of
-      the archetype template). Hidden via `hideWriteCTA: true` in
-      `content/blog/_index.md` if you want a clean read-only list.
-   3. A tag chip filter row, one chip per tag actually used in /blog/.
-      Clicking a chip filters by tag at /tags/<slug>/. "All" goes back
-      to the unfiltered blog list.
-   4. The latest post rendered larger as a "feature" card (PaperMod's
-      .first-entry).
-   5. The rest rendered as PaperMod's .post-entry cards via the
-      `post_card.html` partial.
-   6. Pagination at the bottom, identical to PaperMod's defaults.
+1. A hero band carrying the _index.md description.
+2. A "Start a new post" CTA card (with a copy-to-clipboard button
+for the `hugo new blog/...` command and a collapsible view of
+the archetype template). Hidden via `hideWriteCTA: true` in
+`content/blog/_index.md` if you want a clean read-only list.
+3. A tag chip filter row, one chip per tag actually used in /blog/.
+Clicking a chip filters by tag at /tags/
+<slug>/. "All" goes back
+    to the unfiltered blog list.
+    4. The latest post rendered larger as a "feature" card (PaperMod's
+    .first-entry).
+    5. The rest rendered as PaperMod's .post-entry cards via the
+    `post_card.html` partial.
+    6. Pagination at the bottom, identical to PaperMod's defaults.
 
-  Reuses PaperMod's .post-entry / .first-entry CSS unchanged.
-*/}}
+    Reuses PaperMod's .post-entry / .first-entry CSS unchanged.
+    */}}
 
-<div class="blog-list">
+    <div class="blog-list">
 
-  {{/* ----- Hero band ----- */}}
-  {{- if .Title }}
-  <header class="page-header">
-    {{- partial "breadcrumbs.html" . }}
-    <h1>{{ .Title }}</h1>
-    {{- if .Description }}
-    <div class="post-description">{{ .Description | markdownify }}</div>
-    {{- end }}
-  </header>
-  {{- end }}
+        {{/* ----- Hero band ----- */}}
+        {{- if .Title }}
+        <header class="page-header">
+            {{- partial "breadcrumbs.html" . }}
+            <h1>{{ .Title }}</h1>
+            {{- if .Description }}
+            <div class="post-description">{{ .Description | markdownify }}</div>
+            {{- end }}
+        </header>
+        {{- end }}
 
-  {{- if .Content }}
-  <div class="post-content">
-    {{- if not (.Param "disableAnchoredHeadings") }}
-    {{- partial "anchored_headings.html" .Content -}}
-    {{- else }}{{ .Content }}{{ end }}
-  </div>
-  {{- end }}
+        {{- if .Content }}
+        <div class="post-content">
+            {{- if not (.Param "disableAnchoredHeadings") }}
+            {{- partial "anchored_headings.html" .Content -}}
+            {{- else }}{{ .Content }}{{ end }}
+        </div>
+        {{- end }}
 
-  {{/* ----- Write CTA ----- */}}
-  {{- if not (.Param "hideWriteCTA") }}
-  <aside class="blog-write-cta" aria-label="Start a new blog post">
-    <div class="blog-write-cta-head">
-      <span class="blog-write-cta-tag">workflow</span>
-      <h2>Start a new post</h2>
-      <p>Run the command, edit the scaffolded file, flip <code>draft: false</code>. The archetype handles every field the rest of the site reads.</p>
+        {{/* ----- Write CTA ----- */}}
+        {{- if not (.Param "hideWriteCTA") }}
+        <aside aria-label="Start a new blog post" class="blog-write-cta">
+            <div class="blog-write-cta-head">
+                <span class="blog-write-cta-tag">workflow</span>
+                <h2>Start a new post</h2>
+                <p>Run the command, edit the scaffolded file, flip <code>draft: false</code>. The archetype handles
+                    every field the rest of the site reads.</p>
+            </div>
+            <div class="blog-write-cta-cmd">
+                <code class="blog-write-cta-code">hugo new blog/your-slug.md</code>
+                <button aria-label="Copy command to clipboard" class="blog-write-cta-copy" type="button">
+                    <span class="blog-write-cta-copy-label">copy</span>
+                </button>
+            </div>
+            <details class="blog-write-cta-details">
+                <summary>Show the archetype template</summary>
+                {{- $archetype := "archetypes/blog.md" }}
+                {{- if (fileExists $archetype) }}
+                <pre class="blog-write-cta-archetype"><code>{{ readFile $archetype | safeHTMLAttr }}</code></pre>
+                {{- else }}
+                <p class="blog-write-cta-empty">Couldn&rsquo;t load <code>{{ $archetype }}</code> from disk.</p>
+                {{- end }}
+            </details>
+            <div class="blog-write-cta-foot">
+                <a class="blog-write-cta-link"
+                   href="https://github.com/fahimimam/portfolio/blob/main/archetypes/blog.md" rel="noopener"
+                   target="_blank">Edit the archetype on GitHub &nbsp;→</a>
+            </div>
+        </aside>
+        {{- end }}
+
+        {{/* ----- Tag chips ----- */}}
+        {{- $blogTags := where .Site.Taxonomies.tags "Page.Section" "blog" -}}
+        {{- if gt (len $blogTags) 0 }}
+        <nav aria-label="Filter by tag" class="blog-tag-chips">
+            <a class="blog-tag-chip blog-tag-chip-all" href="/blog/">All</a>
+            {{- range $blogTags }}
+            <a class="blog-tag-chip" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span class="blog-tag-count">{{ len .Pages }}</span></a>
+            {{- end }}
+        </nav>
+        {{- end }}
+
+        {{/* ----- Post list ----- */}}
+        {{- $pages := where .RegularPages "Params.hiddenInHomeList" "!=" "true" }}
+        {{- $sorted := $pages.ByDate.Reverse }}
+        {{- $feature := index $sorted 0 }}
+        {{- $rest := after 1 $sorted }}
+
+        {{- if $feature }}
+        {{- partial "post_card.html" (dict "Page" $feature "class" "post-entry first-entry") }}
+        {{- end }}
+
+        {{- range $rest }}
+        {{- partial "post_card.html" (dict "Page" . "class" "post-entry") }}
+        {{- end }}
+
+        {{/* ----- Pagination (mirror PaperMod defaults) ----- */}}
+        {{- $paginator := .Paginate $pages }}
+        {{- if gt $paginator.TotalPages 1 }}
+        <footer class="page-footer">
+            <nav class="pagination">
+                {{- if $paginator.HasPrev }}
+                <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">«&nbsp;{{ i18n "prev_page" }}&nbsp;</a>
+                {{- end }}
+                {{- if $paginator.HasNext }}
+                <a class="next" href="{{ $paginator.Next.URL | absURL }}">&nbsp;{{ i18n "next_page" }}&nbsp;»</a>
+                {{- end }}
+            </nav>
+        </footer>
+        {{- end }}
+
     </div>
-    <div class="blog-write-cta-cmd">
-      <code class="blog-write-cta-code">hugo new blog/your-slug.md</code>
-      <button type="button" class="blog-write-cta-copy" aria-label="Copy command to clipboard">
-        <span class="blog-write-cta-copy-label">copy</span>
-      </button>
-    </div>
-    <details class="blog-write-cta-details">
-      <summary>Show the archetype template</summary>
-      {{- $archetype := "archetypes/blog.md" }}
-      {{- if (fileExists $archetype) }}
-      <pre class="blog-write-cta-archetype"><code>{{ readFile $archetype | safeHTMLAttr }}</code></pre>
-      {{- else }}
-      <p class="blog-write-cta-empty">Couldn&rsquo;t load <code>{{ $archetype }}</code> from disk.</p>
-      {{- end }}
-    </details>
-    <div class="blog-write-cta-foot">
-      <a class="blog-write-cta-link" href="https://github.com/fahimimam/portfolio/blob/main/archetypes/blog.md" target="_blank" rel="noopener">Edit the archetype on GitHub &nbsp;→</a>
-    </div>
-  </aside>
-  {{- end }}
 
-  {{/* ----- Tag chips ----- */}}
-  {{- $blogTags := where .Site.Taxonomies.tags "Page.Section" "blog" -}}
-  {{- if gt (len $blogTags) 0 }}
-  <nav class="blog-tag-chips" aria-label="Filter by tag">
-    <a class="blog-tag-chip blog-tag-chip-all" href="/blog/">All</a>
-    {{- range $blogTags }}
-    <a class="blog-tag-chip" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span class="blog-tag-count">{{ len .Pages }}</span></a>
-    {{- end }}
-  </nav>
-  {{- end }}
+    <style>
+        /* /blog/ list — only the bits PaperMod doesn't already style. */
 
-  {{/* ----- Post list ----- */}}
-  {{- $pages := where .RegularPages "Params.hiddenInHomeList" "!=" "true" }}
-  {{- $sorted := $pages.ByDate.Reverse }}
-  {{- $feature := index $sorted 0 }}
-  {{- $rest := after 1 $sorted }}
-
-  {{- if $feature }}
-  {{- partial "post_card.html" (dict "Page" $feature "class" "post-entry first-entry") }}
-  {{- end }}
-
-  {{- range $rest }}
-  {{- partial "post_card.html" (dict "Page" . "class" "post-entry") }}
-  {{- end }}
-
-  {{/* ----- Pagination (mirror PaperMod defaults) ----- */}}
-  {{- $paginator := .Paginate $pages }}
-  {{- if gt $paginator.TotalPages 1 }}
-  <footer class="page-footer">
-    <nav class="pagination">
-      {{- if $paginator.HasPrev }}
-      <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">«&nbsp;{{ i18n "prev_page" }}&nbsp;</a>
-      {{- end }}
-      {{- if $paginator.HasNext }}
-      <a class="next" href="{{ $paginator.Next.URL | absURL }}">&nbsp;{{ i18n "next_page" }}&nbsp;»</a>
-      {{- end }}
-    </nav>
-  </footer>
-  {{- end }}
-
-</div>
-
-<style>
-  /* /blog/ list — only the bits PaperMod doesn't already style. */
-
-  .blog-list {
-    max-width: 880px;
-    margin: 0 auto;
-  }
-
-  .blog-list .page-header { margin-bottom: 1.5rem; }
-
-  /* Tag chips row */
-  .blog-tag-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0.5rem;
-    margin: 1.5rem 0 2rem;
-    padding: 0.75rem 0;
-    border-top: 1px solid var(--cyber-border);
-    border-bottom: 1px solid var(--cyber-border);
-  }
-  .blog-tag-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.7rem;
-    background: var(--cyber-surface);
-    border: 1px solid var(--cyber-border);
-    border-radius: 999px;
-    color: var(--neon-blue);
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-  .blog-tag-chip:hover {
-    background: var(--neon-blue);
-    color: var(--cyber-bg);
-    border-color: var(--neon-blue);
-    box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
-  }
-  .blog-tag-chip-all {
-    color: var(--neon-orange);
-    border-color: var(--neon-orange);
-  }
-  .blog-tag-chip-all:hover {
-    background: var(--neon-orange);
-    color: var(--cyber-bg);
-    border-color: var(--neon-orange);
-    box-shadow: 0 0 10px rgba(255, 107, 53, 0.4);
-  }
-  .blog-tag-count {
-    background: rgba(0, 243, 255, 0.18);
-    border-radius: 999px;
-    padding: 0 0.4rem;
-    font-size: 0.75rem;
-    color: var(--neon-blue);
-  }
-  .blog-tag-chip:hover .blog-tag-count {
-    background: rgba(0, 0, 0, 0.25);
-    color: var(--cyber-bg);
-  }
-
-  /* When a card has `first-entry`, lift it visually above the rest. */
-  .blog-list .first-entry {
-    background: linear-gradient(135deg, rgba(0, 243, 255, 0.05), rgba(255, 107, 53, 0.05));
-    border-color: rgba(0, 243, 255, 0.25);
-  }
-
-  /* Write CTA — guides the author from /blog/ into `hugo new`. */
-  .blog-write-cta {
-    position: relative;
-    margin: 0 0 1.75rem;
-    padding: 1.25rem 1.5rem 1.1rem;
-    border: 1px solid var(--cyber-border);
-    border-radius: 12px;
-    background:
-      linear-gradient(135deg, rgba(0, 243, 255, 0.08), rgba(255, 107, 53, 0.06) 60%, rgba(0, 243, 255, 0.04)),
-      var(--cyber-surface);
-    box-shadow: var(--cyber-glow);
-    backdrop-filter: blur(6px);
-    overflow: hidden;
-  }
-  .blog-write-cta::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--neon-blue), var(--neon-orange));
-    pointer-events: none;
-  }
-
-  .blog-write-cta-head { margin-bottom: 0.85rem; }
-  .blog-write-cta-tag {
-    display: inline-block;
-    font-size: 0.7rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 0.15rem 0.55rem;
-    border-radius: 999px;
-    border: 1px solid var(--neon-orange);
-    color: var(--neon-orange);
-    background: rgba(255, 107, 53, 0.08);
-    margin-bottom: 0.5rem;
-  }
-  .blog-write-cta-head h2 {
-    margin: 0 0 0.4rem;
-    color: var(--neon-orange);
-    font-size: 1.2rem;
-    letter-spacing: 0.5px;
-  }
-  .blog-write-cta-head p {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: 0.92rem;
-    line-height: 1.55;
-  }
-  .blog-write-cta-head p code {
-    background: rgba(0, 243, 255, 0.10);
-    color: var(--neon-blue);
-    border: 1px solid rgba(0, 243, 255, 0.30);
-    padding: 0.05em 0.35em;
-    border-radius: 4px;
-    font-size: 0.85em;
-  }
-
-  .blog-write-cta-cmd {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    margin: 0.85rem 0 0.75rem;
-    border: 1px solid var(--cyber-border);
-    border-radius: 8px;
-    overflow: hidden;
-    background: var(--code-block-bg);
-  }
-  .blog-write-cta-code {
-    flex: 1;
-    display: block;
-    padding: 0.65rem 0.9rem;
-    margin: 0;
-    background: transparent !important;
-    border: none !important;
-    color: var(--neon-blue);
-    font-family: inherit;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    overflow-x: auto;
-  }
-  .blog-write-cta-copy {
-    flex: 0 0 auto;
-    padding: 0 0.95rem;
-    border: none;
-    border-left: 1px solid var(--cyber-border);
-    background: rgba(0, 243, 255, 0.08);
-    color: var(--neon-blue);
-    font-family: inherit;
-    font-size: 0.82rem;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .blog-write-cta-copy:hover {
-    background: var(--neon-blue);
-    color: var(--cyber-bg);
-    text-shadow: none;
-  }
-  .blog-write-cta-copy.is-copied {
-    background: var(--neon-orange);
-    color: var(--cyber-bg);
-    border-color: var(--neon-orange);
-  }
-  .blog-write-cta-copy:focus-visible {
-    outline: 2px solid var(--neon-blue);
-    outline-offset: 2px;
-  }
-
-  .blog-write-cta-details {
-    margin-top: 0.25rem;
-    border: 1px dashed var(--cyber-border);
-    border-radius: 8px;
-    background: rgba(5, 8, 17, 0.5);
-  }
-  .blog-write-cta-details summary {
-    cursor: pointer;
-    padding: 0.55rem 0.85rem;
-    color: var(--neon-blue);
-    font-size: 0.88rem;
-    letter-spacing: 0.3px;
-    list-style: none;
-  }
-  .blog-write-cta-details summary::-webkit-details-marker { display: none; }
-  .blog-write-cta-details summary::before {
-    content: "▸";
-    display: inline-block;
-    margin-right: 0.45rem;
-    color: var(--neon-orange);
-    transition: transform 0.15s ease;
-  }
-  .blog-write-cta-details[open] summary::before { transform: rotate(90deg); }
-  .blog-write-cta-details summary:hover { color: var(--neon-orange); }
-
-  .blog-write-cta-archetype {
-    margin: 0;
-    padding: 0.9rem 1rem;
-    border-top: 1px solid var(--cyber-border);
-    border-radius: 0;
-    background: var(--code-block-bg);
-    overflow-x: auto;
-    font-size: 0.82rem;
-    line-height: 1.55;
-    color: var(--text-primary);
-  }
-  .blog-write-cta-archetype code {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    color: var(--text-primary) !important;
-    font-family: inherit;
-  }
-  .blog-write-cta-empty {
-    padding: 0.75rem 1rem;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    margin: 0;
-  }
-
-  .blog-write-cta-foot {
-    margin-top: 0.85rem;
-    display: flex;
-    justify-content: flex-end;
-  }
-  .blog-write-cta-link {
-    font-size: 0.82rem;
-    color: var(--neon-blue);
-    text-decoration: none;
-    border-bottom: 1px dashed var(--neon-blue);
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-  .blog-write-cta-link:hover {
-    color: var(--neon-orange);
-    border-bottom-color: var(--neon-orange);
-    text-shadow: 0 0 6px rgba(255, 107, 53, 0.4);
-  }
-</style>
-
-<script>
-  /* Wire the copy button on the write CTA. Reads the command from
-     the sibling .blog-write-cta-code element so the markup stays the
-     single source of truth. Idempotent — runs again if the page
-     loads the same script twice (Hugo shouldn't, but just in case). */
-  (function () {
-    if (window.__blogWriteCTAWired) return;
-    window.__blogWriteCTAWired = true;
-
-    document.querySelectorAll('.blog-write-cta-copy').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var cmd = btn.parentElement && btn.parentElement.querySelector('.blog-write-cta-code');
-        var text = cmd ? (cmd.textContent || '').trim() : '';
-        if (!text) return;
-
-        var done = function () {
-          var label = btn.querySelector('.blog-write-cta-copy-label');
-          if (label) label.textContent = 'copied';
-          btn.classList.add('is-copied');
-          setTimeout(function () {
-            if (label) label.textContent = 'copy';
-            btn.classList.remove('is-copied');
-          }, 1500);
-        };
-
-        if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(text).then(done).catch(function () {
-            /* fall through to legacy path */
-            legacyCopy(text) && done();
-          });
-        } else if (legacyCopy(text)) {
-          done();
+        .blog-list {
+            max-width: 880px;
+            margin: 0 auto;
         }
-      });
-    });
 
-    function legacyCopy(text) {
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'absolute';
-      ta.style.left = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
-      document.body.removeChild(ta);
-      return ok;
-    }
-  })();
-</script>
+        .blog-list .page-header {
+            margin-bottom: 1.5rem;
+        }
 
-{{- end }}{{- /* end main */ -}}
+        /* Tag chips row */
+        .blog-tag-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.5rem;
+            margin: 1.5rem 0 2rem;
+            padding: 0.75rem 0;
+            border-top: 1px solid var(--cyber-border);
+            border-bottom: 1px solid var(--cyber-border);
+        }
+
+        .blog-tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.3rem 0.7rem;
+            background: var(--cyber-surface);
+            border: 1px solid var(--cyber-border);
+            border-radius: 999px;
+            color: var(--neon-blue);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .blog-tag-chip:hover {
+            background: var(--neon-blue);
+            color: var(--cyber-bg);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+        }
+
+        .blog-tag-chip-all {
+            color: var(--neon-orange);
+            border-color: var(--neon-orange);
+        }
+
+        .blog-tag-chip-all:hover {
+            background: var(--neon-orange);
+            color: var(--cyber-bg);
+            border-color: var(--neon-orange);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.4);
+        }
+
+        .blog-tag-count {
+            background: rgba(0, 243, 255, 0.18);
+            border-radius: 999px;
+            padding: 0 0.4rem;
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+        }
+
+        .blog-tag-chip:hover .blog-tag-count {
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--cyber-bg);
+        }
+
+        /* When a card has `first-entry`, lift it visually above the rest. */
+        .blog-list .first-entry {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.05), rgba(255, 107, 53, 0.05));
+            border-color: rgba(0, 243, 255, 0.25);
+        }
+
+        /* Write CTA — guides the author from /blog/ into `hugo new`. */
+        .blog-write-cta {
+            position: relative;
+            margin: 0 0 1.75rem;
+            padding: 1.25rem 1.5rem 1.1rem;
+            border: 1px solid var(--cyber-border);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.08), rgba(255, 107, 53, 0.06) 60%, rgba(0, 243, 255, 0.04)),
+            var(--cyber-surface);
+            box-shadow: var(--cyber-glow);
+            backdrop-filter: blur(6px);
+            overflow: hidden;
+        }
+
+        .blog-write-cta::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-orange));
+            pointer-events: none;
+        }
+
+        .blog-write-cta-head {
+            margin-bottom: 0.85rem;
+        }
+
+        .blog-write-cta-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+            border: 1px solid var(--neon-orange);
+            color: var(--neon-orange);
+            background: rgba(255, 107, 53, 0.08);
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-write-cta-head h2 {
+            margin: 0 0 0.4rem;
+            color: var(--neon-orange);
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .blog-write-cta-head p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .blog-write-cta-head p code {
+            background: rgba(0, 243, 255, 0.10);
+            color: var(--neon-blue);
+            border: 1px solid rgba(0, 243, 255, 0.30);
+            padding: 0.05em 0.35em;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        .blog-write-cta-cmd {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            margin: 0.85rem 0 0.75rem;
+            border: 1px solid var(--cyber-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--code-block-bg);
+        }
+
+        .blog-write-cta-code {
+            flex: 1;
+            display: block;
+            padding: 0.65rem 0.9rem;
+            margin: 0;
+            background: transparent !important;
+            border: none !important;
+            color: var(--neon-blue);
+            font-family: inherit;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .blog-write-cta-copy {
+            flex: 0 0 auto;
+            padding: 0 0.95rem;
+            border: none;
+            border-left: 1px solid var(--cyber-border);
+            background: rgba(0, 243, 255, 0.08);
+            color: var(--neon-blue);
+            font-family: inherit;
+            font-size: 0.82rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .blog-write-cta-copy:hover {
+            background: var(--neon-blue);
+            color: var(--cyber-bg);
+            text-shadow: none;
+        }
+
+        .blog-write-cta-copy.is-copied {
+            background: var(--neon-orange);
+            color: var(--cyber-bg);
+            border-color: var(--neon-orange);
+        }
+
+        .blog-write-cta-copy:focus-visible {
+            outline: 2px solid var(--neon-blue);
+            outline-offset: 2px;
+        }
+
+        .blog-write-cta-details {
+            margin-top: 0.25rem;
+            border: 1px dashed var(--cyber-border);
+            border-radius: 8px;
+            background: rgba(5, 8, 17, 0.5);
+        }
+
+        .blog-write-cta-details summary {
+            cursor: pointer;
+            padding: 0.55rem 0.85rem;
+            color: var(--neon-blue);
+            font-size: 0.88rem;
+            letter-spacing: 0.3px;
+            list-style: none;
+        }
+
+        .blog-write-cta-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .blog-write-cta-details summary::before {
+            content: "▸";
+            display: inline-block;
+            margin-right: 0.45rem;
+            color: var(--neon-orange);
+            transition: transform 0.15s ease;
+        }
+
+        .blog-write-cta-details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .blog-write-cta-details summary:hover {
+            color: var(--neon-orange);
+        }
+
+        .blog-write-cta-archetype {
+            margin: 0;
+            padding: 0.9rem 1rem;
+            border-top: 1px solid var(--cyber-border);
+            border-radius: 0;
+            background: var(--code-block-bg);
+            overflow-x: auto;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            color: var(--text-primary);
+        }
+
+        .blog-write-cta-archetype code {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            color: var(--text-primary) !important;
+            font-family: inherit;
+        }
+
+        .blog-write-cta-empty {
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .blog-write-cta-foot {
+            margin-top: 0.85rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .blog-write-cta-link {
+            font-size: 0.82rem;
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--neon-blue);
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .blog-write-cta-link:hover {
+            color: var(--neon-orange);
+            border-bottom-color: var(--neon-orange);
+            text-shadow: 0 0 6px rgba(255, 107, 53, 0.4);
+        }
+    </style>
+
+    <script>
+        /* Wire the copy button on the write CTA. Reads the command from
+           the sibling .blog-write-cta-code element so the markup stays the
+           single source of truth. Idempotent — runs again if the page
+           loads the same script twice (Hugo shouldn't, but just in case). */
+        (function () {
+            if (window.__blogWriteCTAWired) return;
+            window.__blogWriteCTAWired = true;
+
+            document.querySelectorAll('.blog-write-cta-copy').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var cmd = btn.parentElement && btn.parentElement.querySelector('.blog-write-cta-code');
+                    var text = cmd ? (cmd.textContent || '').trim() : '';
+                    if (!text) return;
+
+                    var done = function () {
+                        var label = btn.querySelector('.blog-write-cta-copy-label');
+                        if (label) label.textContent = 'copied';
+                        btn.classList.add('is-copied');
+                        setTimeout(function () {
+                            if (label) label.textContent = 'copy';
+                            btn.classList.remove('is-copied');
+                        }, 1500);
+                    };
+
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(text).then(done).catch(function () {
+                            /* fall through to legacy path */
+                            legacyCopy(text) && done();
+                        });
+                    } else if (legacyCopy(text)) {
+                        done();
+                    }
+                });
+            });
+
+            function legacyCopy(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'absolute';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = false;
+                try {
+                    ok = document.execCommand('copy');
+                } catch (e) {
+                    ok = false;
+                }
+                document.body.removeChild(ta);
+                return ok;
+            }
+        })();
+    </script>
+
+    {{- end }}{{- /* end main */ -}}

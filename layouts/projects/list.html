@@ -1,17 +1,17 @@
 {{ define "main" }}
 <header class="page-header">
-  {{- partial "breadcrumbs.html" . }}
-  <h1>{{ .Title }}</h1>
-  {{- if .Description }}
-  <div class="post-description">{{ .Description | markdownify }}</div>
-  {{- end }}
+    {{- partial "breadcrumbs.html" . }}
+    <h1>{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">{{ .Description | markdownify }}</div>
+    {{- end }}
 </header>
 
 {{- if .Content }}
 <div class="post-content">
-  {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- if not (.Param "disableAnchoredHeadings") }}
     {{- partial "anchored_headings.html" .Content -}}
-  {{- else }}{{ .Content }}{{ end }}
+    {{- else }}{{ .Content }}{{ end }}
 </div>
 {{- end }}
 
@@ -21,16 +21,16 @@
 {{- $sorted := sort $pages "Date" "desc" -}}
 
 <div class="projects-grid">
-  {{- range $sorted }}
+    {{- range $sorted }}
     {{- partial "project-card.html" (dict "card" (dict
-        "icon"    .Params.icon
-        "title"   .Title
-        "summary" .Summary
-        "status"  .Params.status
-        "tags"    .Params.tags
-        "links"   .Params.links
-      ) "page" .) }}
-  {{- end }}
+    "icon" .Params.icon
+    "title" .Title
+    "summary" .Summary
+    "status" .Params.status
+    "tags" .Params.tags
+    "links" .Params.links
+    ) "page" .) }}
+    {{- end }}
 </div>
 
 {{ end }}

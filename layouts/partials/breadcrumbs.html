@@ -1,15 +1,15 @@
 {{- /*
-  Override of PaperMod's breadcrumbs.html.
+Override of PaperMod's breadcrumbs.html.
 
-  Why this file exists: PaperMod's home link uses absLangURL and the
-  intermediate crumbs use Permalink, both of which prepend site.BaseURL.
-  Clicking a breadcrumb on a page served from a non-canonical domain
-  (e.g. localhost or fahimimam.sytes.net) silently bounces the visitor
-  to fahimimam.pro.bd — exactly the navigation redirect this site
-  tries to avoid.
+Why this file exists: PaperMod's home link uses absLangURL and the
+intermediate crumbs use Permalink, both of which prepend site.BaseURL.
+Clicking a breadcrumb on a page served from a non-canonical domain
+(e.g. localhost or fahimimam.sytes.net) silently bounces the visitor
+to fahimimam.pro.bd — exactly the navigation redirect this site
+tries to avoid.
 
-  This override swaps both to host-relative forms so the browser
-  appends the path to whatever host the visitor is on.
+This override swaps both to host-relative forms so the browser
+appends the path to whatever host the visitor is on.
 */ -}}
 {{- if (.Param "ShowBreadCrumbs") -}}
 <div class="breadcrumbs">

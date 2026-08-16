@@ -130,19 +130,19 @@ A theme is a complete override of the 17 CSS variables. They live
 in [`assets/css/extended/custom.css`](./assets/css/extended/custom.css)
 as `:root[data-theme="X"] { … }` blocks.
 
-| Variable group | Tokens |
-|---|---|
-| Brand | `--neon-blue`, `--neon-orange`, `--neon-purple`, `--neon-green` |
-| Surface | `--cyber-bg`, `--cyber-bg-2`, `--cyber-bg-3`, `--cyber-surface`, `--cyber-border`, `--cyber-glow`, `--cyber-glow-strong` |
-| Text | `--text-primary`, `--text-secondary` |
-| PaperMod passthrough | `--theme`, `--entry`, `--primary`, `--secondary`, `--tertiary`, `--content`, `--code-block-bg`, `--code-bg`, `--border` |
+| Variable group       | Tokens                                                                                                                   |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------|
+| Brand                | `--neon-blue`, `--neon-orange`, `--neon-purple`, `--neon-green`                                                          |
+| Surface              | `--cyber-bg`, `--cyber-bg-2`, `--cyber-bg-3`, `--cyber-surface`, `--cyber-border`, `--cyber-glow`, `--cyber-glow-strong` |
+| Text                 | `--text-primary`, `--text-secondary`                                                                                     |
+| PaperMod passthrough | `--theme`, `--entry`, `--primary`, `--secondary`, `--tertiary`, `--content`, `--code-block-bg`, `--code-bg`, `--border`  |
 
 Themed blocks use `:root[data-theme="X"]`, which has higher CSS
 specificity than the bare `:root` fallback at the bottom. The
 fallback only applies when no `data-theme` attribute is set at all
 — i.e. during the brief window before the FOUC boot script runs.
 
-### Adding a 7th theme
+### Adding a new theme
 
 1. Open `assets/css/extended/custom.css` and append a new
    `:root[data-theme="my-theme"] { … }` block defining all 17 tokens.
@@ -159,6 +159,9 @@ fallback only applies when no `data-theme` attribute is set at all
    are shown on the dashboard card.
 3. Rebuild. The dashboard picker auto-includes the new theme;
    no HTML changes needed.
+
+The eight shipped themes are cyberpunk (default), synthwave,
+solarized, terminal, nord, monokai, dracula, and catppuccin.
 
 ### Switching themes at runtime
 
@@ -178,14 +181,14 @@ a theme switch, and re-read their state.
 `static/js/theme-dashboard.js` builds the floating ⚙ panel at boot,
 injects its CSS once, and exposes keyboard shortcuts:
 
-| Key | Action |
-|---|---|
-| <kbd>T</kbd> | Toggle the dashboard open / closed |
-| <kbd>Esc</kbd> | Close the dashboard |
-| <kbd>←</kbd> / <kbd>→</kbd> | Cycle themes (when panel open) |
-| <kbd>[</kbd> / <kbd>]</kbd> | Rain speed − / + 0.1 (clamped 0.2 – 3) |
+| Key                         | Action                                    |
+|-----------------------------|-------------------------------------------|
+| <kbd>T</kbd>                | Toggle the dashboard open / closed        |
+| <kbd>Esc</kbd>              | Close the dashboard                       |
+| <kbd>←</kbd> / <kbd>→</kbd> | Cycle themes (when panel open)            |
+| <kbd>[</kbd> / <kbd>]</kbd> | Rain speed − / + 0.1 (clamped 0.2 – 3)    |
 | <kbd>−</kbd> / <kbd>=</kbd> | Rain opacity − / + 0.02 (clamped 0 – 0.5) |
-| <kbd>R</kbd> | Toggle rain on / off |
+| <kbd>R</kbd>                | Toggle rain on / off                      |
 
 All settings persist to `localStorage` under the `lt.*` namespace
 and survive cross-tab reloads via the `storage` event.
@@ -510,15 +513,16 @@ hero/terminal/CTA stack. The page is split across three files:
 
 Each entry in `data/terminal.lines` is one of:
 
-| `type`      | fields              | renders as                              |
-|-------------|---------------------|-----------------------------------------|
-| `prompt`    | `command`           | `~$ <command>`                          |
-| `typing`    | `value`             | typewriter-animated line                |
-| `skills`    | `values: [...]`     | flex row of pills                       |
-| `info`      | `value`             | plain monospace output (no animation)   |
-| `cursor`    | —                   | blinking `▋` after a prompt             |
+| `type`   | fields          | renders as                            |
+|----------|-----------------|---------------------------------------|
+| `prompt` | `command`       | `~$ <command>`                        |
+| `typing` | `value`         | typewriter-animated line              |
+| `skills` | `values: [...]` | flex row of pills                     |
+| `info`   | `value`         | plain monospace output (no animation) |
+| `cursor` | —               | blinking `▋` after a prompt           |
 
 To add a new engineering line to the hero, append a `prompt`
+
 + `info` pair:
 
 ```json
@@ -545,9 +549,9 @@ block that disables every keyframed animation on the page when
 the user has set their OS-level preference. Visual effects remain;
 they just stop moving.
 
-| Domain | What it serves |
-|---|---|
-| `https://fahimimam.pro.bd` | Production. The `baseURL`. |
+| Domain                        | What it serves                      |
+|-------------------------------|-------------------------------------|
+| `https://fahimimam.pro.bd`    | Production. The `baseURL`.          |
 | `https://fahimimam.sytes.net` | Mirror. Same build, different host. |
 
 Both serve the same `public/` directory on the VPS — Nginx

@@ -167,6 +167,69 @@
     --border: var(--cyber-border);
 }
 
+/*
+ * Dracula — popular developer theme. Purple foreground accents
+ * on a near-black backdrop. Warmer than Monokai but cooler than
+ * Cyberpunk; a comfortable middle ground for long reading.
+ */
+:root[data-theme="dracula"] {
+    --neon-blue: #bd93f9;
+    --neon-orange: #ff79c6;
+    --neon-purple: #6272a4;
+    --neon-green: #50fa7b;
+    --cyber-bg: #282a36;
+    --cyber-bg-2: #21222c;
+    --cyber-bg-3: #44475a;
+    --cyber-surface: rgba(40, 42, 54, 0.94);
+    --cyber-border: rgba(189, 147, 249, 0.40);
+    --cyber-glow: 0 0 18px rgba(189, 147, 249, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(255, 121, 198, 0.45);
+    --text-primary: #f8f8f2;
+    --text-secondary: #6272a4;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(68, 71, 90, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(189, 147, 249, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #21222c;
+    --code-bg: #44475a;
+    --border: var(--cyber-border);
+}
+
+/*
+ * Catppuccin Mocha — soft pastels on a deep warm-tinted base.
+ * Lower contrast than the neon themes; reads well in low light
+ * without straining eyes. The pink/peach/blue palette is the
+ * identity colour set in Catppuccin variants.
+ */
+:root[data-theme="catppuccin"] {
+    --neon-blue: #89b4fa;
+    --neon-orange: #fab387;
+    --neon-purple: #cba6f7;
+    --neon-green: #a6e3a1;
+    --cyber-bg: #1e1e2e;
+    --cyber-bg-2: #181825;
+    --cyber-bg-3: #313244;
+    --cyber-surface: rgba(30, 30, 46, 0.94);
+    --cyber-border: rgba(137, 180, 250, 0.40);
+    --cyber-glow: 0 0 18px rgba(137, 180, 250, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(203, 166, 247, 0.45);
+    --text-primary: #cdd6f4;
+    --text-secondary: #a6adc8;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(49, 50, 68, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(137, 180, 250, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #181825;
+    --code-bg: #313244;
+    --border: var(--cyber-border);
+}
+
 /* Default (cyberpunk) for pages that haven't opted into a theme. */
 :root {
     --neon-blue: #00f3ff;
@@ -227,10 +290,9 @@ body,
 }
 
 .main {
-    background:
-        radial-gradient(ellipse at top, rgba(0, 243, 255, 0.06), transparent 50%),
-        radial-gradient(ellipse at bottom, rgba(191, 64, 191, 0.05), transparent 50%),
-        var(--cyber-bg);
+    background: radial-gradient(ellipse at top, rgba(0, 243, 255, 0.06), transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(191, 64, 191, 0.05), transparent 50%),
+    var(--cyber-bg);
     background-attachment: fixed;
 }
 
@@ -441,6 +503,33 @@ body,
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--neon-purple);
+}
+
+/* Skip-to-content link. Sits at the top of the page, offscreen and
+ * transparent, only becoming visible when keyboard-focused. Lets
+ * screen-reader / keyboard users bypass the header nav. */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    z-index: 9999;
+    border-bottom-right-radius: 6px;
+    transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    box-shadow: 0 0 12px var(--neon-blue);
+}
+
+/* Make the focus target visible when the skip link transfers focus. */
+.main:focus {
+    outline: none;
 }
 
 .more-heading {
@@ -693,6 +782,91 @@ body,
     .about-grid {
         grid-template-columns: 1fr 1fr;
     }
+}
+
+/* "More projects" footer that ends every showcase page. Sits below
+   the case-study sections and offers the reader a way out without
+   bouncing back to the project index. The arrow nudges on hover to
+   reinforce the "go read another one" call. */
+.project-related {
+    margin: 3rem 0 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--cyber-border);
+}
+
+.project-related-heading {
+    color: var(--neon-blue);
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+    font-weight: 700;
+}
+
+.project-related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.project-related-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-related-card:hover {
+    transform: translateX(4px);
+    border-color: var(--neon-blue);
+    box-shadow: var(--cyber-glow);
+}
+
+.project-related-arrow {
+    font-size: 1.15rem;
+    color: var(--neon-orange);
+    transition: transform 0.2s ease;
+}
+
+.project-related-card:hover .project-related-arrow {
+    transform: translateX(4px);
+    color: var(--neon-blue);
+}
+
+.project-related-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.project-related-meta strong {
+    color: var(--neon-orange);
+    font-size: 0.98rem;
+    letter-spacing: 0.3px;
+}
+
+.project-related-meta small {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.project-related-card-all {
+    background: transparent;
+    border-style: dashed;
+}
+
+.project-related-card-all .project-related-meta strong {
+    color: var(--neon-blue);
 }
 
 .about-card {

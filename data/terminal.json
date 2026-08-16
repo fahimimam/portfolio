@@ -1,15 +1,54 @@
 {
   "lines": [
-    { "type": "prompt", "command": "whoami" },
-    { "type": "typing", "value": "Fahim Imam" },
-    { "type": "prompt", "command": "cat about.txt" },
-    { "type": "typing", "value": "Software Developer | Go Enthusiast | System Optimizer" },
-    { "type": "prompt", "command": "ls skills/" },
-    { "type": "skills", "values": ["Go", "Docker", "PostgreSQL", "Redis", "Linux", "Hugo"] },
-    { "type": "prompt", "command": "tail -f /var/log/build.log" },
-    { "type": "info", "value": "[ok] lunch-tracker: atomic writes live" },
-    { "type": "info", "value": "[ok] matrix-rain: 0 reflows / frame" },
-    { "type": "info", "value": "[ok] portfolio: shipped 4 blog posts" },
-    { "type": "cursor" }
+    {
+      "type": "prompt",
+      "command": "whoami"
+    },
+    {
+      "type": "typing",
+      "value": "Fahim Imam"
+    },
+    {
+      "type": "prompt",
+      "command": "cat about.txt"
+    },
+    {
+      "type": "typing",
+      "value": "Software Developer | Go Enthusiast | System Optimizer"
+    },
+    {
+      "type": "prompt",
+      "command": "ls skills/"
+    },
+    {
+      "type": "skills",
+      "values": [
+        "Go",
+        "Docker",
+        "PostgreSQL",
+        "Redis",
+        "Linux",
+        "Hugo"
+      ]
+    },
+    {
+      "type": "prompt",
+      "command": "tail -f /var/log/build.log"
+    },
+    {
+      "type": "info",
+      "value": "[ok] lunch-tracker: atomic writes live"
+    },
+    {
+      "type": "info",
+      "value": "[ok] matrix-rain: 0 reflows / frame"
+    },
+    {
+      "type": "info",
+      "value": "[ok] portfolio: shipped 4 blog posts"
+    },
+    {
+      "type": "cursor"
+    }
   ]
 }

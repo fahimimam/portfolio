@@ -9,16 +9,19 @@ summary: "How I optimized my VPS deployment strategy to save resources"
 
 # Optimizing VPS Deployment
 
-When you're working with a resource-constrained VPS (1 core, 2GB RAM), every megabyte counts. Here's how I optimized my deployment strategy.
+When you're working with a resource-constrained VPS (1 core, 2GB RAM), every megabyte counts. Here's how I optimized my
+deployment strategy.
 
 ## The Challenge
 
 I have a VPS with:
+
 - 1 CPU core
 - 2GB RAM
 - 25GB SSD
 
 I needed to run:
+
 - Portfolio website
 - Chat application
 - PostgreSQL

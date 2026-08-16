@@ -1,180 +1,215 @@
 {{ define "main" }}
 {{/*
-  /now page. Mirrors about/single.html's card vocabulary so the two
-  pages share a visual language, but sections are written for a
-  snapshot-of-now feel rather than a CV.
+/now page. Mirrors about/single.html's card vocabulary so the two
+pages share a visual language, but sections are written for a
+snapshot-of-now feel rather than a CV.
 */}}
 
 <article class="post-single about-page now-page">
 
-  {{ partial "breadcrumbs.html" . }}
+    {{ partial "breadcrumbs.html" . }}
 
-  <header class="page-header">
-    <h1>{{ .Title }}</h1>
-    <div class="now-updated">
-      <span class="now-updated-label">Last updated</span>
-      <time datetime="{{ .Params.last_updated }}">{{ .Params.last_updated | time.Format "2 January 2006" }}</time>
-    </div>
-    {{ with .Description }}<div class="post-description">{{ . | markdownify }}</div>{{ end }}
-  </header>
+    <header class="page-header">
+        <h1>{{ .Title }}</h1>
+        <div class="now-updated">
+            <span class="now-updated-label">Last updated</span>
+            <time datetime="{{ .Params.last_updated }}">{{ .Params.last_updated | time.Format "2 January 2006" }}</time>
+        </div>
+        {{ with .Description }}
+        <div class="post-description">{{ . | markdownify }}</div>
+        {{ end }}
+    </header>
 
-  {{ with .Params.hero }}
-  <section class="about-hero now-hero">
-    {{ with .intro }}<p class="now-intro">{{ . | safeHTML }}</p>{{ end }}
-  </section>
-  {{ end }}
+    {{ with .Params.hero }}
+    <section class="about-hero now-hero">
+        {{ with .intro }}<p class="now-intro">{{ . | safeHTML }}</p>{{ end }}
+    </section>
+    {{ end }}
 
-  {{ with .Params.focus }}
-  <section class="about-section">
-    <h2 class="about-section-title">Focus right now</h2>
-    <div class="about-grid">
-      {{ range . }}
-      <article class="about-card about-card-focus">
-        <h3>{{ .area }}</h3>
-        <p>{{ .detail | safeHTML }}</p>
-      </article>
-      {{ end }}
-    </div>
-  </section>
-  {{ end }}
+    {{ with .Params.focus }}
+    <section class="about-section">
+        <h2 class="about-section-title">Focus right now</h2>
+        <div class="about-grid">
+            {{ range . }}
+            <article class="about-card about-card-focus">
+                <h3>{{ .area }}</h3>
+                <p>{{ .detail | safeHTML }}</p>
+            </article>
+            {{ end }}
+        </div>
+    </section>
+    {{ end }}
 
-  {{ with .Params.reading }}
-  <section class="about-section">
-    <h2 class="about-section-title">Reading</h2>
-    <div class="about-grid">
-      {{ range . }}
-      <article class="about-card about-card-reading">
-        <h3>{{ .title }}</h3>
-        <p class="about-card-sub">{{ .author }}</p>
-        {{ with .status }}<p class="about-card-status">{{ . }}</p>{{ end }}
-      </article>
-      {{ end }}
-    </div>
-  </section>
-  {{ end }}
+    {{ with .Params.reading }}
+    <section class="about-section">
+        <h2 class="about-section-title">Reading</h2>
+        <div class="about-grid">
+            {{ range . }}
+            <article class="about-card about-card-reading">
+                <h3>{{ .title }}</h3>
+                <p class="about-card-sub">{{ .author }}</p>
+                {{ with .status }}<p class="about-card-status">{{ . }}</p>{{ end }}
+            </article>
+            {{ end }}
+        </div>
+    </section>
+    {{ end }}
 
-  {{ with .Params.listening }}
-  <section class="about-section">
-    <h2 class="about-section-title">Listening</h2>
-    <ul class="now-list now-list-listening">
-      {{ range . }}<li>{{ . | safeHTML }}</li>{{ end }}
-    </ul>
-  </section>
-  {{ end }}
+    {{ with .Params.listening }}
+    <section class="about-section">
+        <h2 class="about-section-title">Listening</h2>
+        <ul class="now-list now-list-listening">
+            {{ range . }}
+            <li>{{ . | safeHTML }}</li>
+            {{ end }}
+        </ul>
+    </section>
+    {{ end }}
 
-  {{ with .Params.avoiding }}
-  <section class="about-section">
-    <h2 class="about-section-title">What I'm trying to avoid</h2>
-    <ul class="now-list now-list-avoid">
-      {{ range . }}<li>{{ . | safeHTML }}</li>{{ end }}
-    </ul>
-  </section>
-  {{ end }}
+    {{ with .Params.avoiding }}
+    <section class="about-section">
+        <h2 class="about-section-title">What I'm trying to avoid</h2>
+        <ul class="now-list now-list-avoid">
+            {{ range . }}
+            <li>{{ . | safeHTML }}</li>
+            {{ end }}
+        </ul>
+    </section>
+    {{ end }}
 
-  {{ with .Params.contact_again }}
-  <section class="about-section about-section-final">
-    <p>
-      {{ range . }}<a class="about-cta" href="{{ .url }}">{{ .label }}</a> {{ end }}
-    </p>
-  </section>
-  {{ end }}
+    {{ with .Params.contact_again }}
+    <section class="about-section about-section-final">
+        <p>
+            {{ range . }}<a class="about-cta" href="{{ .url }}">{{ .label }}</a> {{ end }}
+        </p>
+    </section>
+    {{ end }}
 
-  {{ with .Content }}
-  <section class="about-section about-markdown-body">
-    {{ . }}
-  </section>
-  {{ end }}
+    {{ with .Content }}
+    <section class="about-section about-markdown-body">
+        {{ . }}
+    </section>
+    {{ end }}
 
 </article>
 
 <style>
-  /* Reuses .about-* from the about layout. Adds /now-specific accents. */
+    /* Reuses .about-* from the about layout. Adds /now-specific accents. */
 
-  .now-page .page-header { margin-bottom: 1.5rem; }
+    .now-page .page-header {
+        margin-bottom: 1.5rem;
+    }
 
-  .now-updated {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0.5rem 0 0;
-    padding: 0.3rem 0.7rem;
-    background: var(--cyber-surface);
-    border: 1px solid var(--cyber-border);
-    border-radius: 999px;
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-  }
-  .now-updated time {
-    color: var(--neon-blue);
-    font-weight: 600;
-    letter-spacing: 0.3px;
-  }
-  .now-updated-label {
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    letter-spacing: 0.5px;
-    font-size: 0.7rem;
-  }
+    .now-updated {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0 0;
+        padding: 0.3rem 0.7rem;
+        background: var(--cyber-surface);
+        border: 1px solid var(--cyber-border);
+        border-radius: 999px;
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+    }
 
-  .now-hero { margin-bottom: 1.5rem; }
-  .now-intro {
-    margin: 0;
-    color: var(--text-primary);
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-  .now-intro strong { color: var(--neon-blue); }
-  .now-intro code {
-    background: var(--cyber-bg-3);
-    border: 1px solid var(--cyber-border);
-    border-radius: 4px;
-    padding: 0.05rem 0.35rem;
-    font-size: 0.88em;
-    color: var(--neon-orange);
-  }
-  .now-intro a {
-    color: var(--neon-blue);
-    text-decoration: none;
-    border-bottom: 1px dashed var(--neon-blue);
-  }
-  .now-intro a:hover { color: var(--neon-orange); border-bottom-color: var(--neon-orange); }
+    .now-updated time {
+        color: var(--neon-blue);
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
 
-  .about-card-focus h3 { color: var(--neon-orange); }
-  .about-card-reading h3 { color: var(--neon-orange); }
-  .about-card-reading .about-card-sub { font-style: italic; color: var(--text-primary); }
-  .about-card-status {
-    margin: 0.4rem 0 0;
-    color: var(--neon-blue);
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
+    .now-updated-label {
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        letter-spacing: 0.5px;
+        font-size: 0.7rem;
+    }
 
-  .now-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.5rem;
-  }
-  .now-list li {
-    position: relative;
-    padding-left: 1.5rem;
-    color: var(--text-primary);
-    line-height: 1.65;
-    font-size: 0.95rem;
-  }
-  .now-list-listening li::before {
-    content: "♪";
-    position: absolute;
-    left: 0;
-    color: var(--neon-blue);
-  }
-  .now-list-avoid li::before {
-    content: "✕";
-    position: absolute;
-    left: 0;
-    color: var(--neon-orange);
-  }
+    .now-hero {
+        margin-bottom: 1.5rem;
+    }
+
+    .now-intro {
+        margin: 0;
+        color: var(--text-primary);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .now-intro strong {
+        color: var(--neon-blue);
+    }
+
+    .now-intro code {
+        background: var(--cyber-bg-3);
+        border: 1px solid var(--cyber-border);
+        border-radius: 4px;
+        padding: 0.05rem 0.35rem;
+        font-size: 0.88em;
+        color: var(--neon-orange);
+    }
+
+    .now-intro a {
+        color: var(--neon-blue);
+        text-decoration: none;
+        border-bottom: 1px dashed var(--neon-blue);
+    }
+
+    .now-intro a:hover {
+        color: var(--neon-orange);
+        border-bottom-color: var(--neon-orange);
+    }
+
+    .about-card-focus h3 {
+        color: var(--neon-orange);
+    }
+
+    .about-card-reading h3 {
+        color: var(--neon-orange);
+    }
+
+    .about-card-reading .about-card-sub {
+        font-style: italic;
+        color: var(--text-primary);
+    }
+
+    .about-card-status {
+        margin: 0.4rem 0 0;
+        color: var(--neon-blue);
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .now-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .now-list li {
+        position: relative;
+        padding-left: 1.5rem;
+        color: var(--text-primary);
+        line-height: 1.65;
+        font-size: 0.95rem;
+    }
+
+    .now-list-listening li::before {
+        content: "♪";
+        position: absolute;
+        left: 0;
+        color: var(--neon-blue);
+    }
+
+    .now-list-avoid li::before {
+        content: "✕";
+        position: absolute;
+        left: 0;
+        color: var(--neon-orange);
+    }
 </style>
 
 {{ end }}
