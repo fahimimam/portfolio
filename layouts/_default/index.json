@@ -1,0 +1,16 @@
+{{- $index := slice }}
+{{- range where site.RegularPages "Section" "in" (slice "blog" "projects") }}
+{{- if not .Params.hideFromSearch }}
+{{- $index = $index | append (dict
+  "title" .Title
+  "content" .Plain
+  "permalink" .Permalink
+  "summary" .Summary
+  "tags" .Params.tags
+  "categories" .Params.categories
+  "section" .Section
+  "date" (.Date.Format "2006-01-02")
+) }}
+{{- end }}
+{{- end }}
+{{- $index | jsonify }}

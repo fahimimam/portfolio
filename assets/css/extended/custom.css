@@ -1,0 +1,907 @@
+/*
+ * Cyberpunk theme extension. Overrides PaperMod defaults so non-landing pages
+ * share the neon aesthetic of the landing page.
+ *
+ * The landing page (/layouts/index.html) carries its own inline stylesheet with
+ * the same tokens; the duplication is intentional so the home page can be
+ * shipped without a second CSS request.
+ *
+ * Theme palettes (cyberpunk / synthwave / solarized / terminal) are
+ * defined here and switched via :root[data-theme="X"] on <html>.
+ * Theme switching happens via /js/theme-dashboard.js.
+ */
+
+:root[data-theme="cyberpunk"] {
+    --neon-blue: #00f3ff;
+    --neon-orange: #ff6b35;
+    --neon-purple: #bf40bf;
+    --neon-green: #4ade80;
+    --cyber-bg: #050811;
+    --cyber-bg-2: #0a0e27;
+    --cyber-bg-3: #0f1538;
+    --cyber-surface: rgba(10, 14, 39, 0.85);
+    --cyber-border: rgba(0, 243, 255, 0.35);
+    --cyber-glow: 0 0 20px rgba(0, 243, 255, 0.3);
+    --cyber-glow-strong: 0 0 30px rgba(0, 243, 255, 0.5);
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(15, 21, 56, 0.7);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(0, 243, 255, 0.15);
+    --content: var(--text-primary);
+    --code-block-bg: #06091a;
+    --code-bg: #0a0f2a;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="synthwave"] {
+    --neon-blue: #22d3ee;
+    --neon-orange: #ff2e93;
+    --neon-purple: #a855f7;
+    --neon-green: #34d399;
+    --cyber-bg: #0c0420;
+    --cyber-bg-2: #1a0b3a;
+    --cyber-bg-3: #2d1454;
+    --cyber-surface: rgba(26, 11, 58, 0.88);
+    --cyber-border: rgba(255, 46, 147, 0.45);
+    --cyber-glow: 0 0 20px rgba(255, 46, 147, 0.4);
+    --cyber-glow-strong: 0 0 30px rgba(168, 85, 247, 0.55);
+    --text-primary: #f5e8ff;
+    --text-secondary: #b794d4;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(45, 20, 84, 0.7);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-orange);
+    --tertiary: rgba(255, 46, 147, 0.18);
+    --content: var(--text-primary);
+    --code-block-bg: #160a2e;
+    --code-bg: #1f0e3d;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="solarized"] {
+    --neon-blue: #2aa198;
+    --neon-orange: #cb4b16;
+    --neon-purple: #8a3fa6;
+    --neon-green: #859900;
+    --cyber-bg: #fdf6e3;
+    --cyber-bg-2: #eee8d5;
+    --cyber-bg-3: #e4debf;
+    --cyber-surface: rgba(253, 246, 227, 0.92);
+    --cyber-border: rgba(7, 54, 66, 0.20);
+    --cyber-glow: 0 0 18px rgba(42, 161, 152, 0.18);
+    --cyber-glow-strong: 0 0 28px rgba(203, 75, 22, 0.20);
+    --text-primary: #073642;
+    --text-secondary: #586e75;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(238, 232, 213, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(42, 161, 152, 0.12);
+    --content: var(--text-primary);
+    --code-block-bg: #eee8d5;
+    --code-bg: #e4debf;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="terminal"] {
+    --neon-blue: #ffb000;
+    --neon-orange: #ff5e1a;
+    --neon-purple: #cc7722;
+    --neon-green: #7fff00;
+    --cyber-bg: #0a0a08;
+    --cyber-bg-2: #16140e;
+    --cyber-bg-3: #1f1c12;
+    --cyber-surface: rgba(16, 14, 8, 0.92);
+    --cyber-border: rgba(255, 176, 0, 0.40);
+    --cyber-glow: 0 0 18px rgba(255, 176, 0, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(255, 176, 0, 0.45);
+    --text-primary: #ffcb66;
+    --text-secondary: #a08658;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(22, 20, 14, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(255, 176, 0, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #100e08;
+    --code-bg: #16140e;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="nord"] {
+    --neon-blue: #88c0d0;
+    --neon-orange: #ebcb8b;
+    --neon-purple: #b48ead;
+    --neon-green: #a3be8c;
+    --cyber-bg: #2e3440;
+    --cyber-bg-2: #3b4252;
+    --cyber-bg-3: #434c5e;
+    --cyber-surface: rgba(46, 52, 64, 0.92);
+    --cyber-border: rgba(136, 192, 208, 0.45);
+    --cyber-glow: 0 0 18px rgba(136, 192, 208, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(180, 142, 173, 0.40);
+    --text-primary: #eceff4;
+    --text-secondary: #b8bec9;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(59, 66, 82, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(136, 192, 208, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #3b4252;
+    --code-bg: #434c5e;
+    --border: var(--cyber-border);
+}
+
+:root[data-theme="monokai"] {
+    --neon-blue: #f92672;
+    --neon-orange: #fd971f;
+    --neon-purple: #ae81ff;
+    --neon-green: #a6e22e;
+    --cyber-bg: #272822;
+    --cyber-bg-2: #1e1f1c;
+    --cyber-bg-3: #3e3d32;
+    --cyber-surface: rgba(39, 40, 34, 0.94);
+    --cyber-border: rgba(249, 38, 114, 0.45);
+    --cyber-glow: 0 0 18px rgba(249, 38, 114, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(174, 129, 255, 0.45);
+    --text-primary: #f8f8f2;
+    --text-secondary: #a59f85;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(62, 61, 50, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(249, 38, 114, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #1e1f1c;
+    --code-bg: #3e3d32;
+    --border: var(--cyber-border);
+}
+
+/*
+ * Dracula — popular developer theme. Purple foreground accents
+ * on a near-black backdrop. Warmer than Monokai but cooler than
+ * Cyberpunk; a comfortable middle ground for long reading.
+ */
+:root[data-theme="dracula"] {
+    --neon-blue: #bd93f9;
+    --neon-orange: #ff79c6;
+    --neon-purple: #6272a4;
+    --neon-green: #50fa7b;
+    --cyber-bg: #282a36;
+    --cyber-bg-2: #21222c;
+    --cyber-bg-3: #44475a;
+    --cyber-surface: rgba(40, 42, 54, 0.94);
+    --cyber-border: rgba(189, 147, 249, 0.40);
+    --cyber-glow: 0 0 18px rgba(189, 147, 249, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(255, 121, 198, 0.45);
+    --text-primary: #f8f8f2;
+    --text-secondary: #6272a4;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(68, 71, 90, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(189, 147, 249, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #21222c;
+    --code-bg: #44475a;
+    --border: var(--cyber-border);
+}
+
+/*
+ * Catppuccin Mocha — soft pastels on a deep warm-tinted base.
+ * Lower contrast than the neon themes; reads well in low light
+ * without straining eyes. The pink/peach/blue palette is the
+ * identity colour set in Catppuccin variants.
+ */
+:root[data-theme="catppuccin"] {
+    --neon-blue: #89b4fa;
+    --neon-orange: #fab387;
+    --neon-purple: #cba6f7;
+    --neon-green: #a6e3a1;
+    --cyber-bg: #1e1e2e;
+    --cyber-bg-2: #181825;
+    --cyber-bg-3: #313244;
+    --cyber-surface: rgba(30, 30, 46, 0.94);
+    --cyber-border: rgba(137, 180, 250, 0.40);
+    --cyber-glow: 0 0 18px rgba(137, 180, 250, 0.30);
+    --cyber-glow-strong: 0 0 28px rgba(203, 166, 247, 0.45);
+    --text-primary: #cdd6f4;
+    --text-secondary: #a6adc8;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(49, 50, 68, 0.85);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(137, 180, 250, 0.14);
+    --content: var(--text-primary);
+    --code-block-bg: #181825;
+    --code-bg: #313244;
+    --border: var(--cyber-border);
+}
+
+/* Default (cyberpunk) for pages that haven't opted into a theme. */
+:root {
+    --neon-blue: #00f3ff;
+    --neon-orange: #ff6b35;
+    --neon-purple: #bf40bf;
+    --neon-green: #4ade80;
+    --cyber-bg: #050811;
+    --cyber-bg-2: #0a0e27;
+    --cyber-bg-3: #0f1538;
+    --cyber-surface: rgba(10, 14, 39, 0.85);
+    --cyber-border: rgba(0, 243, 255, 0.35);
+    --cyber-glow: 0 0 20px rgba(0, 243, 255, 0.3);
+    --cyber-glow-strong: 0 0 30px rgba(0, 243, 255, 0.5);
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+
+    --theme: var(--cyber-bg);
+    --entry: rgba(15, 21, 56, 0.7);
+    --primary: var(--text-primary);
+    --secondary: var(--neon-blue);
+    --tertiary: rgba(0, 243, 255, 0.15);
+    --content: var(--text-primary);
+    --code-block-bg: #06091a;
+    --code-bg: #0a0f2a;
+    --border: var(--cyber-border);
+}
+
+body,
+[data-theme] body {
+    background: var(--cyber-bg);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Courier New', monospace;
+}
+
+.header {
+    background: rgba(5, 8, 17, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--cyber-border);
+}
+
+.header .logo a {
+    color: var(--neon-blue) !important;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+}
+
+#menu li a {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+#menu li a:hover,
+#menu li a span.active {
+    color: var(--neon-blue) !important;
+    text-shadow: 0 0 8px var(--neon-blue);
+}
+
+.main {
+    background: radial-gradient(ellipse at top, rgba(0, 243, 255, 0.06), transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(191, 64, 191, 0.05), transparent 50%),
+    var(--cyber-bg);
+    background-attachment: fixed;
+}
+
+.page-header h1 {
+    color: var(--neon-blue);
+    text-shadow: 0 0 12px rgba(0, 243, 255, 0.5);
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.6rem;
+}
+
+.post-description {
+    color: var(--text-secondary) !important;
+    font-style: normal;
+}
+
+.post-entry,
+.first-entry {
+    background: var(--cyber-surface) !important;
+    border: 1px solid var(--cyber-border) !important;
+    border-radius: 12px !important;
+    padding: 1.25rem 1.5rem !important;
+    margin-bottom: 1.25rem !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    backdrop-filter: blur(6px);
+}
+
+.post-entry:hover,
+.first-entry:hover {
+    transform: translateY(-3px);
+    border-color: var(--neon-blue) !important;
+    box-shadow: var(--cyber-glow);
+}
+
+.post-entry .entry-header h2,
+.first-entry .entry-header h2 {
+    color: var(--neon-orange) !important;
+    font-weight: 700;
+}
+
+.post-entry .entry-content p,
+.first-entry .entry-content p {
+    color: var(--text-primary) !important;
+}
+
+.post-entry .entry-footer,
+.first-entry .entry-footer {
+    color: var(--text-secondary) !important;
+    font-size: 0.85rem;
+}
+
+.post-content {
+    color: var(--text-primary);
+    line-height: 1.8;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+    color: var(--neon-blue);
+    letter-spacing: 0.5px;
+}
+
+.post-content h2 {
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.4rem;
+    margin-top: 2rem;
+}
+
+.post-content a {
+    color: var(--neon-orange);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--neon-orange);
+}
+
+.post-content a:hover {
+    color: var(--neon-blue);
+    border-bottom-color: var(--neon-blue);
+    text-shadow: 0 0 6px rgba(0, 243, 255, 0.5);
+}
+
+.post-content code {
+    background: rgba(0, 243, 255, 0.08) !important;
+    color: var(--neon-blue) !important;
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.post-content pre {
+    background: var(--code-block-bg) !important;
+    border: 1px solid var(--cyber-border);
+    border-radius: 8px;
+    box-shadow: var(--cyber-glow);
+}
+
+.post-content pre code {
+    background: transparent !important;
+    border: none;
+    color: var(--text-primary);
+}
+
+.post-content blockquote {
+    border-left: 3px solid var(--neon-orange);
+    background: rgba(255, 107, 53, 0.05);
+    padding: 0.75rem 1rem;
+    color: var(--text-secondary);
+    border-radius: 0 6px 6px 0;
+}
+
+.post-content table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.post-content table th,
+.post-content table td {
+    border: 1px solid var(--cyber-border);
+    padding: 0.5rem 0.75rem;
+}
+
+.post-content table th {
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--neon-blue);
+}
+
+.post-content hr {
+    border: none;
+    border-top: 1px solid var(--cyber-border);
+}
+
+.post-tags a,
+.post-single .post-tags a {
+    background: rgba(0, 243, 255, 0.1) !important;
+    border: 1px solid var(--neon-blue) !important;
+    color: var(--neon-blue) !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.post-tags a:hover {
+    background: var(--neon-blue) !important;
+    color: var(--cyber-bg) !important;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* Series badge in post meta (added by post_meta.html override). */
+.post-meta-series {
+    background: rgba(255, 107, 53, 0.08);
+    border: 1px solid var(--neon-orange);
+    border-radius: 999px;
+    padding: 0.05em 0.6em;
+    color: var(--neon-orange) !important;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    font-size: 0.9em;
+}
+
+.footer {
+    background: rgba(5, 8, 17, 0.85) !important;
+    border-top: 1px solid var(--cyber-border);
+    color: var(--text-secondary);
+}
+
+.footer a {
+    color: var(--neon-blue);
+}
+
+.breadcrumbs {
+    color: var(--text-secondary);
+}
+
+.breadcrumbs a {
+    color: var(--neon-orange);
+}
+
+.pagination a {
+    background: var(--cyber-surface) !important;
+    color: var(--neon-blue) !important;
+    border: 1px solid var(--cyber-border) !important;
+}
+
+.pagination a:hover {
+    background: var(--neon-blue) !important;
+    color: var(--cyber-bg) !important;
+}
+
+::selection {
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cyber-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--neon-blue);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-purple);
+}
+
+/* Skip-to-content link. Sits at the top of the page, offscreen and
+ * transparent, only becoming visible when keyboard-focused. Lets
+ * screen-reader / keyboard users bypass the header nav. */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    z-index: 9999;
+    border-bottom-right-radius: 6px;
+    transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    box-shadow: 0 0 12px var(--neon-blue);
+}
+
+/* Make the focus target visible when the skip link transfers focus. */
+.main:focus {
+    outline: none;
+}
+
+.more-heading {
+    margin-top: 2.5rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0 2.5rem;
+}
+
+.project-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(5, 8, 17, 0.95) 100%);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--neon-blue);
+    box-shadow: var(--cyber-glow-strong);
+}
+
+.project-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+}
+
+.project-icon {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    font-size: 1.2rem;
+}
+
+.project-status {
+    margin-left: auto;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.project-status.live {
+    color: var(--neon-green);
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid var(--neon-green);
+}
+
+.project-status.wip {
+    color: var(--neon-orange);
+    background: rgba(255, 107, 53, 0.1);
+    border: 1px solid var(--neon-orange);
+}
+
+.project-status.archived {
+    color: var(--text-secondary);
+    background: rgba(160, 160, 160, 0.1);
+    border: 1px solid var(--text-secondary);
+}
+
+.project-card h3 {
+    color: var(--neon-orange);
+    font-size: 1.15rem;
+    margin: 0.25rem 0 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.project-card p {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.project-tag {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background: rgba(0, 243, 255, 0.08);
+    border: 1px solid rgba(0, 243, 255, 0.35);
+    color: var(--neon-blue);
+    letter-spacing: 0.5px;
+}
+
+.project-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.project-links a {
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    border: 1px solid var(--text-secondary);
+    padding: 0.35rem 0.8rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.project-links a:hover {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+    box-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+}
+
+.project-links a.primary {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+}
+
+.project-links a.primary:hover {
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+}
+
+.cv-wrapper {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 1rem 0 2rem;
+    box-shadow: var(--cyber-glow);
+    backdrop-filter: blur(6px);
+}
+
+.cv-wrapper iframe {
+    width: 100%;
+    height: 80vh;
+    min-height: 600px;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.cv-wrapper object {
+    width: 100%;
+    height: 80vh;
+    min-height: 600px;
+    display: block;
+}
+
+.cv-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.cv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--neon-blue);
+    background: var(--neon-blue);
+    color: var(--cyber-bg);
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.cv-btn:hover {
+    box-shadow: 0 0 16px var(--neon-blue);
+    transform: translateY(-2px);
+}
+
+.cv-btn.secondary {
+    background: transparent;
+    color: var(--neon-orange);
+    border-color: var(--neon-orange);
+}
+
+.cv-btn.secondary:hover {
+    box-shadow: 0 0 16px var(--neon-orange);
+}
+
+.cv-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border: 2px dashed var(--cyber-border);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    background: rgba(10, 14, 39, 0.4);
+}
+
+.cv-empty h3 {
+    color: var(--neon-orange);
+    margin-top: 0;
+}
+
+.cv-empty .hint {
+    font-size: 0.85rem;
+}
+
+.cv-empty code {
+    color: var(--neon-blue);
+    background: rgba(0, 243, 255, 0.1);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+@media (min-width: 720px) {
+    .about-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* "More projects" footer that ends every showcase page. Sits below
+   the case-study sections and offers the reader a way out without
+   bouncing back to the project index. The arrow nudges on hover to
+   reinforce the "go read another one" call. */
+.project-related {
+    margin: 3rem 0 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--cyber-border);
+}
+
+.project-related-heading {
+    color: var(--neon-blue);
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+    font-weight: 700;
+}
+
+.project-related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.project-related-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-related-card:hover {
+    transform: translateX(4px);
+    border-color: var(--neon-blue);
+    box-shadow: var(--cyber-glow);
+}
+
+.project-related-arrow {
+    font-size: 1.15rem;
+    color: var(--neon-orange);
+    transition: transform 0.2s ease;
+}
+
+.project-related-card:hover .project-related-arrow {
+    transform: translateX(4px);
+    color: var(--neon-blue);
+}
+
+.project-related-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.project-related-meta strong {
+    color: var(--neon-orange);
+    font-size: 0.98rem;
+    letter-spacing: 0.3px;
+}
+
+.project-related-meta small {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.project-related-card-all {
+    background: transparent;
+    border-style: dashed;
+}
+
+.project-related-card-all .project-related-meta strong {
+    color: var(--neon-blue);
+}
+
+.about-card {
+    background: var(--cyber-surface);
+    border: 1px solid var(--cyber-border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    backdrop-filter: blur(6px);
+}
+
+.about-card h3 {
+    color: var(--neon-orange);
+    margin-top: 0;
+    letter-spacing: 0.5px;
+    font-size: 1.05rem;
+    border-bottom: 1px solid var(--cyber-border);
+    padding-bottom: 0.5rem;
+}
+
+.about-card ul {
+    padding-left: 1.25rem;
+    line-height: 1.8;
+}
+
+.about-card ul li::marker {
+    color: var(--neon-blue);
+}
+
+@media (max-width: 720px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cv-wrapper iframe,
+    .cv-wrapper object {
+        height: 70vh;
+    }
+}

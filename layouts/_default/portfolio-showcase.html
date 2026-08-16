@@ -1,0 +1,2218 @@
+{{ define "main" }}
+
+{{/*
+Dedicated showcase for the portfolio website itself. Same 12-section
+pattern as the lunch-tracker showcase, with a live "design system" card
+up top that demonstrates the dashboard's CSS variables against the current
+theme. Built-on-modern-stack metadata, full architecture diagram, and
+ground-truth engineering challenges pulled from the actual files.
+*/}}
+
+<article class="post-single portfolio-showcase">
+
+    {{ partial "breadcrumbs.html" . }}
+
+    {{/* ============== HERO ============== */}}
+    <section class="pf-hero">
+        <div class="pf-hero-grid">
+            <div class="pf-hero-text">
+                <div class="pf-eyebrow">
+                    <span class="pf-eyebrow-dot"></span>
+                    <span>Engineering Case Study</span>
+                </div>
+                <h1 class="pf-title">This website</h1>
+                <p class="pf-tagline">
+                    The portfolio you're reading right now. A Hugo static site that
+                    ships its own design dashboard, a live matrix-rain background,
+                    a four-theme palette engine, and a deeply customized PaperMod
+                    base — built and deployed on a 1-core VPS that uses about
+                    as much RAM as a single browser tab.
+                </p>
+
+                <ul class="pf-hero-meta">
+                    <li>
+                        <span class="pf-meta-label">Role</span>
+                        <span class="pf-meta-value">Sole author · design, build, deploy</span>
+                    </li>
+                    <li>
+                        <span class="pf-meta-label">Stack</span>
+                        <span class="pf-meta-value">Hugo · PaperMod · Vanilla JS · CSS variables</span>
+                    </li>
+                    <li>
+                        <span class="pf-meta-label">Status</span>
+                        <span class="pf-meta-value pf-status-live">
+              <span class="pf-status-dot"></span> Live · 54 pages
+            </span>
+                    </li>
+                    <li>
+                        <span class="pf-meta-label">Footprint</span>
+                        <span class="pf-meta-value">~10 MB RAM · single static output · no backend</span>
+                    </li>
+                </ul>
+
+                <div class="pf-hero-cta">
+                    <a class="pf-btn primary" href="https://github.com/fahimimam/portfolio"
+                       rel="noopener" target="_blank">
+                        <span class="pf-btn-icon">⌘</span> Source
+                    </a>
+                    <a class="pf-btn" href="#pf-dashboard">
+                        <span class="pf-btn-icon">⚙</span> Open the dashboard
+                    </a>
+                    <a class="pf-btn" href="https://fahimimam.pro.bd" rel="noopener" target="_blank">
+                        <span class="pf-btn-icon">↗</span> Live site
+                    </a>
+                </div>
+            </div>
+
+            {{/* ============== LIVE DESIGN-SYSTEM CARD ============== */}}
+            <aside aria-label="Live design system" class="pf-live-card">
+                <div class="pf-live-header">
+                    <span class="pf-live-dot"></span>
+                    <span class="pf-live-title">Live Design System</span>
+                    <span class="pf-live-theme" id="pf-live-theme">—</span>
+                </div>
+                <p class="pf-live-sub">
+                    Reading the current <code>:root[data-theme="…"]</code> values straight
+                    from the loaded stylesheet. Press <kbd>T</kbd> anywhere on the page
+                    to open the dashboard, or click the ⚙ button top-right.
+                </p>
+
+                <div class="pf-token-grid">
+                    <div class="pf-token">
+                        <span class="pf-token-swatch" id="pf-token-blue"></span>
+                        <span class="pf-token-name">--neon-blue</span>
+                        <span class="pf-token-value" id="pf-token-blue-val">—</span>
+                    </div>
+                    <div class="pf-token">
+                        <span class="pf-token-swatch" id="pf-token-orange"></span>
+                        <span class="pf-token-name">--neon-orange</span>
+                        <span class="pf-token-value" id="pf-token-orange-val">—</span>
+                    </div>
+                    <div class="pf-token">
+                        <span class="pf-token-swatch" id="pf-token-purple"></span>
+                        <span class="pf-token-name">--neon-purple</span>
+                        <span class="pf-token-value" id="pf-token-purple-val">—</span>
+                    </div>
+                    <div class="pf-token">
+                        <span class="pf-token-swatch" id="pf-token-green"></span>
+                        <span class="pf-token-name">--neon-green</span>
+                        <span class="pf-token-value" id="pf-token-green-val">—</span>
+                    </div>
+                    <div class="pf-token">
+                        <span class="pf-token-swatch" id="pf-token-bg"></span>
+                        <span class="pf-token-name">--cyber-bg</span>
+                        <span class="pf-token-value" id="pf-token-bg-val">—</span>
+                    </div>
+                    <div class="pf-token">
+                        <span class="pf-token-swatch" id="pf-token-border"></span>
+                        <span class="pf-token-name">--cyber-border</span>
+                        <span class="pf-token-value" id="pf-token-border-val">—</span>
+                    </div>
+                </div>
+
+                <div class="pf-live-footer">
+                    <span>Source: <code>getComputedStyle(document.documentElement)</code></span>
+                    <button class="pf-refresh" id="pf-live-refresh" title="Re-read" type="button">↻</button>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    {{/* ============== THE PROBLEM ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">01</span>
+            <h2>The problem</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                Personal-portfolio templates are a solved problem.
+                <a href="https://github.com/adityatelange/hugo-PaperMod" rel="noopener" target="_blank">PaperMod</a>,
+                <a href="https://github.com/halogenica/beautifulhugo" rel="noopener" target="_blank">Beautiful Hugo</a>,
+                <a href="https://github.com/jeremyf/centilium" rel="noopener" target="_blank">Centilium</a>,
+                and a hundred others all do the same thing: a clean light-on-dark
+                blog with a sidebar, a code font, and zero personality.
+            </p>
+            <p>
+                Two things bothered me about that:
+            </p>
+            <ul class="pf-bullets">
+                <li><strong>None of them teach anything about the author.</strong> Visiting the blog is one click;
+                    learning something about the author's taste is zero.
+                </li>
+                <li><strong>None of them let the visitor steer.</strong> A theme picker that just toggles
+                    <code>dark</code> / <code>light</code> is a checkbox, not a design choice.
+                </li>
+            </ul>
+            <p>
+                So the brief I wrote for myself was: build a portfolio that <em>is</em>
+                a project — a frontend that an interviewer can click around for
+                thirty seconds and walk away thinking "this person cares about the
+                details, not just the page". That meant: visible engineering, a
+                working design system, and a piece of motion that isn't decorative
+                — it has controls.
+            </p>
+        </div>
+    </section>
+
+    {{/* ============== PRODUCT ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">02</span>
+            <h2>What it is</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                Four user-facing surfaces, served as a single static site:
+            </p>
+            <ol class="pf-bullets">
+                <li>
+                    <strong>A neon-cyber landing page</strong> with a faux-terminal
+                    hero, an animated profile card, typed-out "command" output, and a
+                    hand-drawn grid background. The hero is custom Hugo HTML rendered
+                    from <code>layouts/index.html</code> — no JavaScript required.
+                </li>
+                <li>
+                    <strong>An inner-site theme</strong> for blog, projects, and CV
+                    pages that overrides PaperMod's chrome with neon-blue accents,
+                    monospace fonts, and a translucent surface treatment.
+                </li>
+                <li>
+                    <strong>A floating design dashboard</strong> (top-right ⚙) that
+                    lets the visitor swap themes, slow the matrix rain, change its
+                    opacity, and switch character sets. Preferences persist in
+                    <code>localStorage</code> and survive cross-tab reloads.
+                </li>
+                <li>
+                    <strong>A live matrix-rain background</strong> drawn on a
+                    full-screen canvas, theme-aware, with a fractional speed
+                    accumulator so the rain can drop below 1 row/frame.
+                </li>
+            </ol>
+            <p class="pf-callout">
+                The site is built with Hugo, deployed as a directory of static
+                files, and reads no backend at all in the steady state. The
+                lunch-tracker showcase makes a single read-only cross-origin
+                fetch to <code>fahimimam.sytes.net</code> on its hero card —
+                everything else is offline.
+            </p>
+        </div>
+    </section>
+
+    {{/* ============== ARCHITECTURE ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">03</span>
+            <h2>Architecture</h2>
+        </header>
+        <div class="pf-section-body">
+
+            <div class="pf-arch">
+                <div class="pf-arch-row">
+                    <div class="pf-arch-node source">
+                        <span class="pf-arch-icon">📝</span>
+                        <span class="pf-arch-name">Content (Markdown)</span>
+                        <span class="pf-arch-sub">content/blog · content/projects</span>
+                    </div>
+                </div>
+                <div class="pf-arch-arrow">↓ hugo --minify</div>
+                <div class="pf-arch-row pf-arch-pair">
+                    <div class="pf-arch-node layout">
+                        <span class="pf-arch-icon">🧩</span>
+                        <span class="pf-arch-name">Layouts</span>
+                        <span class="pf-arch-sub">layouts/index.html + custom _default pages</span>
+                    </div>
+                    <div class="pf-arch-node theme">
+                        <span class="pf-arch-icon">🎨</span>
+                        <span class="pf-arch-name">PaperMod + custom.css</span>
+                        <span class="pf-arch-sub">4 :root[data-theme] palettes · cyberpunk default</span>
+                    </div>
+                </div>
+                <div class="pf-arch-arrow">↓ CSS + JS bundles</div>
+                <div class="pf-arch-row pf-arch-trio">
+                    <div class="pf-arch-node js">
+                        <span class="pf-arch-icon">🌧</span>
+                        <span class="pf-arch-name">matrix.js</span>
+                        <span class="pf-arch-sub">canvas · rAF · theme-aware glyph</span>
+                    </div>
+                    <div class="pf-arch-node js">
+                        <span class="pf-arch-icon">⚙</span>
+                        <span class="pf-arch-name">theme-dashboard.js</span>
+                        <span class="pf-arch-sub">floating panel · live settings</span>
+                    </div>
+                    <div class="pf-arch-node js">
+                        <span class="pf-arch-icon">🥾</span>
+                        <span class="pf-arch-name">extend_head.html</span>
+                        <span class="pf-arch-sub">inline no-flash theme boot</span>
+                    </div>
+                </div>
+                <div class="pf-arch-arrow">↓ public/</div>
+                <div class="pf-arch-row">
+                    <div class="pf-arch-node store">
+                        <span class="pf-arch-icon">📦</span>
+                        <span class="pf-arch-name">Static output</span>
+                        <span class="pf-arch-sub">54 pages · 6 static files · single CSS bundle</span>
+                    </div>
+                </div>
+                <div class="pf-arch-arrow">↓ rsync -avz</div>
+                <div class="pf-arch-row">
+                    <div class="pf-arch-node go">
+                        <span class="pf-arch-icon">🌐</span>
+                        <span class="pf-arch-name">VPS · Nginx</span>
+                        <span class="pf-arch-sub">TLS · serve /var/www/portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pf-grid-2">
+                <div class="pf-card">
+                    <h3>One CSS bundle, four themes</h3>
+                    <p>
+                        Every theme is a <code>:root[data-theme="…"]</code> block in
+                        <code>custom.css</code>. Higher specificity than the page's
+                        plain <code>:root</code> rules, so they win without
+                        <code>!important</code>. The dashboard just toggles the
+                        attribute on <code>&lt;html&gt;</code>.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Settings as events, not pollls</h3>
+                    <p>
+                        The dashboard writes to <code>localStorage</code> and dispatches
+                        <code>lt:settings-change</code>. Matrix.js listens for both
+                        that event and the cross-tab <code>storage</code> event, so
+                        changing the rain in one tab takes effect in every other open
+                        tab instantly.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>No-flash theme boot</h3>
+                    <p>
+                        A synchronous inline script in <code>extend_head.html</code>
+                        reads <code>lt.theme</code> and sets <code>data-theme</code>
+                        on <code>&lt;html&gt;</code> <em>before</em> the stylesheet
+                        loads — so the very first paint is in the active palette.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>No build step for the JS</h3>
+                    <p>
+                        <code>matrix.js</code> and <code>theme-dashboard.js</code>
+                        ship as plain ES5-compatible scripts. No bundler, no
+                        transpiler, no <code>node_modules</code>. The dashboard
+                        injects its own CSS once at boot.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{/* ============== TECH STACK ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">04</span>
+            <h2>Tech stack &amp; why</h2>
+        </header>
+        <div class="pf-section-body">
+            <table class="pf-stack">
+                <thead>
+                <tr>
+                    <th>Layer</th>
+                    <th>Choice</th>
+                    <th>Why</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Generator</td>
+                    <td>Hugo ≥ 0.155</td>
+                    <td>Single static binary, builds 54 pages in 62 ms. Templating with Go's <code>html/template</code>
+                        is fast enough that incremental rebuilds feel like a save.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Base theme</td>
+                    <td>PaperMod</td>
+                    <td>Handles the boring 80% — blog pagination, tags, RSS, search-friendly URLs, share buttons. <code>disableThemeToggle
+                        = true</code> because we ship our own.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Theme layer</td>
+                    <td>CSS variables + <code>:root[data-theme]</code></td>
+                    <td>Four palettes in one stylesheet. No SASS, no PostCSS, no CSS-in-JS. Switch is one attribute
+                        write.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Custom layouts</td>
+                    <td>layouts/_default/*.html</td>
+                    <td>Selected per page via the frontmatter <code>layout:</code> key.
+                        <code>lunch-tracker-showcase</code> and this page are full-paper overrides.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Matrix rain</td>
+                    <td>Vanilla canvas + <code>requestAnimationFrame</code></td>
+                    <td>Pauses on <code>visibilitychange</code>; nothing flashes when the tab is in the background.</td>
+                </tr>
+                <tr>
+                    <td>Dashboard</td>
+                    <td>Vanilla JS + injected CSS</td>
+                    <td>Builds the panel DOM, injects a stylesheet once, persists to <code>localStorage</code>. No
+                        framework, no virtual DOM.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Settings sync</td>
+                    <td>Custom <code>lt:settings-change</code> event + <code>storage</code> event</td>
+                    <td>Same-tab updates fire the custom event; cross-tab updates fire <code>storage</code>. Both
+                        handlers do the same thing.
+                    </td>
+                </tr>
+                <tr>
+                    <td>No-FOUC</td>
+                    <td>Inline synchronous boot script</td>
+                    <td>Runs before the stylesheet to prevent the first paint from flashing the default palette.</td>
+                </tr>
+                <tr>
+                    <td>Hosting</td>
+                    <td>Nginx on a 1-core 2&nbsp;GB VPS</td>
+                    <td>Static files only. The site uses essentially zero RAM — the VPS serves WordPress-grade traffic
+                        on this configuration.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Deploy</td>
+                    <td><code>rsync -avz public/ vps:/var/www/portfolio/</code></td>
+                    <td>One command. <code>--delete</code> keeps the server mirror clean. No CI, no rollbacks — a bad
+                        deploy is one rsync away from being reverted.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    {{/* ============== FEATURES ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">05</span>
+            <h2>What it does</h2>
+        </header>
+        <div class="pf-section-body">
+            <div class="pf-feature-grid">
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">⌨</div>
+                    <h3>Faux-terminal landing hero</h3>
+                    <p>
+                        The home page renders a custom HTML terminal — three coloured
+                        "buttons", a <code>whoami</code> prompt, animated typed text
+                        via CSS-only keyframes, and a blinking block cursor. No JS
+                        needed; the typing runs entirely on CSS <code>animation-timing-function: steps()</code>.
+                    </p>
+                </div>
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">🪪</div>
+                    <h3>Animated profile card</h3>
+                    <p>
+                        A holographic-bordered credential card with corner markers,
+                        a moving scanline overlay, a pulsing status indicator, and a
+                        CSS-only holographic gradient that shifts every six seconds.
+                        Pure CSS, zero JS.
+                    </p>
+                </div>
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">🌧</div>
+                    <h3>Live matrix rain</h3>
+                    <p>
+                        A full-screen <code>&lt;canvas&gt;</code> with cascading
+                        binary glyphs. Theme-aware — the glyph colour is read from
+                        <code>--neon-blue</code> on every paint, so it tracks whichever
+                        theme the dashboard is currently on.
+                    </p>
+                </div>
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">⚙</div>
+                    <h3>Floating design dashboard</h3>
+                    <p>
+                        A glassmorphism panel that hands the visitor four themes,
+                        controls for the rain speed, opacity, and character set, and a
+                        reset button. Keyboard shortcuts: <kbd>T</kbd> to toggle,
+                        <kbd>[</kbd>/<kbd>]</kbd> for speed, <kbd>−</kbd>/<kbd>=</kbd>
+                        for opacity, <kbd>R</kbd> to toggle rain, <kbd>←</kbd>/<kbd>→</kbd>
+                        to cycle themes.
+                    </p>
+                </div>
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">📝</div>
+                    <h3>Blog + RSS + tags</h3>
+                    <p>
+                        PaperMod's built-in blog machinery, restyled. Homeinfo is
+                        disabled so the blog index is the empty-state hero. Tags,
+                        RSS, breadcrumbs, code-copy buttons, and word counts all
+                        work out of the box.
+                    </p>
+                </div>
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">📁</div>
+                    <h3>Project cards + detail pages</h3>
+                    <p>
+                        A reusable <code>project-card</code> partial renders four
+                        cards on the projects index. The lunch-tracker and this page
+                        each use a custom <code>layout:</code> to render a full
+                        engineering case study on their own page.
+                    </p>
+                </div>
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">📄</div>
+                    <h3>In-page CV viewer</h3>
+                    <p>
+                        <code>/cv/</code> embeds the PDF as an <code>&lt;iframe&gt;</code>
+                        with download and external links. No backend, no file-upload
+                        workflow — the PDF is a static asset in <code>static/</code>.
+                    </p>
+                </div>
+                <div class="pf-feature">
+                    <div class="pf-feature-icon">🍱</div>
+                    <h3>Live lunch-tracker showcase</h3>
+                    <p>
+                        <code>/projects/lunch-tracker/</code> is a 12-section
+                        engineering case study with a live hero card that polls
+                        <code>/api/lunch/state</code> every 30s. Render is fully
+                        static — the live data is fetched client-side.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{/* ============== ENGINEERING CHALLENGES ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">06</span>
+            <h2>Engineering challenges</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                Six things that cost me an evening each. All are either
+                bugs that shipped and got caught, or design decisions that
+                got refactored after the first build looked wrong.
+            </p>
+
+            <article class="pf-challenge">
+                <header>
+                    <span class="pf-challenge-tag">FOUC</span>
+                    <h3>Theme flash on first paint</h3>
+                </header>
+                <p>
+                    <strong>Symptom.</strong> Pick a theme, refresh — the page
+                    paints in the default cyberpunk palette for ~80 ms, then
+                    swaps to the saved one. The matrix rain appears in the
+                    wrong colour for a single frame.
+                </p>
+                <p>
+                    <strong>Cause.</strong> The dashboard (which sets
+                    <code>data-theme</code>) is a <code>defer</code>'d script,
+                    so it runs after the stylesheet. The stylesheet already
+                    contains all four palettes, but the saved one isn't
+                    applied until the script parses.
+                </p>
+                <p>
+                    <strong>Fix.</strong> A tiny inline synchronous script in
+                    <code>extend_head.html</code> reads
+                    <code>localStorage.getItem('lt.theme')</code> and sets
+                    <code>documentElement.setAttribute('data-theme', …)</code>
+                    <em>before</em> the stylesheet loads. Runs in one
+                    statement, no conditionals on the dashboard.
+                </p>
+                <pre><code>(function () {
+  try {
+    var t = localStorage.getItem('lt.theme');
+    if (t && t !== 'cyberpunk') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  } catch (e) { /* localStorage blocked */ }
+})();</code></pre>
+            </article>
+
+            <article class="pf-challenge">
+                <header>
+                    <span class="pf-challenge-tag">Theme engine</span>
+                    <h3>Four themes that actually look distinct</h3>
+                </header>
+                <p>
+                    <strong>First attempt.</strong> Just changed three
+                    primary colours. Result: every theme looked like the
+                    default cyberpunk with a different accent.
+                </p>
+                <p>
+                    <strong>Lesson.</strong> A theme is not a hue. It's a
+                    <em>palette</em> — background, surface, border, glow,
+                    text-primary, text-secondary, and the three accent
+                    colours all have to shift together, or the page looks
+                    like a colour-swap demo.
+                </p>
+                <p>
+                    <strong>Fix.</strong> Every theme in <code>custom.css</code>
+                    defines the full 17-token set:
+                    <code>--neon-blue/orange/purple/green</code>,
+                    <code>--cyber-bg/bg-2/bg-3</code>,
+                    <code>--cyber-surface/border/glow/glow-strong</code>,
+                    <code>--text-primary/secondary</code>, and the PaperMod
+                    passthrough tokens (<code>--theme</code>, <code>--entry</code>,
+                    <code>--primary</code>, <code>--secondary</code>, …).
+                    Solarized is a light theme — neon values become ink.
+                    Terminal swaps the whole palette to amber-on-black.
+                </p>
+            </article>
+
+            <article class="pf-challenge">
+                <header>
+                    <span class="pf-challenge-tag">CSS specificity</span>
+                    <h3>Themes lost to a less-specific rule</h3>
+                </header>
+                <p>
+                    <strong>Symptom.</strong> Solarized painted correctly on
+                    the dashboard panel but reverted to cyberpunk on the rest
+                    of the page.
+                </p>
+                <p>
+                    <strong>Cause.</strong> The plain <code>:root { … }</code>
+                    fallback in <code>custom.css</code> had the same specificity
+                    as the <code>:root[data-theme="solarized"]</code> block,
+                    and the cascaded order meant the fallback won.
+                </p>
+                <p>
+                    <strong>Fix.</strong> The themed blocks now use
+                    <code>:root[data-theme="X"]</code>, which is more specific
+                    than a bare <code>:root</code>. The fallback <code>:root</code>
+                    block only applies when no <code>data-theme</code> attribute
+                    is set at all — i.e. on pages that haven't loaded the
+                    dashboard yet, and on the initial FOUC frame.
+                </p>
+            </article>
+
+            <article class="pf-challenge">
+                <header>
+                    <span class="pf-challenge-tag">Concurrency</span>
+                    <h3>Scripts loading twice on the landing page</h3>
+                </header>
+                <p>
+                    <strong>Symptom.</strong> Right after moving the script
+                    tags into <code>extend_head.html</code>, the home page
+                    loaded <code>matrix.js</code> and <code>theme-dashboard.js</code>
+                    twice. Two rain canvases, two dashboard panels,
+                    <code>LocalStorage</code> thrashing between reads.
+                </p>
+                <p>
+                    <strong>Cause.</strong> <code>layouts/index.html</code>
+                    had been carrying its own <code>&lt;script src="/js/matrix.js"&gt;</code>
+                    at the bottom for the original drop-in install. The
+                    <code>extend_head.html</code> partial was now also
+                    including the same scripts, so the home page got both.
+                </p>
+                <p>
+                    <strong>Fix.</strong> The bottom-of-page script tags were
+                    deleted from <code>layouts/index.html</code>. Scripts now
+                    load exactly once across every page, verified by
+                    <code>grep -c 'js/matrix.js' public/index.html</code> returning
+                    <code>1</code>.
+                </p>
+            </article>
+
+            <article class="pf-challenge">
+                <header>
+                    <span class="pf-challenge-tag">Animation</span>
+                    <h3>Rain too fast at speed=1</h3>
+                </header>
+                <p>
+                    <strong>Symptom.</strong> The default speed was 1 row/frame,
+                    which felt like a video at 2× speed. The whole canvas
+                    flashed past unreadable.
+                </p>
+                <p>
+                    <strong>Cause.</strong> Most demos use integer speed. At
+                    60 fps, "1 row/frame" is 60 rows/second — too fast for
+                    the binary glyphs the user actually wanted to read.
+                </p>
+                <p>
+                    <strong>Fix.</strong> <code>matrix.js</code> now uses a
+                    fractional accumulator:
+                </p>
+                <pre><code>speedAcc += speed;
+var step = Math.floor(speedAcc);
+if (step < 1) step = 1;
+speedAcc -= step;</code></pre>
+                <p>
+                    The slider goes from 0.2× to 3×. At 0.2× the rain is
+                    contemplative; at 3× it's a flicker. The default of 1×
+                    feels like a calm downpour.
+                </p>
+            </article>
+
+            <article class="pf-challenge">
+                <header>
+                    <span class="pf-challenge-tag">UX</span>
+                    <h3>Hard to discover the dashboard</h3>
+                </header>
+                <p>
+                    <strong>Symptom.</strong> First user test: "Where do I
+                    change the theme?" Nobody clicked the ⚙ because they
+                    didn't know what it was.
+                </p>
+                <p>
+                    <strong>Fix.</strong> Three changes layered on top of each
+                    other:
+                </p>
+                <ul class="pf-bullets compact">
+                    <li>The header now carries a visible hint strip — <kbd>T</kbd> toggle, <kbd>[</kbd>/<kbd>]</kbd>
+                        speed, <kbd>−</kbd>/<kbd>=</kbd> opacity — formatted as <code>&lt;kbd&gt;</code> badges.
+                    </li>
+                    <li>The toggle button's <code>title</code> attribute says "Open design dashboard (press T)" so hover
+                        reveals the shortcut.
+                    </li>
+                    <li>The keyboard shortcuts actually work — pressing <kbd>T</kbd> while the dashboard is closed opens
+                        it; pressing it again closes it.
+                    </li>
+                </ul>
+            </article>
+
+            <article class="pf-challenge">
+                <header>
+                    <span class="pf-challenge-tag">Multi-domain</span>
+                    <h3>Every link redirected to the production domain</h3>
+                </header>
+                <p>
+                    <strong>Symptom.</strong> Click any internal link from
+                    <code>localhost</code> or <code>fahimimam.sytes.net</code>
+                    and the browser bounced the visitor over to
+                    <code>fahimimam.pro.bd</code>. The address bar was effectively
+                    a redirect button: arrive anywhere, click anywhere, end up
+                    on the production host.
+                </p>
+                <p>
+                    <strong>Cause.</strong> Hugo's <code>baseURL</code> is set
+                    to <code>http://fahimimam.pro.bd/</code> at build time.
+                    PaperMod's templates use <code>absURL</code> and
+                    <code>absLangURL</code> for nav, logo, menu, breadcrumbs,
+                    and favicon links — both prepend the baseURL, so every
+                    rendered <code>href</code> is fully qualified against the
+                    production host. The build is host-locked.
+                </p>
+                <p>
+                    <strong>Why this was bad.</strong> Two domains point at the
+                    site. Forcing both into one URL collapses them: a visitor
+                    who arrived on <code>sytes.net</code> gets silently teleported
+                    to <code>pro.bd</code> on the first click, and back-button
+                    behavior turns into an infinite redirect loop.
+                </p>
+                <p>
+                    <strong>Fix.</strong> Hugo's layout override system lets
+                    a file in <code>layouts/partials/</code> shadow the
+                    matching partial under <code>themes/PaperMod/</code>. I
+                    copied four partials and swapped every internal
+                    <code>absURL</code> / <code>absLangURL</code> for
+                    <code>relURL</code> / <code>relLangURL</code>, and every
+                    internal <code>Permalink</code> for <code>RelPermalink</code>:
+                </p>
+                <pre><code>layouts/partials/header.html       # logo + main menu
+layouts/partials/head.html         # favicon + apple-touch + mask
+layouts/partials/footer.html       # copyright link
+layouts/partials/breadcrumbs.html  # home + intermediate crumbs</code></pre>
+                <p>
+                    Plus two hand-written pages — the landing hero's CTA
+                    buttons and the CV viewer's PDF link — were using hardcoded
+                    <code>href="/projects/"</code> etc., which on a static
+                    build work correctly with relative URLs but I'd written
+                    them with absolute paths. Swapped for
+                    <code>relURL</code> / <code>relLangURL</code> for consistency.
+                </p>
+                <p>
+                    <strong>What stayed absolute (intentionally).</strong>
+                    <code>&lt;link rel="canonical"&gt;</code>, RSS / JSON feed
+                    links, OpenGraph / Twitter card tags, JSON-LD
+                    <code>@id</code> and <code>url</code>, and the live lunch-tracker
+                    demo URLs all stayed absolute. Search engines dedupe via
+                    canonical, feed readers need absolute URLs, and the OpenGraph
+                    spec requires them — making those relative would break
+                    every external consumer.
+                </p>
+                <p>
+                    <strong>Verification.</strong> After the rebuild,
+                    <code>grep 'href="http'</code> against <code>public/</code>
+                    returned matches only inside <code>index.xml</code>
+                    (RSS feeds), the lunch-tracker showcase's
+                    <code>https://fahimimam.sytes.net/api/...</code> demo
+                    links, and the JSON-LD / OG blocks. No navigation link is
+                    absolute anymore.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    {{/* ============== DASHBOARD ============== */}}
+    <section class="pf-section" id="pf-dashboard">
+        <header class="pf-section-header">
+            <span class="pf-section-num">07</span>
+            <h2>The design dashboard</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                The dashboard is a single float-mounted <code>&lt;aside&gt;</code>
+                appended to <code>document.body</code> at boot. It owns its own
+                scoped CSS (injected once via a <code>style[data-lt-dashboard]</code>
+                tag), builds the panel DOM from scratch, and never touches
+                PaperMod's styles.
+            </p>
+            <div class="pf-grid-2">
+                <div class="pf-card">
+                    <h3>Theme picker</h3>
+                    <p>
+                        Six theme cards, each with a three-swatch preview
+                        (the blue, orange, and purple tokens) and a "CURRENT"
+                        pill that fades in on the active card. <code>role="radiogroup"</code>
+                        with arrow-key navigation; the picker is fully keyboard-driven.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Rain controls</h3>
+                    <p>
+                        Enabled checkbox, speed slider (0.2–3×), opacity slider
+                        (0–0.5), and a character-set selector with four
+                        alphabets: binary (<code>01</code>), ASCII mix, Japanese
+                        katakana, and hex digits. The slider thumbs pick up the
+                        active theme's neon-blue via <code>accent-color</code>.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Live state</h3>
+                    <p>
+                        Every change writes to <code>localStorage</code> and
+                        dispatches <code>lt:settings-change</code>. Matrix.js
+                        listens for that event and re-reads settings at the next
+                        frame, so the rain visibly reacts without a re-render.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Cross-tab sync</h3>
+                    <p>
+                        The <code>storage</code> event fires when <em>another</em>
+                        tab writes the same keys. The dashboard and matrix.js
+                        both listen for it, so flipping the theme in tab A
+                        flips it in tab B without a refresh.
+                    </p>
+                </div>
+            </div>
+            <p class="pf-callout">
+                The whole dashboard is ~600 lines of vanilla JS, has no
+                dependencies, and survives a grep for <code>react</code>,
+                <code>vue</code>, or <code>jquery</code> returning zero matches.
+            </p>
+        </div>
+    </section>
+
+    {{/* ============== MATRIX RAIN ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">08</span>
+            <h2>Matrix rain</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                <code>static/js/matrix.js</code> is one of the smallest files
+                in the project (~144 lines) and one of the most polished.
+                The surface looks trivial — a canvas, glyphs, animation —
+                but three decisions made it production-ready:
+            </p>
+
+            <div class="pf-grid-2">
+                <div class="pf-card">
+                    <h3>Theme-aware glyph colour</h3>
+                    <p>
+                        On every frame, the glyph colour is read from
+                        <code>getComputedStyle(document.documentElement).getPropertyValue('--neon-blue')</code>.
+                        Switch the theme and the rain picks up the new colour
+                        on the next frame — no re-init, no canvas reset.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Fractional speed</h3>
+                    <p>
+                        The speed accumulator lets the rain drop below 1 row/frame
+                        without losing position. At 0.2× the rainfall is
+                        contemplative; at 1× it matches the default demo; at 3×
+                        it's a flicker.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Tab-visibility aware</h3>
+                    <p>
+                        The <code>visibilitychange</code> listener pauses
+                        <code>requestAnimationFrame</code> when the tab is hidden.
+                        No battery drain in the background, no waste of GPU time.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Four alphabets</h3>
+                    <p>
+                        Binary (<code>01</code>), ASCII mix (the default with
+                        katakana + ASCII letters + symbols), pure katakana
+                        (雨.gif), and hex digits. Switch live from the dashboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{/* ============== THEMING SYSTEM ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">09</span>
+            <h2>Theming system</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                The site is single-CSS. No SASS, no PostCSS, no CSS-in-JS,
+                no <code>tailwind.config.js</code>. Just four
+                <code>:root[data-theme="X"]</code> blocks in
+                <code>assets/css/extended/custom.css</code> plus a default
+                <code>:root</code> fallback. The cascading order is the
+                spec:
+            </p>
+            <pre><code>:root[data-theme="cyberpunk"] { /* 17 tokens */ }
+:root[data-theme="synthwave"]  { /* 17 tokens */ }
+:root[data-theme="solarized"]  { /* 17 tokens */ }
+:root[data-theme="terminal"]   { /* 17 tokens */ }
+:root[data-theme="nord"]       { /* 17 tokens */ }
+:root[data-theme="monokai"]    { /* 17 tokens */ }
+:root                          { /* 17 tokens — fallback */ }</code></pre>
+            <p>
+                Because the themed blocks have higher specificity than the
+                plain <code>:root</code>, they win without
+                <code>!important</code>. The fallback is there for pages
+                that haven't loaded the dashboard yet — i.e. the brief
+                FOUC window before the inline boot script runs.
+            </p>
+            <p>
+                <strong>Six</strong> themes today: <code>cyberpunk</code>,
+                <code>synthwave</code>, <code>solarized</code>, <code>terminal</code>,
+                <code>nord</code>, <code>monokai</code>. Each defines the same
+                17 tokens:
+            </p>
+            <table class="pf-stack">
+                <thead>
+                <tr>
+                    <th>Group</th>
+                    <th>Tokens</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Brand</td>
+                    <td><code>--neon-blue</code>, <code>--neon-orange</code>, <code>--neon-purple</code>, <code>--neon-green</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Surface</td>
+                    <td><code>--cyber-bg</code>, <code>--cyber-bg-2</code>, <code>--cyber-bg-3</code>, <code>--cyber-surface</code>,
+                        <code>--cyber-border</code>, <code>--cyber-glow</code>, <code>--cyber-glow-strong</code></td>
+                </tr>
+                <tr>
+                    <td>Text</td>
+                    <td><code>--text-primary</code>, <code>--text-secondary</code></td>
+                </tr>
+                <tr>
+                    <td>PaperMod passthrough</td>
+                    <td><code>--theme</code>, <code>--entry</code>, <code>--primary</code>, <code>--secondary</code>,
+                        <code>--tertiary</code>, <code>--content</code>, <code>--code-block-bg</code>,
+                        <code>--code-bg</code>, <code>--border</code></td>
+                </tr>
+                </tbody>
+            </table>
+            <p>
+                For an extra defensive layer, the page's <code>body</code>
+                rule is overridden by <code>[data-theme] body</code>, so a
+                theme set on <code>&lt;html&gt;</code> always wins even if
+                the body rule was loaded later.
+            </p>
+        </div>
+    </section>
+
+    {{/* ============== TESTING ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">10</span>
+            <h2>Testing</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                A static site doesn't have an obvious test surface. The
+                practical QA loop is:
+            </p>
+            <ol class="pf-bullets">
+                <li>
+                    <strong>Build determinism.</strong> <code>hugo --minify</code>
+                    must finish with zero errors and a known page count. A
+                    counter-assertion in the deploy script verifies "54 pages,
+                    6 static files" before pushing.
+                </li>
+                <li>
+                    <strong>Cross-theme grep.</strong> After the build, the
+                    generated CSS is grepped for each theme block to confirm
+                    it made it into the bundle. Catches the case where a typo
+                    in a <code>:root[data-theme="…"]</code> selector silently
+                    swallows the palette.
+                </li>
+                <li>
+                    <strong>Script loading check.</strong> Each published page
+                    is grepped for the script tags. A regression where a
+                    script loads twice is caught immediately.
+                </li>
+                <li>
+                    <strong>JS smoke test.</strong> The dashboard and matrix
+                    scripts are stub-loaded under a minimal browser mock to
+                    catch syntax errors and top-level exceptions at boot.
+                </li>
+                <li>
+                    <strong>Cross-theme visual pass.</strong> Each route
+                    (home, blog, projects, CV, about, lunch-tracker showcase,
+                    this page) is opened in each of the four themes and
+                    visually checked — no clipped text, no broken contrast,
+                    no white-on-white.
+                </li>
+            </ol>
+            <p class="pf-callout">
+                The JS smoke test is a one-shot <code>node</code> script
+                that re-uses a stub DOM, runs the script under
+                <code>eval</code>, and exits non-zero on throw. Not a test
+                framework — just a syntactic and runtime floor.
+            </p>
+        </div>
+    </section>
+
+    {{/* ============== DEPLOYMENT ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">11</span>
+            <h2>Deployment</h2>
+        </header>
+        <div class="pf-section-body">
+            <p>
+                No CI. No containers. A bad deploy is one rsync and one
+                reverse rsync away from being reverted.
+            </p>
+            <pre><code>cd /Users/pathaoltd/go/src/github.com/fahimimam/portfolio
+rm -rf public/
+hugo --minify
+# spot-check: 54 pages, 6 static files, 0 errors
+rsync -avz --delete public/ vps:/var/www/portfolio/
+ssh vps 'nginx -t && sudo systemctl reload nginx'
+curl -sS https://fahimimam.pro.bd/ | grep -c 'lt-theme\|cyberpunk\|synthwave'</code></pre>
+            <div class="pf-grid-2">
+                <div class="pf-card">
+                    <h3>Nginx</h3>
+                    <p>
+                        Static-only server block. TLS terminated at Nginx
+                        (certbot / Let's Encrypt). Gzip on, expires headers on
+                        <code>/assets/</code>, <code>add_header Cache-Control
+                        "public, max-age=31536000, immutable"</code> for hashed
+                        assets. The page itself is served with
+                        <code>Cache-Control: no-cache</code>.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Cross-origin read for the lunch tracker</h3>
+                    <p>
+                        The lunch-tracker showcase makes a single
+                        <code>Origin: https://fahimimam.pro.bd</code> fetch to
+                        <code>fahimimam.sytes.net</code>. The lunch-tracker
+                        service has that origin on its CORS allow-list, so the
+                        fetch is permitted at the browser level.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Footprint</h3>
+                    <p>
+                        The built site is ~600 KB of HTML/CSS/JS. The
+                        single served CSS bundle is the largest asset; everything
+                        else is small. Cold-cache first byte is roughly the
+                        VPS round-trip, which is under 100 ms from any
+                        Bangladesh-origin network.
+                    </p>
+                </div>
+                <div class="pf-card">
+                    <h3>Rollback</h3>
+                    <p>
+                        The last published <code>public/</code> is kept on the
+                        laptop. If a deploy is bad, <code>rsync</code> again
+                        from the previous build. There's no git-based publish
+                        and no staging environment — the cost of being wrong is
+                        at most one rebuild.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{/* ============== LESSONS ============== */}}
+    <section class="pf-section">
+        <header class="pf-section-header">
+            <span class="pf-section-num">12</span>
+            <h2>Lessons learned</h2>
+        </header>
+        <div class="pf-section-body">
+            <div class="pf-lesson-grid">
+                <div class="pf-lesson">
+                    <h3>Static-first still wins for portfolios</h3>
+                    <p>
+                        No backend, no auth, no database, no S3 bill. The site
+                        is a thousand files in a directory and Nginx is happy.
+                        For a personal site that gets a few thousand visitors a
+                        month, this is the right shape.
+                    </p>
+                </div>
+                <div class="pf-lesson">
+                    <h3>Show, don't tell, in the design system</h3>
+                    <p>
+                        The reason the dashboard exists is that a portfolio that
+                        only <em>describes</em> its design is half a portfolio.
+                        Handing the visitor the same controls the author uses
+                        is the most honest form of showing taste.
+                    </p>
+                </div>
+                <div class="pf-lesson">
+                    <h3>Specificity &gt; cascade order</h3>
+                    <p>
+                        When CSS variables are overridden by <code>:root[data-theme="X"]</code>,
+                        they win because of specificity, not cascade order. This
+                        is load-order independent — the themed blocks can be
+                        declared anywhere in the file and still win.
+                    </p>
+                </div>
+                <div class="pf-lesson">
+                    <h3>Inline scripts are not a sin</h3>
+                    <p>
+                        The no-flash theme boot is a synchronous inline script
+                        in <code>extend_head.html</code>. The "no inline JS"
+                        rule has its place — but the rule against "five lines"
+                        of inline script that prevents a visible flash is
+                        misplaced.
+                    </p>
+                </div>
+                <div class="pf-lesson">
+                    <h3>Custom events beat polling for in-page state</h3>
+                    <p>
+                        The dashboard writes to <code>localStorage</code> and
+                        fires <code>lt:settings-change</code>. Matrix.js
+                        listens for that event. There's no shared state object,
+                        no observer chain, no polling. The dashboard doesn't
+                        even know matrix.js exists.
+                    </p>
+                </div>
+                <div class="pf-lesson">
+                    <h3>A portfolio is a project</h3>
+                    <p>
+                        The site has its own commits, its own bug history,
+                        its own FOUC fix, its own testing loop. Documenting it
+                        the same way as a backend service is honest — it's the
+                        same kind of work, just front-of-screen instead of
+                        behind an API.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{/* ============== LINKS / FOOTER ============== */}}
+    <section class="pf-section pf-section-final">
+        <header class="pf-section-header">
+            <h2>Source &amp; live site</h2>
+        </header>
+        <div class="pf-section-body">
+            <div class="pf-final-links">
+                <a class="pf-btn primary" href="https://github.com/fahimimam/portfolio" rel="noopener" target="_blank">
+                    <span class="pf-btn-icon">⌘</span> github.com/fahimimam/portfolio
+                </a>
+                <a class="pf-btn" href="https://fahimimam.pro.bd" rel="noopener" target="_blank">
+                    <span class="pf-btn-icon">↗</span> Live site
+                </a>
+                <a class="pf-btn" href="https://github.com/adityatelange/hugo-PaperMod" rel="noopener" target="_blank">
+                    <span class="pf-btn-icon">★</span> PaperMod upstream
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {{/* ============== CODE SAMPLES ============== */}}
+    {{ $snipFouc := `// Runs synchronously, BEFORE the stylesheet, so the saved theme
+    // is correct on first paint -- no flash of default palette.
+    (function () {
+    try {
+    var t = localStorage.getItem('lt.theme');
+    if (t && t !== 'cyberpunk') {
+    document.documentElement.setAttribute('data-theme', t);
+    }
+    } catch (e) { /* localStorage blocked -- default theme */ }
+    })();` }}
+
+    {{ $snipGlyphCache := `// --neon-blue is read ONCE per theme change, not every frame.
+    // The previous version called getComputedStyle() at 60 Hz, which
+    // forced a layout read on every animation tick.
+    function refreshGlyph() {
+    try {
+    var v = getComputedStyle(document.documentElement)
+    .getPropertyValue('--neon-blue').trim();
+    if (v) cachedGlyph = v;
+    } catch (e) { /* keep previous */ }
+    }` }}
+
+    {{ $snipFrame := `// Fractional speed: the slider goes 0.2x - 3x, so we accumulate
+    // and step the drops only when the accumulator crosses 1. A naive
+    // int(round(speed)) would either stall the rain below 1x or look
+    // the same as 1x.
+    var speedAcc = 0;
+
+    function frame() {
+    rafId = 0;
+    if (!running) return;
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.fillStyle = cachedGlyph;
+    ctx.font = fontSize + 'px monospace';
+
+    speedAcc += speed;
+    var step = Math.floor(speedAcc);
+    if (step < 1) step = 1;
+    speedAcc -= step;
+
+    for (var i = 0; i < drops.length; i++) {
+    ctx.fillText(pickChar(), i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > height && Math.random() > 0.975) {
+    drops[i] = 0;
+    }
+    drops[i] += step;
+    }
+    rafId = requestAnimationFrame(frame);
+    }` }}
+
+    {{ $snipThemeCss := `/* :root[data-theme="nord"] sets every token. Specificity beats
+    the bare :root fallback, so a missing token here would still
+    fall through to a near-invisible default. */
+    :root[data-theme="nord"] {
+    --neon-blue: #88c0d0;
+    --neon-orange: #d08770;
+    --neon-purple: #b48ead;
+    --neon-green: #a3be8c;
+
+    --cyber-bg: #2e3440;
+    --cyber-bg-2: #3b4252;
+    --cyber-bg-3: #434c5e;
+    --cyber-surface: rgba(59, 66, 82, 0.6);
+    --cyber-border: rgba(136, 192, 208, 0.18);
+    --cyber-glow: 0 0 18px rgba(136, 192, 208, 0.18);
+    --cyber-glow-strong: 0 0 28px rgba(136, 192, 208, 0.35);
+
+    --text-primary: #eceff4;
+    --text-secondary: #d8dee9;
+    }` }}
+
+    <section class="pf-section pf-section-code">
+        <header class="pf-section-header">
+            <h2>Code samples</h2>
+            <p class="pf-section-tag">
+                Four small pieces of the site itself — the bits that were the
+                fiddliest to get right.
+            </p>
+        </header>
+
+        <article class="pf-code-block">
+            <h3>FOUC boot script</h3>
+            <p class="pf-code-lead">
+                A single synchronous IIFE in <code>extend_head.html</code> reads
+                the saved theme and sets <code>data-theme</code> on
+                <code>&lt;html&gt;</code> before the stylesheet loads. The
+                cached palette is the very first paint.
+            </p>
+            {{ highlight $snipFouc "javascript" "linenos=table,hl_lines=4 5" }}
+        </article>
+
+        <article class="pf-code-block">
+            <h3>Matrix rain — cached glyph colour</h3>
+            <p class="pf-code-lead">
+                The first version of matrix.js called
+                <code>getComputedStyle()</code> every frame to read
+                <code>--neon-blue</code> — 60 forced reflows a second. The
+                colour is now cached and refreshed only on
+                <code>lt:theme-change</code>.
+            </p>
+            {{ highlight $snipGlyphCache "javascript" "linenos=table,hl_lines=3 4" }}
+        </article>
+
+        <article class="pf-code-block">
+            <h3>Matrix rain — fractional speed accumulator</h3>
+            <p class="pf-code-lead">
+                The dashboard's rain speed slider goes from 0.2× to 3×. A naive
+                <code>round(speed)</code> would stall sub-1× speeds or alias
+                them to integer-only motion. A <code>speedAcc</code> carries
+                the fractional part across frames.
+            </p>
+            {{ highlight $snipFrame "javascript" "linenos=table,hl_lines=18 19 20" }}
+        </article>
+
+        <article class="pf-code-block">
+            <h3>Theme palette — Nord</h3>
+            <p class="pf-code-lead">
+                One of six themes. Every block must define <em>all 17</em>
+                tokens; missing tokens fall through to the bare
+                <code>:root</code> fallback, which usually means an
+                invisible colour and a long debugging session.
+            </p>
+            {{ highlight $snipThemeCss "css" "linenos=table,hl_lines=2 3" }}
+        </article>
+    </section>
+
+    {{/* ============== RELATED PROJECTS ============== */}}
+    {{/*
+    Cross-link to other project showcases. Fetches up to 2 sibling
+    project pages by date (excluding the current page), so the
+    block stays in sync as projects are added or reordered.
+    */}}
+    <nav aria-label="More projects" class="project-related">
+        <h2 class="project-related-heading">More projects</h2>
+        <ul class="project-related-list">
+            {{- $rel := where site.RegularPages "Section" "projects" | first 3 -}}
+            {{- range $rel }}
+            {{- if ne .RelPermalink $.RelPermalink }}
+            <li>
+                <a class="project-related-card" href="{{ .RelPermalink }}">
+                    <span aria-hidden="true" class="project-related-arrow">→</span>
+                    <span class="project-related-meta">
+            <strong>{{ .Title }}</strong>
+            {{- with .Description }}
+            <small>{{ . | plainify | htmlUnescape | truncate 90 }}</small>
+            {{- end }}
+          </span>
+                </a>
+            </li>
+            {{- end }}
+            {{- end }}
+            <li>
+                <a class="project-related-card project-related-card-all" href="/projects/">
+                    <span aria-hidden="true" class="project-related-arrow">→</span>
+                    <span class="project-related-meta">
+            <strong>All projects</strong>
+            <small>Back to the full project index.</small>
+          </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</article>
+
+{{/* ============== INLINE STYLES + LIVE DESIGN-SYSTEM READER ============== */}}
+<style>
+    /* ---- Showcase container ------------------------------------------- */
+    .portfolio-showcase {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    /* ---- Hero --------------------------------------------------------- */
+    .pf-hero {
+        margin: 1rem 0 2.5rem;
+        padding: 2rem 0 1rem;
+        border-bottom: 1px solid var(--cyber-border);
+    }
+
+    .pf-hero-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 2.5rem;
+        align-items: center;
+    }
+
+    @media (max-width: 960px) {
+        .pf-hero-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .pf-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--neon-blue);
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+
+    .pf-eyebrow-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--neon-orange);
+        box-shadow: 0 0 10px var(--neon-orange);
+        animation: pf-pulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pf-pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.4;
+        }
+    }
+
+    .pf-title {
+        font-size: clamp(2.2rem, 5vw, 3.2rem);
+        color: var(--neon-blue);
+        text-shadow: 0 0 14px rgba(0, 243, 255, 0.45);
+        margin: 0 0 0.6rem;
+        letter-spacing: 0.5px;
+        line-height: 1.1;
+    }
+
+    .pf-tagline {
+        color: var(--text-primary);
+        font-size: 1.02rem;
+        line-height: 1.7;
+        max-width: 56ch;
+        margin: 0 0 1.5rem;
+    }
+
+    .pf-hero-meta {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem 1.5rem;
+    }
+
+    .pf-hero-meta li {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+    }
+
+    .pf-meta-label {
+        color: var(--neon-orange);
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .pf-meta-value {
+        color: var(--text-primary);
+        font-size: 0.9rem;
+    }
+
+    .pf-status-live {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .pf-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--neon-green);
+        box-shadow: 0 0 10px var(--neon-green);
+    }
+
+    .pf-hero-cta {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+    }
+
+    /* ---- Buttons ------------------------------------------------------ */
+    .pf-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 1rem;
+        border: 1px solid var(--text-secondary);
+        border-radius: 8px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 0.86rem;
+        font-weight: 600;
+        background: transparent;
+        transition: all 0.2s ease;
+    }
+
+    .pf-btn:hover {
+        border-color: var(--neon-blue);
+        color: var(--neon-blue);
+        box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+    }
+
+    .pf-btn.primary {
+        border-color: var(--neon-blue);
+        color: var(--neon-blue);
+    }
+
+    .pf-btn.primary:hover {
+        background: var(--neon-blue);
+        color: var(--cyber-bg);
+    }
+
+    .pf-btn-icon {
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    /* ---- Live design-system card -------------------------------------- */
+    .pf-live-card {
+        background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(5, 8, 17, 0.95) 100%);
+        border: 1px solid var(--cyber-border);
+        border-radius: 14px;
+        padding: 1.25rem 1.4rem;
+        box-shadow: 0 0 24px rgba(0, 243, 255, 0.18), 0 20px 60px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(8px);
+    }
+
+    .pf-live-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.6rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid var(--cyber-border);
+    }
+
+    .pf-live-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--neon-green);
+        box-shadow: 0 0 10px var(--neon-green);
+        animation: pf-pulse 1.6s ease-in-out infinite;
+    }
+
+    .pf-live-title {
+        color: var(--neon-blue);
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+    }
+
+    .pf-live-theme {
+        margin-left: auto;
+        color: var(--neon-orange);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .pf-live-sub {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 0 0 0.9rem;
+    }
+
+    .pf-live-sub kbd {
+        font-family: inherit;
+        font-size: 0.74rem;
+        background: var(--code-bg);
+        border: 1px solid var(--cyber-border);
+        border-radius: 4px;
+        padding: 0 0.35rem;
+        margin: 0 1px;
+        color: var(--neon-blue);
+    }
+
+    .pf-live-sub code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.05em 0.4em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        font-size: 0.85em;
+    }
+
+    .pf-token-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem 0.7rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .pf-token {
+        display: grid;
+        grid-template-columns: 22px 1fr auto;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.55rem;
+        border: 1px solid var(--cyber-border);
+        border-radius: 8px;
+        background: rgba(10, 14, 39, 0.4);
+        font-size: 0.78rem;
+    }
+
+    .pf-token-swatch {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: var(--cyber-bg);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.4) inset;
+    }
+
+    .pf-token-name {
+        color: var(--text-primary);
+        font-family: inherit;
+        font-size: 0.78rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .pf-token-value {
+        color: var(--neon-blue);
+        font-variant-numeric: tabular-nums;
+        font-size: 0.74rem;
+        letter-spacing: 0.2px;
+    }
+
+    .pf-live-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.74rem;
+        color: var(--text-secondary);
+        border-top: 1px solid var(--cyber-border);
+        padding-top: 0.6rem;
+    }
+
+    .pf-live-footer code {
+        background: transparent;
+        border: none;
+        color: var(--neon-blue);
+        padding: 0;
+    }
+
+    .pf-refresh {
+        background: transparent;
+        border: 1px solid var(--cyber-border);
+        color: var(--neon-blue);
+        border-radius: 6px;
+        padding: 0.2rem 0.55rem;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+
+    .pf-refresh:hover {
+        background: var(--neon-blue);
+        color: var(--cyber-bg);
+    }
+
+    /* ---- Sections ----------------------------------------------------- */
+    .pf-section {
+        margin: 3rem 0;
+    }
+
+    .pf-section-header {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        border-bottom: 1px solid var(--cyber-border);
+        padding-bottom: 0.5rem;
+    }
+
+    .pf-section-num {
+        color: var(--neon-purple);
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .pf-section h2 {
+        color: var(--neon-blue);
+        margin: 0;
+        font-size: 1.5rem;
+        letter-spacing: 0.4px;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .pf-section-body {
+        color: var(--text-primary);
+        line-height: 1.75;
+    }
+
+    .pf-section-body > p {
+        margin: 0 0 0.9rem;
+    }
+
+    .pf-section-body > ul.pf-bullets,
+    .pf-section-body > ol.pf-bullets {
+        margin: 0 0 1rem;
+    }
+
+    .pf-bullets {
+        padding-left: 1.4rem;
+    }
+
+    .pf-bullets li {
+        margin-bottom: 0.45rem;
+    }
+
+    .pf-bullets.compact {
+        padding-left: 1.2rem;
+    }
+
+    .pf-bullets.compact li {
+        margin-bottom: 0.25rem;
+        font-size: 0.93rem;
+    }
+
+    .pf-bullets li::marker {
+        color: var(--neon-blue);
+    }
+
+    .pf-callout {
+        background: rgba(255, 107, 53, 0.06);
+        border-left: 3px solid var(--neon-orange);
+        padding: 0.85rem 1rem;
+        margin: 1rem 0;
+        border-radius: 0 8px 8px 0;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
+
+    .pf-callout code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.1em 0.4em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+    }
+
+    .pf-callout strong {
+        color: var(--text-primary);
+    }
+
+    /* ---- Code samples ------------------------------------------------- */
+    .pf-section-tag {
+        margin: 0.6rem 0 0;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .pf-section-tag code {
+        color: var(--neon-orange);
+        background: rgba(255, 107, 53, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 3px;
+        border: 1px solid rgba(255, 107, 53, 0.25);
+        font-size: 0.9em;
+    }
+
+    .pf-code-block {
+        margin: 1.5rem 0;
+        padding: 1.25rem 1.5rem;
+        background: var(--cyber-surface);
+        border: 1px solid var(--cyber-border);
+        border-radius: 12px;
+        box-shadow: var(--cyber-glow);
+    }
+
+    .pf-code-block h3 {
+        color: var(--neon-orange);
+        margin: 0 0 0.5rem;
+        font-size: 1.1rem;
+        border-bottom: 1px solid var(--cyber-border);
+        padding-bottom: 0.4rem;
+    }
+
+    .pf-code-lead {
+        margin: 0 0 1rem;
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        line-height: 1.65;
+    }
+
+    .pf-code-lead code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 3px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        font-size: 0.9em;
+    }
+
+    .pf-code-block em {
+        color: var(--neon-blue);
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    .pf-code-block pre {
+        margin: 0;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+
+    /* ---- Architecture diagram ---------------------------------------- */
+    .pf-arch {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        margin: 1.2rem 0 1rem;
+        padding: 1.2rem;
+        border: 1px solid var(--cyber-border);
+        border-radius: 12px;
+        background: rgba(10, 14, 39, 0.5);
+    }
+
+    .pf-arch-row {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+    }
+
+    .pf-arch-row.pf-arch-pair,
+    .pf-arch-row.pf-arch-trio {
+        flex-wrap: wrap;
+    }
+
+    .pf-arch-node {
+        background: var(--cyber-surface);
+        border: 1px solid var(--cyber-border);
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+        min-width: 180px;
+        text-align: center;
+        transition: all 0.2s ease;
+    }
+
+    .pf-arch-node:hover {
+        border-color: var(--neon-blue);
+        box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+    }
+
+    .pf-arch-node.source {
+        border-color: var(--neon-orange);
+    }
+
+    .pf-arch-node.theme {
+        border-color: var(--neon-purple);
+    }
+
+    .pf-arch-node.go {
+        border-color: var(--neon-blue);
+    }
+
+    .pf-arch-node.store {
+        border-color: var(--neon-purple);
+    }
+
+    .pf-arch-icon {
+        display: block;
+        font-size: 1.4rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .pf-arch-name {
+        display: block;
+        color: var(--neon-blue);
+        font-weight: 700;
+        font-size: 0.92rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .pf-arch-sub {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.74rem;
+        line-height: 1.4;
+    }
+
+    .pf-arch-arrow {
+        color: var(--neon-blue);
+        font-size: 1rem;
+        line-height: 1;
+        text-shadow: 0 0 8px var(--neon-blue);
+    }
+
+    /* ---- Cards (2-col grids) ----------------------------------------- */
+    .pf-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    @media (max-width: 720px) {
+        .pf-grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .pf-hero-meta {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .pf-card {
+        background: var(--cyber-surface);
+        border: 1px solid var(--cyber-border);
+        border-radius: 12px;
+        padding: 1rem 1.2rem;
+        backdrop-filter: blur(6px);
+    }
+
+    .pf-card h3 {
+        color: var(--neon-orange);
+        margin: 0 0 0.6rem;
+        font-size: 1.02rem;
+        border-bottom: 1px solid var(--cyber-border);
+        padding-bottom: 0.4rem;
+        letter-spacing: 0.3px;
+    }
+
+    .pf-card p {
+        color: var(--text-primary);
+        font-size: 0.93rem;
+        margin: 0;
+        line-height: 1.65;
+    }
+
+    .pf-card code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        font-size: 0.88em;
+    }
+
+    /* ---- Tech stack table -------------------------------------------- */
+    .pf-stack {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+    }
+
+    .pf-stack th, .pf-stack td {
+        border: 1px solid var(--cyber-border);
+        padding: 0.65rem 0.85rem;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .pf-stack th {
+        background: rgba(0, 243, 255, 0.08);
+        color: var(--neon-blue);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.74rem;
+        font-weight: 700;
+    }
+
+    .pf-stack td:first-child {
+        color: var(--neon-orange);
+        font-weight: 700;
+        width: 16%;
+    }
+
+    .pf-stack td:nth-child(2) {
+        color: var(--neon-blue);
+        font-weight: 600;
+        width: 26%;
+    }
+
+    .pf-stack td:last-child {
+        color: var(--text-primary);
+        font-size: 0.92rem;
+    }
+
+    .pf-stack td code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        font-size: 0.88em;
+    }
+
+    /* ---- Feature grid ------------------------------------------------- */
+    .pf-feature-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    @media (max-width: 720px) {
+        .pf-feature-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .pf-feature {
+        background: var(--cyber-surface);
+        border: 1px solid var(--cyber-border);
+        border-radius: 12px;
+        padding: 1.1rem 1.2rem;
+        transition: all 0.25s ease;
+    }
+
+    .pf-feature:hover {
+        transform: translateY(-3px);
+        border-color: var(--neon-blue);
+        box-shadow: 0 0 14px rgba(0, 243, 255, 0.25);
+    }
+
+    .pf-feature-icon {
+        font-size: 1.4rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .pf-feature h3 {
+        color: var(--neon-orange);
+        margin: 0 0 0.5rem;
+        font-size: 1.02rem;
+        letter-spacing: 0.3px;
+    }
+
+    .pf-feature p {
+        color: var(--text-primary);
+        font-size: 0.93rem;
+        line-height: 1.65;
+        margin: 0;
+    }
+
+    .pf-feature code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        font-size: 0.88em;
+    }
+
+    /* ---- Engineering challenges -------------------------------------- */
+    .pf-challenge {
+        background: var(--cyber-surface);
+        border: 1px solid var(--cyber-border);
+        border-left: 3px solid var(--neon-orange);
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+    }
+
+    .pf-challenge header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .pf-challenge h3 {
+        color: var(--neon-blue);
+        margin: 0;
+        font-size: 1.08rem;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .pf-challenge-tag {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-weight: 700;
+        padding: 0.15rem 0.55rem;
+        border-radius: 4px;
+        background: rgba(255, 107, 53, 0.15);
+        color: var(--neon-orange);
+        border: 1px solid var(--neon-orange);
+    }
+
+    .pf-challenge p {
+        margin: 0.4rem 0;
+        font-size: 0.93rem;
+        color: var(--text-primary);
+    }
+
+    .pf-challenge strong {
+        color: var(--neon-blue);
+    }
+
+    .pf-challenge pre {
+        background: var(--code-block-bg);
+        border: 1px solid var(--cyber-border);
+        border-radius: 6px;
+        padding: 0.6rem 0.8rem;
+        margin: 0.4rem 0;
+        font-size: 0.85rem;
+        overflow-x: auto;
+    }
+
+    .pf-challenge code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        font-size: 0.88em;
+    }
+
+    .pf-challenge pre code {
+        background: transparent;
+        border: none;
+        padding: 0;
+        color: var(--text-primary);
+        font-size: 0.85rem;
+    }
+
+    /* ---- Lessons ------------------------------------------------------ */
+    .pf-lesson-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    @media (max-width: 720px) {
+        .pf-lesson-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .pf-lesson {
+        background: var(--cyber-surface);
+        border: 1px solid var(--cyber-border);
+        border-radius: 12px;
+        padding: 1rem 1.2rem;
+    }
+
+    .pf-lesson h3 {
+        color: var(--neon-orange);
+        font-size: 1rem;
+        margin: 0 0 0.5rem;
+        border-bottom: 1px solid var(--cyber-border);
+        padding-bottom: 0.4rem;
+        letter-spacing: 0.3px;
+    }
+
+    .pf-lesson p {
+        color: var(--text-primary);
+        font-size: 0.92rem;
+        line-height: 1.65;
+        margin: 0;
+    }
+
+    .pf-lesson code {
+        color: var(--neon-blue);
+        background: rgba(0, 243, 255, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 243, 255, 0.25);
+        font-size: 0.88em;
+    }
+
+    /* ---- Final -------------------------------------------------------- */
+    .pf-section-final .pf-section-header {
+        border-bottom-color: var(--neon-blue);
+    }
+
+    .pf-final-links {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+</style>
+
+<script>
+    (function () {
+        'use strict';
+        // Live design-system card: read the current :root[data-theme=…] values
+        // and reflect them in the hero card. The card updates whenever the
+        // data-theme attribute changes (so swapping themes via the dashboard
+        // re-renders the swatches in real time).
+
+        var TOKENS = [
+            {id: 'blue', name: '--neon-blue'},
+            {id: 'orange', name: '--neon-orange'},
+            {id: 'purple', name: '--neon-purple'},
+            {id: 'green', name: '--neon-green'},
+            {id: 'bg', name: '--cyber-bg'},
+            {id: 'border', name: '--cyber-border'}
+        ];
+
+        function readToken(name) {
+            try {
+                return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function renderTokens() {
+            var themeAttr = document.documentElement.getAttribute('data-theme') || 'cyberpunk';
+            var themeEl = document.getElementById('pf-live-theme');
+            if (themeEl) themeEl.textContent = themeAttr;
+
+            TOKENS.forEach(function (t) {
+                var v = readToken(t.name);
+                var sw = document.getElementById('pf-token-' + t.id);
+                var tv = document.getElementById('pf-token-' + t.id + '-val');
+                if (sw) {
+                    if (t.id === 'bg' || t.id === 'border') {
+                        // Tokens with rgba/hex values go through directly.
+                        sw.style.background = v;
+                    } else {
+                        sw.style.background = v;
+                    }
+                }
+                if (tv) tv.textContent = v || '—';
+            });
+        }
+
+        // Re-render when the dashboard changes the theme or any setting.
+        window.addEventListener('lt:settings-change', renderTokens);
+        // Cross-tab theme changes:
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'lt.theme') renderTokens();
+        });
+        // MutationObserver fallback in case the dashboard updates the
+        // attribute without going through the event.
+        if (typeof MutationObserver !== 'undefined') {
+            var mo = new MutationObserver(renderTokens);
+            mo.observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
+        }
+
+        var refresh = document.getElementById('pf-live-refresh');
+        if (refresh) refresh.addEventListener('click', renderTokens);
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', renderTokens);
+        } else {
+            renderTokens();
+        }
+    })();
+</script>
+
+{{ end }}

@@ -1,0 +1,47 @@
+{{- if lt hugo.Version "0.146.0" }}
+{{- errorf "=> hugo v0.146.0 or greater is required for hugo-PaperMod to build " }}
+{{- end -}}
+
+<!DOCTYPE html>
+{{- $theme := site.Params.defaultTheme | default "auto" }}
+{{- if eq $theme "dark" }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="dark">
+{{- else if eq $theme "light" }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="light">
+{{- else }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="auto">
+{{- end }}
+
+<head>
+    {{- partial "head.html" . }}
+</head>
+
+{{/*
+Body class.
+
+PaperMod's default emits `body class="list"` whenever the page is
+not a single page or archive. We keep that behaviour, but also
+add a `home` class on the home page so home.css can scope the
+darker background + overflow-x:hidden to just the hero shell
+rather than painting every page in the matrix-rain backdrop.
+*/}}
+{{- $bodyClass := "" }}
+{{- if .IsHome }}{{ $bodyClass = "home" }}{{ end }}
+{{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) }}
+<body class="list {{ $bodyClass }}" id="top">
+{{- else }}
+<body class="{{ $bodyClass }}" id="top">
+{{- end }}
+{{- /*
+Skip-to-content link. Hidden by default, surfaces when focused
+via keyboard. Helps keyboard-only users bypass the header nav.
+*/ -}}
+<a class="skip-link" href="#main-content">Skip to content</a>
+{{ partialCached "header.html" . .Page -}}
+<main class="main" id="main-content" tabindex="-1">
+    {{- block "main" . }}{{ end }}
+</main>
+{{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+</body>
+
+</html>

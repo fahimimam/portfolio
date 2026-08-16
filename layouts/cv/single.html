@@ -1,0 +1,53 @@
+{{ define "main" }}
+<header class="page-header">
+    {{- partial "breadcrumbs.html" . }}
+    <h1>{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">{{ .Description | markdownify }}</div>
+    {{- end }}
+</header>
+
+{{- $pdfPath := "cv/fahim-imam-cv.pdf" -}}
+
+{{- if .Content }}
+<div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+{{- if os.FileExists (print "static/" $pdfPath) }}
+<div class="cv-actions">
+    <a class="cv-btn" href="{{ $pdfPath | relURL }}" rel="noopener" target="_blank">
+        <span>⬇</span> Download PDF
+    </a>
+    <a class="cv-btn secondary" href="{{ $pdfPath | relURL }}" rel="noopener" target="_blank">
+        <span>↗</span> Open in new tab
+    </a>
+</div>
+
+<div class="cv-wrapper">
+    <object aria-label="CV PDF" data="{{ $pdfPath | relURL }}" type="application/pdf">
+        <p>
+            Your browser doesn't support embedded PDFs.
+            <a href="{{ $pdfPath | relURL }}">Download the PDF</a> to view it.
+        </p>
+    </object>
+</div>
+
+{{- else }}
+<div class="cv-empty">
+    <h3>📄 No CV uploaded yet</h3>
+    <p>
+        Drop your CV PDF at
+        <code>static/cv/fahim-imam-cv.pdf</code>
+        and rebuild the site. This page will automatically embed it.
+    </p>
+    <p class="hint">
+        Tip: rename the file or update <code>content/cv.md</code> if you use a different filename.
+    </p>
+</div>
+{{- end }}
+
+{{ end }}

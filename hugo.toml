@@ -14,14 +14,33 @@ relativeURLs = false
 pagerSize = 10
 
 [permalinks]
-posts = "/:filename/"
-blog = "/blog/:filename/"
-projects = "/projects/:filename/"
+posts = "/:contentbasename/"
+blog = "/blog/:contentbasename/"
+projects = "/projects/:contentbasename/"
 
 [params]
 defaultTheme = "dark"
 disableThemeToggle = true
 homeInfoParams = false
+ShowReadingTime = true
+ShowShareButtons = true
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = true
+
+[params.assets]
+favicon = "/favicon.svg"
+
+[params.search]
+enable = true
+type = "fastsearch"
+placeholder = "Search posts and projects…"
+
+[params.fuseOpts]
+isCaseSensitive = false
+minMatchCharLength = 2
+threshold = 0.3
 
 [[params.socialIcons]]
 name = "github"
@@ -29,18 +48,11 @@ url = "https://github.com/fahimimam"
 
 [[params.socialIcons]]
 name = "linkedin"
-url = "https://linkedin.com/in/yourprofile"
+url = "https://www.linkedin.com/in/kazi-fahim-imam-0027081a1/"
 
 [[params.socialIcons]]
 name = "email"
-url = "mailto:your@email.com"
-
-ShowReadingTime = true
-ShowShareButtons = true
-ShowPostNavLinks = true
-ShowBreadCrumbs = true
-ShowCodeCopyButtons = true
-ShowWordCount = true
+url = "mailto:fahimimam026@gmail.com"
 
 [menu]
 [[menu.main]]
@@ -56,10 +68,34 @@ url = "/blog/"
 weight = 20
 
 [[menu.main]]
+identifier = "search"
+name = "Search"
+url = "/search/"
+weight = 25
+
+[[menu.main]]
+identifier = "cv"
+name = "CV"
+url = "/cv/"
+weight = 30
+
+[[menu.main]]
 identifier = "about"
 name = "About"
 url = "/about/"
-weight = 30
+weight = 40
+
+[[menu.main]]
+identifier = "now"
+name = "Now"
+url = "/now/"
+weight = 45
+
+[[menu.main]]
+identifier = "uses"
+name = "Uses"
+url = "/uses/"
+weight = 50
 
 [taxonomies]
 tag = "tags"

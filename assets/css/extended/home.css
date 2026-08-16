@@ -1,0 +1,890 @@
+/*
+ * Home-page-only styles. Auto-included by PaperMod's head.html via
+ * `resources.Match "css/extended/*.css"`, so it gets bundled into the
+ * site stylesheet (minified + fingerprinted) rather than shipped in
+ * the HTML of every visit.
+ *
+ * Theme tokens (--neon-blue, --text-primary, --cyber-bg, …) and the
+ * base body/font rule come from assets/css/extended/custom.css. We
+ * only declare what the home page needs on top of that bundle:
+ *
+ *   --darker-bg: a slightly deeper variant of --cyber-bg used only
+ *                here for the home-page hero background.
+ */
+
+:root {
+    --darker-bg: #050811;
+    --dark-bg: #0a0e27;
+    --terminal-bg: rgba(10, 14, 39, 0.9);
+}
+
+/*
+ * Body gets the darker variant only on the home page, where the
+ * hero + matrix rain need it. Non-home pages keep --cyber-bg from
+ * custom.css so PaperMod chrome (header, footer, post entries)
+ * renders consistently with the themed palette.
+ */
+body.home {
+    background: var(--darker-bg);
+    overflow-x: hidden;
+}
+
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+}
+
+/*
+ * Top accent strip. A thin gradient bar pinned to the top of the
+ * hero, full width. Three-stop gradient mirrors the theme palette
+ * (blue → orange → purple) so it visually re-asserts the brand
+ * without competing with the terminal content below.
+ */
+.hero-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+    var(--neon-blue) 0%,
+    var(--neon-orange) 50%,
+    var(--neon-purple) 100%);
+    box-shadow: 0 0 12px var(--neon-blue);
+    z-index: 2;
+    animation: accentShift 8s ease-in-out infinite;
+    background-size: 200% 100%;
+}
+
+@keyframes accentShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.background-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(var(--neon-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--neon-blue) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.03;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(50px, 50px);
+    }
+}
+
+.hero-content {
+    max-width: 1480px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    z-index: 1;
+}
+
+.profile-card {
+    position: relative;
+    width: 270px;
+    align-self: center;
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.55) 0%, rgba(5, 8, 17, 0.55) 100%);
+    border-radius: 10px;
+    padding: 1.5rem;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    flex-shrink: 0;
+}
+
+/* Scanline effect */
+.card-scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+            0deg,
+            rgba(0, 243, 255, 0.03) 0px,
+            rgba(0, 243, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 2px
+    );
+    pointer-events: none;
+    animation: scanlineMove 3s linear infinite;
+    z-index: 2;
+}
+
+@keyframes scanlineMove {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+/* Card header — a single band carrying the availability chip. */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+/*
+ * Availability chip. The only "signal" in the card header — the
+ * dot + label tell visitors whether the author is open to work.
+ */
+.availability-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid #4ade80;
+    border-radius: 999px;
+    background: rgba(74, 222, 128, 0.10);
+    color: #4ade80;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.availability-chip-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 6px #4ade80;
+    animation: statusBlink 2s ease-in-out infinite;
+}
+
+/* Profile image wrapper */
+.profile-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--neon-blue);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.3),
+    inset 0 0 30px rgba(0, 243, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(1.1) contrast(1.05);
+    position: relative;
+    z-index: 0;
+}
+
+/* Holographic border effect */
+.holographic-effect {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(
+            45deg,
+            var(--neon-blue),
+            var(--neon-purple),
+            var(--neon-orange),
+            var(--neon-blue)
+    );
+    background-size: 300% 300%;
+    opacity: 0.3;
+    filter: blur(8px);
+    animation: holographicShift 6s ease infinite;
+    z-index: -1;
+    border-radius: 8px;
+}
+
+@keyframes holographicShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Image overlay (subtle tech grid) */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Card footer */
+.card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.data-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    font-size: 0.8rem;
+}
+
+.data-line:last-child {
+    border-bottom: none;
+}
+
+.data-line .label {
+    color: var(--neon-orange);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.data-line .value {
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+}
+
+/* Hover effect for entire card */
+.profile-card:hover .holographic-effect {
+    opacity: 0.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-card {
+        width: 280px;
+        padding: 1rem;
+    }
+
+    .data-line {
+        font-size: 0.7rem;
+    }
+
+    .data-line .value {
+        font-size: 0.65rem;
+    }
+}
+
+/*
+ * Hero shell — the single frame around the card + terminal pair.
+ * Carries the traffic-light header and outer neon border. The
+ * children no longer have their own thick borders; they're tiles
+ * inside the shell.
+ */
+.hero-shell {
+    width: 100%;
+    max-width: 1400px;
+    background: var(--terminal-bg);
+    border: 2px solid var(--neon-blue);
+    border-radius: 14px;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.25),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.hero-shell-header {
+    background: rgba(0, 243, 255, 0.1);
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--neon-blue);
+}
+
+/*
+ * Always stack card on top, terminal below. Vertical gives the card
+ * a full 270px column (no flex squeeze) and the terminal its own
+ * full-width row — text reveals end-to-end without competing with
+ * the card for horizontal space.
+ */
+.hero-shell-body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+/* Terminal — a tile inside the shell, no inner border. */
+.terminal-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: rgba(5, 8, 17, 0.55);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-title {
+    color: var(--neon-blue);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.terminal-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.terminal-buttons span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+}
+
+.btn-close {
+    background: #ff5f56;
+}
+
+.btn-minimize {
+    background: #ffbd2e;
+}
+
+.btn-maximize {
+    background: #27c93f;
+}
+
+.terminal-body {
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.terminal-line {
+    margin: 1rem 0;
+}
+
+.prompt {
+    color: var(--neon-blue);
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.command {
+    color: var(--neon-purple);
+    font-weight: bold;
+}
+
+.output {
+    color: var(--text-primary);
+    margin: 0.5rem 0 1rem 2rem;
+}
+
+/*
+ * Sequence the entire terminal reveal top-to-bottom.
+ *
+ * Every `<p>` inside `.terminal-body` starts at `opacity: 0` and
+ * fades in at its turn via `animation-delay` on the matching
+ * `:nth-child()` below. The reveal timeline (calibrated to the
+ * typing animation timings defined further down):
+ *
+ *   child 1  prompt "whoami"           fade @ 0.0s
+ *   child 2  typing  "Fahim Imam"      fade @ 1.0s, typing 1.0→3.0s
+ *   child 3  prompt "cat about.txt"    fade @ 3.0s
+ *   child 4  typing  "...Optimizer"    fade @ 3.3s, typing 3.3→5.3s
+ *   child 5  prompt "ls skills/"       fade @ 5.3s
+ *   child 6  skills grid               fade @ 5.6s
+ *   child 7  prompt "tail -f ..."      fade @ 6.0s
+ *   child 8  info line 1               fade @ 6.3s
+ *   child 9  info line 2               fade @ 6.5s
+ *   child 10 info line 3               fade @ 6.7s
+ *   child 11 idle cursor               fade @ 7.0s
+ *
+ * `forwards` keeps the line visible after the fade completes.
+ */
+.terminal-body > p {
+    opacity: 0;
+    animation: lineAppear 0.35s ease-out forwards;
+}
+
+.terminal-body > p:nth-child(1) {
+    animation-delay: 0.0s;
+}
+
+.terminal-body > p:nth-child(2) {
+    animation-delay: 1.0s;
+}
+
+.terminal-body > p:nth-child(3) {
+    animation-delay: 3.0s;
+}
+
+.terminal-body > p:nth-child(4) {
+    animation-delay: 3.3s;
+}
+
+.terminal-body > p:nth-child(5) {
+    animation-delay: 5.3s;
+}
+
+.terminal-body > p:nth-child(6) {
+    animation-delay: 5.6s;
+}
+
+.terminal-body > p:nth-child(7) {
+    animation-delay: 6.0s;
+}
+
+.terminal-body > p:nth-child(8) {
+    animation-delay: 6.3s;
+}
+
+.terminal-body > p:nth-child(9) {
+    animation-delay: 6.5s;
+}
+
+.terminal-body > p:nth-child(10) {
+    animation-delay: 6.7s;
+}
+
+.terminal-body > p:nth-child(11) {
+    animation-delay: 7.0s;
+}
+
+.terminal-body > p:nth-child(n+12) {
+    animation-delay: 7.3s;
+}
+
+/* Skills chip chips inside the grid get a tiny per-chip stagger so
+ * they pop in left-to-right rather than appearing all at once. */
+.skills-grid > .skill {
+    opacity: 0;
+    animation: lineAppear 0.3s ease-out forwards;
+}
+
+.skills-grid > .skill:nth-child(1) {
+    animation-delay: 5.7s;
+}
+
+.skills-grid > .skill:nth-child(2) {
+    animation-delay: 5.8s;
+}
+
+.skills-grid > .skill:nth-child(3) {
+    animation-delay: 5.9s;
+}
+
+.skills-grid > .skill:nth-child(4) {
+    animation-delay: 6.0s;
+}
+
+.skills-grid > .skill:nth-child(5) {
+    animation-delay: 6.1s;
+}
+
+.skills-grid > .skill:nth-child(6) {
+    animation-delay: 6.2s;
+}
+
+.skills-grid > .skill:nth-child(n+7) {
+    animation-delay: 6.3s;
+}
+
+@keyframes lineAppear {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.typing-text {
+    /*
+     * Reveal via clip-path, NOT max-width. clip-path inset uses
+     * the element's own intrinsic width (which equals its full
+     * content width thanks to inline-block + nowrap), so the
+     * animation is independent of the parent's content width.
+     * Using max-width: 0 → 100% would cap the final reveal to the
+     * parent's width, clipping long lines on narrow viewports.
+     *
+     * No per-line `border-right` caret: the bottom idle cursor is
+     * the only cursor on the terminal. The orange glow of the
+     * typing text itself + the clip-path reveal already convey
+     * "text is being typed".
+     */
+    display: inline-block;
+    color: var(--neon-orange);
+    font-size: 1.5rem;
+    font-weight: bold;
+    clip-path: inset(0 100% 0 0);
+    max-width: 100%;
+}
+
+/*
+ * Stagger the typing reveal across all `.typing-text` elements.
+ *
+ * Each `.typing-text` is a `<span>` inside its own `<p class="output">`.
+ * We need the reveal to start AFTER the parent `<p>` has faded in
+ * (so the user sees the prompt first, then the text "types in").
+ *
+ * Selector notes (this has bitten us before):
+ *   - `:nth-of-type(N)` inside a `<p>` only counts same-TAG siblings,
+ *     and each typing-text is a lone `<span>` — so `:nth-of-type`
+ *     on the inner span never reaches beyond 1.
+ *   - `:nth-child(N)` on the OUTER `<p>` works ONLY IF we know the
+ *     absolute position. `.terminal-body` has 11 `<p>` children and
+ *     all of them are `<p>`, so `:nth-of-type(N)` and `:nth-child(N)`
+ *     are equivalent here. We use `:nth-of-type` to make the intent
+ *     explicit ("the Nth `<p>` block, which is also where the typing
+ *     reveal should fire").
+ *   - We earlier tried `:has(.typing-text):nth-child(N)` (combine
+ *     `:has` to filter then `:nth-child` to position). That pattern
+ *     is a CSS spec footgun: `:nth-child(N)` evaluates positionality
+ *     against ALL siblings, NOT against `:has`-matched ones. So that
+ *     selector silently matched nothing. Do not use that pattern.
+ *
+ * Animation delays are calibrated to the lineAppear timeline.
+ *
+ * Layout of `<p>` children of `.terminal-body`:
+ *   child 1: terminal-line "~$ whoami"
+ *   child 2: output         typing "Fahim Imam"            <- reveal 1s
+ *   child 3: terminal-line "~$ cat about.txt"
+ *   child 4: output         typing "Software Developer..."  <- reveal 3.3s
+ *   child 5: terminal-line "~$ ls skills/"
+ *   child 6: output         skills-grid
+ *   child 7: terminal-line "~$ tail -f ..."
+ *   child 8: output-info   "[ok] lunch-tracker..."
+ *   child 9: output-info   "[ok] matrix-rain..."
+ *   child 10: output-info  "[ok] portfolio..."
+ *   child 11: terminal-line idle cursor "~$ ▋"
+ */
+.terminal-body > p:nth-of-type(2) > .typing-text {
+    animation: typing 2s steps(40) 1s forwards;
+}
+
+.terminal-body > p:nth-of-type(4) > .typing-text {
+    animation: typing 2s steps(60) 3.3s forwards;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: normal;
+    line-height: 1.4;
+    /*
+     * Force block + width:100% for the long phrasing line. The
+     * phrase is ~52 chars; even at 0.85rem an inline-block of
+     * one un-broken phrase still tries to overflow. Making the
+     * span a block + 100%-width turns it into a multi-line wrap
+     * inside its parent <p>. The clip-path reveal still works
+     * because it operates on the block's full width, unmasking
+     * left-to-right across however many wrapped lines appear.
+     */
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Plain info output (e.g. `echo '...'`) — monospace, dim, no animation. */
+.output-info {
+    font-family: 'Courier New', monospace;
+    color: var(--neon-green);
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+/*
+ * Reveal-from-left keyframe. inset(0 100% 0 0) clips out 100% from
+ * the right (nothing visible); inset(0 0 0 0) clips nothing (fully
+ * visible). The element retains its full content width during the
+ * animation; clip-path just unmasks it from left to right.
+ */
+@keyframes typing {
+    from {
+        clip-path: inset(0 100% 0 0);
+    }
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill {
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--neon-blue);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--neon-blue);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.skill:hover {
+    background: var(--neon-blue);
+    color: var(--darker-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 243, 255, 0.4);
+}
+
+/*
+ * Idle cursor — the lone caret at the bottom of the terminal.
+ * Fades in/out using opacity rather than the historical border
+ * trick (the border-color keyframe was reused from an older
+ * design where the cursor was a CSS border; the markup here
+ * uses a U+258B block character, so we toggle opacity).
+ */
+.cursor-blink {
+    color: var(--neon-blue);
+    animation: cursorBlink 1s steps(2, end) infinite;
+}
+
+@keyframes cursorBlink {
+    0%, 49% {
+        opacity: 1;
+    }
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+/* CTA Buttons */
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    padding: 0.875rem 1.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: 2px solid;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: var(--neon-blue);
+    color: var(--darker-bg);
+    border-color: var(--neon-blue);
+}
+
+.btn-primary:hover {
+    background: transparent;
+    color: var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--neon-orange);
+    border-color: var(--neon-orange);
+}
+
+.btn-secondary:hover {
+    background: var(--neon-orange);
+    color: var(--darker-bg);
+    box-shadow: 0 0 20px var(--neon-orange);
+    transform: translateY(-2px);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/*
+ * Ghost row. Secondary destinations (blog, about, now, uses) sit
+ * below the primary CTAs as inline text links, visually demoted so
+ * they don't compete with Projects / CV.
+ */
+.cta-ghost-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.5rem;
+    margin-top: -0.5rem;
+}
+
+.cta-ghost {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    border-bottom: 1px dashed transparent;
+    transition: color 0.2s ease, border-color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.cta-ghost:hover {
+    color: var(--neon-blue);
+    border-bottom-color: var(--neon-blue);
+    text-shadow: 0 0 6px rgba(0, 243, 255, 0.45);
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover .social-icon {
+    color: var(--neon-blue);
+    filter: drop-shadow(0 0 8px var(--neon-blue));
+    transform: translateY(-3px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content {
+        gap: 1.25rem;
+    }
+
+    /*
+     * Reorder so CTA buttons land above the hero shell on phones.
+     * The shell contains the card + terminal, which are tall —
+     * pushing them below the fold. CTAs are short, decision-ready,
+     * and need to be visible without scrolling.
+     */
+    .cta-buttons {
+        order: 1;
+    }
+
+    .cta-ghost-row {
+        order: 2;
+    }
+
+    .hero-shell {
+        order: 3;
+    }
+
+    .social-links {
+        order: 4;
+    }
+
+    .profile-image-container {
+        width: 200px;
+        height: 200px;
+    }
+
+    .terminal-body {
+        font-size: 0.85rem;
+        padding: 1rem;
+    }
+
+    .typing-text {
+        font-size: 1.2rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* On narrow screens the card stretches to full row width. */
+    .profile-card {
+        width: 100%;
+    }
+
+    .hero-shell-body {
+        padding: 1rem;
+    }
+}
+
+/*
+ * Reduced-motion guard. When the user has set their OS-level
+ * "reduce motion" preference, disable every keyframed animation
+ * on the home page — scanlines, holographic shifts, blinking
+ * cursors, the status pulse. The visual effects remain; they
+ * just stop moving.
+ */
+@media (prefers-reduced-motion: reduce) {
+    .background-grid,
+    .card-scanline,
+    .holographic-effect,
+    .availability-chip-dot,
+    .typing-text,
+    .cursor-blink,
+    .skill,
+    .btn,
+    .social-links a:hover .social-icon,
+    .terminal-body > p,
+    .skills-grid > .skill,
+    .hero-accent {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    /* Lines and chips are visible by default when motion is off. */
+    .terminal-body > p,
+    .skills-grid > .skill {
+        opacity: 1 !important;
+    }
+
+    /* Show the typing text fully instead of clipped. */
+    .typing-text {
+        clip-path: none !important;
+    }
+
+    .skill:hover,
+    .btn:hover,
+    .social-links a:hover .social-icon {
+        transform: none !important;
+    }
+}
